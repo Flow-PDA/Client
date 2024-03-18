@@ -11,6 +11,7 @@ const TopNavigationBar = ({ text }) => {
         </Navbar.Brand>
 
         <Nav.Item className="nav-item-text">{text}</Nav.Item>
+
       </Container>
     </Navbar>
   );
