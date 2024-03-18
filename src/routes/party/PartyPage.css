@@ -1,0 +1,70 @@
+.page-container {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+}
+.party-container {
+  width: 90vw;
+  height: 65vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.alert-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+}
+.alert-message {
+  text-align: left;
+  margin: 0;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+}
+.main-font {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+.sub-font {
+  color: rgba(0, 0, 0, 0.5);
+}
+.alert-button-container {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.deposit-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
+  background-color: #f8f6f6;
+  border-radius: 1rem;
+}
+.deposit-info-container {
+  display: flex;
+  position: absolute;
+  left: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.deposit-button-container {
+  display: flex;
+  gap: 0.2rem;
+  position: absolute;
+  bottom: 1.8rem;
+  right: 1rem;
+}
