@@ -16,7 +16,6 @@ const PrimaryButton = ({ text, minWidth, onClick, style }) => {
         fontSize: "16px",
         fontWeight: "bold",
       }}
-      className="rounded-pill primaryButton"
     >
       {text}
     </Button>
