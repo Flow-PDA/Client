@@ -1,7 +1,7 @@
 import logo from "../assets/logo.svg";
 import "./MainPage.css";
 import PrimaryButton from "../components/common/button/PrimaryButton";
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 const MainPage = () => {
   return (
     <Container className="main-container">
@@ -21,6 +21,8 @@ const MainPage = () => {
             minWidth="100%"
           />
         </Col>
+      </Row>
+      <Row>
         <Col>
           <span>이미 계정이 있나요? </span>
           <span className="login-button">로그인</span>
