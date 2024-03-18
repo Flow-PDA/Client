@@ -21,11 +21,12 @@ const MainPage = () => {
             minWidth="100%"
           />
         </Col>
-        <Col>
-          <span>이미 계정이 있나요? </span>
-          <span className="login-button">로그인</span>
-        </Col>
       </Row>
+      <Col>
+        <span>이미 계정이 있나요? </span>
+        <span className="login-button">로그인</span>
+      </Col>
+      <Row></Row>
     </Container>
   );
 };
