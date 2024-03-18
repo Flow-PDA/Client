@@ -1,11 +1,13 @@
 .transfer-possible-price-sentence {
   text-align: center;
+  margin-top: 2vh;
 }
 
 .transfer-possible-price {
   text-align: center;
   font-size: 2rem;
   font-weight: 500;
+  margin-bottom: 2vh;
 }
 
 .full-transfer-sentence {

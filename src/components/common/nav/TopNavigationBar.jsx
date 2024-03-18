@@ -9,7 +9,6 @@ const TopNavigationBar = ({ text }) => {
         <Navbar.Brand href="/" className="navbar-brand">
           <Image src={BackButton} alt="Back" />
         </Navbar.Brand>
-
         <Nav.Item className="nav-item-text">{text}</Nav.Item>
       </Container>
     </Navbar>
