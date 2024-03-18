@@ -3,6 +3,7 @@
   font-weight: 600;
 }
 
+
 .navbar-container {
   position: relative; /* 부모 요소를 relative로 설정 */
 }
@@ -14,3 +15,4 @@
     -50%
   ); /* 왼쪽 여백의 50%만큼 왼쪽으로 이동하여 가운데 정렬 */
 }
+
