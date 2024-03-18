@@ -3,10 +3,12 @@ import Button from "react-bootstrap/Button";
 import { Container } from "react-bootstrap";
 import "./TransferPage.css";
 import PrimaryButton from "../../components/common/button/PrimaryButton";
+import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
 
 export default function TransferPage() {
   return (
     <Container>
+      <TopNavigationBar text={"이체하기"} />
       <div className="transfer-possible-price-sentence">이체 가능 금액</div>
       <div className="transfer-possible-price">
         {(4182553).toLocaleString()}원
