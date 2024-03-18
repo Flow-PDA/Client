@@ -1,12 +1,34 @@
-* {
-  text-align: center;
-  /* height: 100vh; */
+body {
+  margin-top: 0;
+  margin-bottom: 0;
 }
-.accountLink {
-  justify-content: flex-end;
+.main-container {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+}
+.main-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 가로 중앙 정렬 */
+  justify-content: center;
+  text-align: center;
+  height: 87vh;
 }
 
-.loginButton {
+.login-button {
   color: #375aff;
-  padding-top: 300px; /* 버튼을 최하단으로 이동 */
+}
+
+.account-link {
+  align-items: center;
+  margin-top: auto;
+  padding: 0 0 3vh 0;
+  height: 10vh;
+}
+
+.start-button {
+  margin-top: auto;
 }
