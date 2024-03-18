@@ -13,8 +13,9 @@ const PrimaryButton = ({ text, minWidth, onClick, style }) => {
         minWidth: minWidth,
         minHeight: 59,
         color: "white",
+        fontSize: "16px",
+        fontWeight: "bold",
       }}
-      className="rounded-pill primaryButton"
     >
       {text}
     </Button>

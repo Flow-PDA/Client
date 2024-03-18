@@ -1,8 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../routes/Layout";
 import MainPage from "../routes/MainPage";
+import InterestPage from "../routes/Interest/InterestPage";
 import PartyPage from "../routes/party/PartyPage";
 import PartyCreatePage from "../routes/party/create/PartyCreatePage";
+import TransferPage from "../routes/transfer/TransferPage";
+
 export const mainRouter = [
   {
     path: "",
@@ -11,6 +14,10 @@ export const mainRouter = [
       {
         path: "",
         element: <MainPage />,
+      },
+      {
+        path: "/interests",
+        element: <InterestPage />,
       },
       {
         path: "party",
@@ -26,6 +33,10 @@ export const mainRouter = [
             index: true,
           },
         ],
+      },
+      {
+        path: "/transfer",
+        element: <TransferPage />,
       },
     ],
   },
