@@ -9,9 +9,9 @@ const TopNavigationBar = ({ text }) => {
         <Navbar.Brand href="/" className="navbar-brand">
           <Image src={BackButton} alt="Back" />
         </Navbar.Brand>
-        <Nav className="mx-auto">
-          <Nav.Item className="nav-item-text">{text}</Nav.Item>
-        </Nav>
+
+        <Nav.Item className="nav-item-text">{text}</Nav.Item>
+
       </Container>
     </Navbar>
   );
