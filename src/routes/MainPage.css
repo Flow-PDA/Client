@@ -1,0 +1,12 @@
+* {
+  text-align: center;
+  /* height: 100vh; */
+}
+.accountLink {
+  justify-content: flex-end;
+}
+
+.loginButton {
+  color: #375aff;
+  padding-top: 300px; /* 버튼을 최하단으로 이동 */
+}
