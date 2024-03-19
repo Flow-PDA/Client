@@ -4,6 +4,7 @@ import MainPage from "../routes/MainPage";
 import InterestPage from "../routes/Interest/InterestPage";
 import PartyPage from "../routes/party/PartyPage";
 import PartyCreatePage from "../routes/party/create/PartyCreatePage";
+import MyPartyPage from "../routes/party/myparty/MyPartyPage"
 import TransferPage from "../routes/transfer/TransferPage";
 
 export const mainRouter = [
@@ -30,6 +31,11 @@ export const mainRouter = [
           {
             path: "create",
             element: <PartyCreatePage />,
+            index: true,
+          },
+          {
+            path: "myparty",
+            element: <MyPartyPage />,
             index: true,
           },
         ],
