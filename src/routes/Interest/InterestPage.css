@@ -37,6 +37,7 @@
 .interest-button-group {
   display: flex;
   align-items: center;
+  justify-content: right;
 }
 
 .interest-no-button {
@@ -54,4 +55,5 @@
 .interest-remove-button-col {
   display: flex;
   align-items: center;
+  justify-content: right;
 }
