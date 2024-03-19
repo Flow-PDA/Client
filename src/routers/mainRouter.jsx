@@ -5,6 +5,7 @@ import InterestPage from "../routes/Interest/InterestPage";
 import PartyPage from "../routes/party/PartyPage";
 import PartyCreatePage from "../routes/party/create/PartyCreatePage";
 import TransferPage from "../routes/transfer/TransferPage";
+import TransferDetailAccountNum from "../routes/transfer/TransferDetailAccountNumPage";
 
 export const mainRouter = [
   {
@@ -36,7 +37,18 @@ export const mainRouter = [
       },
       {
         path: "/transfer",
-        element: <TransferPage />,
+        children: [
+          {
+            path: "",
+            element: <TransferPage />,
+            index: true,
+          },
+          {
+            path: "transferDetailAccountNum",
+            element: <TransferDetailAccountNum />,
+            index: true,
+          },
+        ],
       },
     ],
   },
