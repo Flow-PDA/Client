@@ -5,7 +5,8 @@ import InterestPage from "../routes/Interest/InterestPage";
 import PartyPage from "../routes/party/PartyPage";
 import PartyCreatePage from "../routes/party/create/PartyCreatePage";
 import MyPartyPage from "../routes/party/myparty/MyPartyPage";
-import PartyInfoPage from "../routes/party/info/PartyInfoPage"
+import PartyInfoPage from "../routes/party/info/PartyInfoPage";
+import PartyInvitePage from "../routes/party/invite/PartyInvitePage";
 import TransferPage from "../routes/transfer/TransferPage";
 
 export const mainRouter = [
@@ -41,8 +42,18 @@ export const mainRouter = [
           },
           {
             path: "info",
-            element: <PartyInfoPage />,
-            index: true,
+            children: [
+              {
+                path: "",
+                element: <PartyInfoPage />,
+                index: true,
+              },
+              {
+                path: "invite",
+                element: <PartyInvitePage />,
+                index: true,
+              },
+            ],
           },
         ],
       },
