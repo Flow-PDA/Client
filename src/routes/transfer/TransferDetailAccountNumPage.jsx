@@ -5,7 +5,7 @@ import "./TransferDetailAccountNumPage.css";
 import PrimaryButton from "../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
 
-export default function TransferDetailAccountNum() {
+export default function TransferDetailAccountNumPage() {
   return (
     <>
       <TopNavigationBar />

@@ -1,0 +1,24 @@
+.transfer-how-sentence {
+  font-size: 1.8rem;
+  font-weight: 600;
+
+  margin-bottom: 3vh;
+  margin-top: 3vh;
+}
+
+.transfer-input {
+  width: 90vw;
+  margin-bottom: 0.5rem;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: solid 2px #efefef;
+}
+
+.transfer-possible-deposit {
+  display: block;
+  float: left;
+  background-color: #f8f6f6;
+  border-radius: 5px;
+  padding: 7px;
+}

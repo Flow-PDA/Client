@@ -48,7 +48,10 @@
   display: flex;
   flex-direction: column;
   height: 92vh;
-  /* padding: 0 5vw !important; */
 
   /* Fix! 나중에 height는 수정해야될듯.. */
+}
+
+.account-number {
+  margin-bottom: 2vh;
 }
