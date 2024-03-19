@@ -1,21 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 
-const InterestButton = ({ text1, text2, minWidth, onClick, style }) => {
-  const [activeButton, setActiveButton] = useState(null);
-
-  const handleButtonClick = (buttonIndex) => {
-    setActiveButton(buttonIndex);
-    // 클릭 이벤트가 있을 경우, 해당 버튼의 onClick 콜백 함수 호출
-    if (onClick) {
-      onClick(buttonIndex);
-    }
-  };
-
+const InterestButton = ({ text1, text2, activeButton, onClick }) => {
   return (
     <ButtonGroup
       aria-label="Basic example"
-      style={{ backgroundColor: "#375AFF", minWidth: "100%" }}
+      style={{ minWidth: "100%", margin: "25px 0" }}
     >
       <Button
         style={{
@@ -23,7 +13,7 @@ const InterestButton = ({ text1, text2, minWidth, onClick, style }) => {
           color: activeButton === 0 ? "#375AFF" : "#fff",
           width: "50%",
         }}
-        onClick={() => handleButtonClick(0)}
+        onClick={() => onClick(0)} // 첫 번째 버튼을 클릭했을 때 0을 전달
       >
         {text1}
       </Button>
@@ -33,7 +23,7 @@ const InterestButton = ({ text1, text2, minWidth, onClick, style }) => {
           color: activeButton === 1 ? "#375AFF" : "#fff",
           width: "50%",
         }}
-        onClick={() => handleButtonClick(1)}
+        onClick={() => onClick(1)} // 두 번째 버튼을 클릭했을 때 1을 전달
       >
         {text2}
       </Button>
