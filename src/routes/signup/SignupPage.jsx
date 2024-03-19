@@ -5,6 +5,7 @@ import { Button, Container } from "react-bootstrap";
 import { useState } from "react";
 import { useCallback } from "react";
 import { useEffect } from "react";
+import { checkEmail } from "../../lib/apis/userApi";
 
 import "./SignupPage.css";
 
@@ -46,15 +47,21 @@ export default function SignupPage() {
   );
 
   const onEmailCheckClick = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
       // console.log(email);
       const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
       if (emailRegex.test(email)) {
-        window.alert("사용 가능한 email 입니다");
-        setIsAvailableEmail(true);
+        const resp = await checkEmail(email);
+
+        if (resp.msg === "available") {
+          window.alert("사용 가능한 email 입니다");
+          setIsAvailableEmail(true);
+        } else {
+          window.alert("사용중인 email 입니다.");
+        }
       } else {
-        window.alert("Invalid email");
+        window.alert("이메일 형식을 확인해주세요");
       }
     },
     [email]
