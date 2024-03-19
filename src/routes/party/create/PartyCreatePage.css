@@ -31,6 +31,7 @@
   border-bottom: solid 2px #efefef;
 }
 .party-btn {
+  height: 5vh;
   display: flex;
   justify-content: center;
 }

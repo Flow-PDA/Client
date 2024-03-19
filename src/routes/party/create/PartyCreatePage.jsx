@@ -1,6 +1,7 @@
 import React from "react";
 import "./PartyCreatePage.css";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import PrimaryButton from "../../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 
 export default function PartyCreatePage() {
@@ -25,9 +26,7 @@ export default function PartyCreatePage() {
             <input className="party-input" type="text" />
           </Col>
           <Col md className="party-btn">
-            <Button style={{ width: "90vw" }} variant="primary">
-              생성하기
-            </Button>
+            <PrimaryButton text="생성하기" minWidth="100%"></PrimaryButton>
           </Col>
         </Row>
       </Container>
