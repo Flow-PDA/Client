@@ -21,7 +21,7 @@ export default function SignupPage() {
   const [verifiedPassword, setVerifiedPassword] = useState(false);
 
   useEffect(() => {
-    console.log(password, checkPassword);
+    // console.log(password, checkPassword);
     setVerifiedPassword(password === checkPassword);
   }, [password, checkPassword]);
 
