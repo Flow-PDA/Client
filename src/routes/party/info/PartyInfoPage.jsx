@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./PartyInfoPage.css";
 import { Col, Row, Container, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Next from "../../../assets/arrow.png";
 import Bottom from "../../../assets/bottom_arrow.png";
 import Up from "../../../assets/up_arrow.png";
@@ -98,9 +99,11 @@ export default function PartyInfoPage() {
           <Col>
             <div className="info-btn-container">
               <div className="info-link">친구 초대</div>
-              <button style={{ border: "none", backgroundColor: "#fff" }}>
-                <img src={Next} alt="arrow" />
-              </button>
+              <Link to={"/party/info/invite"}>
+                <button style={{ border: "none", backgroundColor: "#fff" }}>
+                  <img src={Next} alt="arrow" />
+                </button>
+              </Link>
             </div>
           </Col>
           <Col>
