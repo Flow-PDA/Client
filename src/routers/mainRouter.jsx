@@ -8,11 +8,15 @@ import MyPartyPage from "../routes/party/myparty/MyPartyPage";
 import PartyInfoPage from "../routes/party/info/PartyInfoPage";
 import PartyInvitePage from "../routes/party/invite/PartyInvitePage";
 import TransferPage from "../routes/transfer/TransferPage";
+import TransferDetailAccountNumPage from "../routes/transfer/TransferDetailAccountNumPage";
+import TransferDetailPricePage from "../routes/transfer/TransferDetailPricePage";
+import TransferDetailConfirmPage from "../routes/transfer/TransferDetailConfirmPage";
 import SetGoalPage from "../routes/party/setgoal/SetGoalPage";
 import SetPricePage from "../routes/party/setprice/SetPricePage";
 import SetDatePage from "../routes/party/setdate/SetDatePage";
 import SignupPage from "../routes/signup/SignupPage";
 import LoginPage from "../routes/login/LoginPage";
+
 
 export const mainRouter = [
   {
@@ -79,7 +83,28 @@ export const mainRouter = [
       },
       {
         path: "/transfer",
-        element: <TransferPage />,
+        children: [
+          {
+            path: "",
+            element: <TransferPage />,
+            index: true,
+          },
+          {
+            path: "transferDetailAccountNumPage",
+            element: <TransferDetailAccountNumPage />,
+            index: true,
+          },
+          {
+            path: "transferDetailPricePage",
+            element: <TransferDetailPricePage />,
+            index: true,
+          },
+          {
+            path: "TransferDetailConfirmPage",
+            element: <TransferDetailConfirmPage />,
+            index: true,
+          },
+        ],
       },
       {
         path: "/signup",
