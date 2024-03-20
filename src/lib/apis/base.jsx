@@ -28,7 +28,7 @@ const token = persistedString?.includes("accessToken")
 /**
  * axios instance with Authorization header
  */
-const authInstace = axios.create({
+const authInstance = axios.create({
   baseURL: "http://localhost:3000/api",
   headers: {
     "Content-Type": "application/json",
@@ -41,12 +41,12 @@ const authInstace = axios.create({
  * @param {*} token
  */
 const updateToken = (token) => {
-  authInstace.interceptors.request.use(function (request) {
+  authInstance.interceptors.request.use(function (request) {
     request.headers.Authorization = `Bearer ${token}`;
 
     return request;
   });
 };
 
-export { authInstace, updateToken };
+export { authInstance, updateToken };
 export default instance;

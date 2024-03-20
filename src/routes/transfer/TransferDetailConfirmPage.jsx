@@ -5,15 +5,39 @@ import PrimaryButton from "../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { fetchPartyInfo } from "../../lib/apis/party";
+import { transfer } from "../../lib/apis/transfer";
 
 export default function TransferDetailConfirmPage() {
   const location = useLocation();
   const name = location.state.name;
   const accountNumber = location.state.accountNumber;
-  const price = location.state.price;
+  const price = parseInt(location.state.price);
   const [partyInfo, setPartyInfo] = useState([]);
 
   const partyKey = 25; //TODO: 수정 필요
+
+  const handleTransferButtonClick = () => async (e) => {
+    e.preventDefault();
+
+    const transferConfirm = confirm("정말 이체하시겠습니까?");
+
+    if (transferConfirm == true) {
+      const reqBody = {
+        name,
+        accountNumber,
+        price,
+      };
+
+      const resp = await transfer({ reqBody, partyKey });
+
+      if (resp.status == 201) {
+        alert("이체 완료");
+        navigate("/party");
+      } else {
+        window.alert("이체 실패");
+      }
+    }
+  };
 
   const callPartyInfo = async () => {
     try {
@@ -54,13 +78,16 @@ export default function TransferDetailConfirmPage() {
         </Row>
         <Row className="transfer-detail-info">
           <Col className="transfer-detail-title">입금 계좌</Col>
-          <Col className="transfer-detail-content">{accountNumber}</Col>
+          <Col className="transfer-detail-content">
+            신한투자 {accountNumber}
+          </Col>
         </Row>
 
         <PrimaryButton
           text="이체하기"
           minWidth="100%"
           style={{ marginTop: "2vh" }}
+          onClick={handleTransferButtonClick()}
         />
       </Container>
     </>

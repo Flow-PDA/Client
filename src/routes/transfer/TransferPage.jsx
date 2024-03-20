@@ -24,13 +24,19 @@ export default function TransferPage() {
     callTransferData();
   }, []);
 
+  let deposit = 0;
+
+  if (transferData[0]) {
+    deposit = transferData[0].deposit;
+  }
+
   return (
     <>
       <TopNavigationBar text={"이체하기"} />
       <Container>
         <div className="transfer-possible-price-sentence">이체 가능 금액</div>
         <div className="transfer-possible-price">
-          {transferData[0].deposit.toLocaleString()}원
+          {deposit.toLocaleString()}원
         </div>
         <Link
           to={`transferDetailAccountNumPage`}
