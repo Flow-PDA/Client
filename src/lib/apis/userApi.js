@@ -16,4 +16,24 @@ async function checkEmail(email) {
   }
 }
 
-export { checkEmail };
+/**
+ * send signup request
+ * @param {*} reqBody required : email, name, password, phoneNumber, birth
+ * @returns
+ */
+async function signup(reqBody) {
+  try {
+    const resp = await instance.post(`/users/signup`, reqBody);
+
+    console.log(resp);
+    return resp;
+  } catch (error) {
+    console.log(error);
+    if (error.response.status === 400) {
+      return error.response.data;
+    }
+    return error.response;
+  }
+}
+
+export { checkEmail, signup };

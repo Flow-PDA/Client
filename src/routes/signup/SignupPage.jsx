@@ -5,7 +5,8 @@ import { Button, Container } from "react-bootstrap";
 import { useState } from "react";
 import { useCallback } from "react";
 import { useEffect } from "react";
-import { checkEmail } from "../../lib/apis/userApi";
+import { useNavigate } from "react-router-dom";
+import { checkEmail, signup } from "../../lib/apis/userApi";
 
 import "./SignupPage.css";
 
@@ -20,18 +21,29 @@ export default function SignupPage() {
   const [checkPassword, setCheckPassword] = useState("");
   const [verifiedPassword, setVerifiedPassword] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     // console.log(password, checkPassword);
     setVerifiedPassword(password === checkPassword);
   }, [password, checkPassword]);
 
-  const onButtonClick = useCallback(
+  const onNextClick = useCallback(
     (e) => {
       e.preventDefault();
-      if (pageNo === 1) {
-        setPageNo(2);
+      if (name === "" || telNo === "" || birth === "") {
+        window.alert("정보를 입력해주세요");
       } else {
-        console.log("submit");
+        setPageNo(2);
+      }
+    },
+    [name, telNo, birth]
+  );
+
+  const onSubmitClick = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (isAvailableEmail && verifiedPassword) {
         const reqBody = {
           name,
           phoneNumber: telNo,
@@ -40,10 +52,20 @@ export default function SignupPage() {
           password,
         };
 
-        console.log(reqBody);
+        // console.log(reqBody);
+        const resp = await signup(reqBody);
+
+        if (resp.status == 201) {
+          window.alert("Done");
+          navigate("/");
+        } else {
+          window.alert("failed to signup");
+        }
+      } else {
+        window.alert("정보를 입력해주세요");
       }
     },
-    [pageNo, password, email]
+    [isAvailableEmail, verifiedPassword]
   );
 
   const onEmailCheckClick = useCallback(
@@ -173,11 +195,19 @@ export default function SignupPage() {
         </div>
       </div>
       <div className="mb-3">
-        <PrimaryButton
-          text={pageNo === 1 ? "다음" : "가입하기"}
-          minWidth="100%"
-          onClick={onButtonClick}
-        />
+        {pageNo === 1 ? (
+          <PrimaryButton
+            text="다음"
+            minWidth="100%"
+            onClick={(e) => onNextClick(e)}
+          />
+        ) : (
+          <PrimaryButton
+            text="가입하기"
+            minWidth="100%"
+            onClick={(e) => onSubmitClick(e)}
+          />
+        )}
       </div>
     </Container>
   );
