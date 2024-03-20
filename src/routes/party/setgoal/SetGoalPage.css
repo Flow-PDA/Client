@@ -1,0 +1,29 @@
+.setgoal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.setgoal-top {
+  display: flex;
+  height: 75vh;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.setgoal-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.setgoal-detail {
+  font-size: 0.9rem;
+}
+.setgoal-input {
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: solid 2px #efefef;
+}
+.setgoal-bottom {
+  width: 90vw;
+}

@@ -1,0 +1,61 @@
+.myparty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90vw;
+  height: 90vh;
+}
+.myparty-deposit-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
+  height: 30vh;
+}
+.myparty-deposit-detail-container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+}
+.myparty-deposit-btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+.myparty-stock-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* height: 29vh; */
+  width: 90vw;
+}
+.myparty-stock {
+  align-items: center;
+  width: 100%;
+  height: 9vh;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0 !important;
+}
+.stock-img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+}
+.myparty-stock-price-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.myparty-transfer-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap !important;
+  width: 85vw;
+  height: 35vh;
+  flex-direction: row;
+}
