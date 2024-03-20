@@ -4,7 +4,13 @@ import MainPage from "../routes/MainPage";
 import InterestPage from "../routes/Interest/InterestPage";
 import PartyPage from "../routes/party/PartyPage";
 import PartyCreatePage from "../routes/party/create/PartyCreatePage";
+import MyPartyPage from "../routes/party/myparty/MyPartyPage";
+import PartyInfoPage from "../routes/party/info/PartyInfoPage";
+import PartyInvitePage from "../routes/party/invite/PartyInvitePage";
 import TransferPage from "../routes/transfer/TransferPage";
+import SetGoalPage from "../routes/party/setgoal/SetGoalPage";
+import SetPricePage from "../routes/party/setprice/SetPricePage";
+import SetDatePage from "../routes/party/setdate/SetDatePage";
 import SignupPage from "../routes/signup/SignupPage";
 import LoginPage from "../routes/login/LoginPage";
 
@@ -33,6 +39,41 @@ export const mainRouter = [
             path: "create",
             element: <PartyCreatePage />,
             index: true,
+          },
+          {
+            path: "myparty",
+            element: <MyPartyPage />,
+            index: true,
+          },
+          {
+            path: "info",
+            children: [
+              {
+                path: "",
+                element: <PartyInfoPage />,
+                index: true,
+              },
+              {
+                path: "invite",
+                element: <PartyInvitePage />,
+                index: true,
+              },
+              {
+                path: "setgoal",
+                element: <SetGoalPage />,
+                index: true,
+              },
+              {
+                path: "setprice",
+                element: <SetPricePage />,
+                index: true,
+              },
+              {
+                path: "setdate",
+                element: <SetDatePage />,
+                index: true,
+              },
+            ],
           },
         ],
       },

@@ -1,0 +1,37 @@
+.party-create-container {
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  height: 90vh;
+  /* position: relative; */
+}
+.party-notice {
+  /* width: 70vw; */
+  height: 15vh;
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+
+.party-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 75vh;
+}
+
+.party-info {
+  height: 70vh;
+}
+.party-input {
+  width: 90vw;
+  margin-bottom: 0.5rem;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: solid 2px #efefef;
+}
+.party-btn {
+  height: 5vh;
+  display: flex;
+  justify-content: center;
+}

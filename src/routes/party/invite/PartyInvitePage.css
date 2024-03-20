@@ -1,0 +1,25 @@
+.invite-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 3rem;
+}
+.kakao-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.kakao-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center !important;
+  position: relative;
+  height: 6vh;
+  gap: 5rem;
+  background-color: #fee500;
+  border: none;
+}
+.kakao-p {
+  text-align: center;
+}
