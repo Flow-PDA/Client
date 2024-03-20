@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 
-const PrimaryButton = ({ text, minWidth, onClick, style }) => {
+const PrimaryButton = ({ text, minWidth, onClick, style, disabled }) => {
   return (
     <Button
       onClick={onClick}
@@ -16,6 +16,7 @@ const PrimaryButton = ({ text, minWidth, onClick, style }) => {
         fontSize: "16px",
         fontWeight: "bold",
       }}
+      disabled={disabled}
     >
       {text}
     </Button>
