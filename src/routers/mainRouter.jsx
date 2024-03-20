@@ -8,6 +8,8 @@ import MyPartyPage from "../routes/party/myparty/MyPartyPage";
 import PartyInfoPage from "../routes/party/info/PartyInfoPage";
 import PartyInvitePage from "../routes/party/invite/PartyInvitePage";
 import TransferPage from "../routes/transfer/TransferPage";
+import SetGoalPage from "../routes/party/setgoal/SetGoalPage";
+import SetPricePage from "../routes/party/setprice/SetPricePage";
 
 export const mainRouter = [
   {
@@ -51,6 +53,16 @@ export const mainRouter = [
               {
                 path: "invite",
                 element: <PartyInvitePage />,
+                index: true,
+              },
+              {
+                path: "setgoal",
+                element: <SetGoalPage />,
+                index: true,
+              },
+              {
+                path: "setprice",
+                element: <SetPricePage />,
                 index: true,
               },
             ],
