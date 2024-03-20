@@ -7,6 +7,12 @@ export async function fetchTransferList(partyKey) {
   return response.data.result;
 }
 
+//최근 보낸 계좌
+export async function fetchRecentAccountList(partyKey) {
+  const response = await instance.get(`/transfers/${partyKey}/recents`);
+  return response.data.result;
+}
+
 // export async function fetchBoardDetail(boardType, boardId) {
 //   const response = await instance.get(`/${boardType}/${boardId}`);
 //   return response;

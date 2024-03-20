@@ -10,7 +10,7 @@ import { fetchTransferList } from "../../lib/apis/transfer";
 export default function TransferPage() {
   const [transferData, setTransferData] = useState([]);
 
-  const partyKey = 1;
+  const partyKey = 25;
   const callTransferData = async () => {
     try {
       const response = await fetchTransferList(partyKey);
@@ -30,7 +30,7 @@ export default function TransferPage() {
       <Container>
         <div className="transfer-possible-price-sentence">이체 가능 금액</div>
         <div className="transfer-possible-price">
-          {(4182553).toLocaleString()}원
+          {transferData[0].deposit.toLocaleString()}원
         </div>
         <Link
           to={`transferDetailAccountNumPage`}

@@ -1,19 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "./TransferDetailPricePage.css";
 import PrimaryButton from "../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { fetchTransferList } from "../../lib/apis/transfer";
 
 export default function TransferDetailPricePage() {
+  const location = useLocation();
+  const name = location.state.name;
+  const accountNumber = location.state.accountNumber;
+  const [price, setPrice] = useState("");
+  const [transferData, setTransferData] = useState([]);
+  const partyKey = 25; //수정 필요
+
+  const navigate = useNavigate();
+
+  const callTransferData = async () => {
+    try {
+      const response = await fetchTransferList(partyKey);
+      setTransferData(response);
+    } catch (error) {
+      console.error("이체 데이터 호출 중 에러:", error);
+    }
+  };
+
+  const handleNextButtonClick = () => {
+    if (price < deposit) {
+      navigate("/transfer/transferDetailConfirmPage", {
+        state: { name: name, accountNumber: accountNumber, price: price },
+      });
+    } else {
+      alert("이체 가능한 금액보다 큽니다!");
+    }
+  };
+  useEffect(() => {
+    callTransferData();
+  }, []);
+
+  let deposit = 0;
+
+  if (transferData[0]) {
+    deposit = transferData[0].deposit;
+  }
+
   return (
     <>
       <TopNavigationBar />
       <Container className="transfer-detail-page">
         <div className="transfer-how-sentence">얼마나 옮길까요?</div>
         <div className="account-info">
-          <div className="account-name">김민우</div>
-          <div className="account-number">신한투자증권 270-71-123456으로</div>
+          <div className="account-name">{name}</div>
+          <div className="account-number">신한투자증권 {accountNumber}으로</div>
         </div>
 
         <Row className="transfer-form">
@@ -21,26 +59,27 @@ export default function TransferDetailPricePage() {
             <p style={{ margin: "0", color: "#92969B", fontSize: "0.9rem" }}>
               * 금액
             </p>
-            <input className="transfer-input" type="text" />
+            <input
+              className="transfer-input"
+              type="text"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
           </Col>
         </Row>
 
         <div>
           <div className="transfer-possible-deposit">
-            이체 가능 금액: 279,866원
+            이체 가능 금액: {deposit.toLocaleString()}원
           </div>
         </div>
-        <Link
-          to={`/transfer/transferDetailConfirmPage`}
-          preventScrollReset
-          className="text-decoration-none"
-        >
-          <PrimaryButton
-            style={{ marginTop: "auto" }}
-            text="다음"
-            minWidth="100%"
-          />
-        </Link>
+
+        <PrimaryButton
+          style={{ marginTop: "auto" }}
+          text="다음"
+          minWidth="100%"
+          onClick={handleNextButtonClick}
+        />
       </Container>
     </>
   );
