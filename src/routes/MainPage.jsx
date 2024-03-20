@@ -29,7 +29,9 @@ const MainPage = () => {
       <Row>
         <Col>
           <span>이미 계정이 있나요? </span>
-          <span className="login-button">로그인</span>
+          <span className="login-button" onClick={(e) => navigate("/login")}>
+            로그인
+          </span>
         </Col>
       </Row>
     </Container>

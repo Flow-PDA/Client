@@ -38,7 +38,14 @@ export default function LoginPage() {
   return (
     <Container className="login-page-container">
       <div className="mt-4 signup-content-container">
-        <img className="top-logo" src={logo} alt="logo"></img>
+        <img
+          className="top-logo"
+          src={logo}
+          alt="logo"
+          onClick={(e) => {
+            navigate("/");
+          }}
+        ></img>
         <div className="intro-msg-group">
           <p className="intro-msg">가입하신 이메일 주소로</p>
           <p className="intro-msg">로그인해주세요.</p>
