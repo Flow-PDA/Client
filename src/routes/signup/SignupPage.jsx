@@ -92,7 +92,14 @@ export default function SignupPage() {
   return (
     <Container className="signup-page-container" style={{}}>
       <div className="mt-4 signup-content-container">
-        <img className="top-logo" src={logo} alt="logo"></img>
+        <img
+          className="top-logo"
+          src={logo}
+          alt="logo"
+          onClick={(e) => {
+            navigate("/");
+          }}
+        ></img>
         <div className="intro-msg-group">
           <p className="intro-msg">회원가입을 위해</p>
           <p className="intro-msg">정보를 입력해주세요.</p>

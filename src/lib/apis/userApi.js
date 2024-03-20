@@ -33,4 +33,22 @@ async function signup(reqBody) {
   }
 }
 
-export { checkEmail, signup };
+/**
+ *
+ * @param {*} email
+ * @param {*} password
+ * @returns
+ */
+async function login(email, password) {
+  try {
+    const reqBody = { email, password };
+    const resp = await instance.post(`/users/login`, reqBody);
+
+    return resp;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+
+export { checkEmail, signup, login };
