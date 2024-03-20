@@ -6,3 +6,7 @@ export async function fetchPartyInfo(partyKey) {
 
   return response.data.result;
 }
+
+export default {
+  fetchPartyInfo,
+};
