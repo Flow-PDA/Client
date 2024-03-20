@@ -11,6 +11,9 @@ import TransferPage from "../routes/transfer/TransferPage";
 import SetGoalPage from "../routes/party/setgoal/SetGoalPage";
 import SetPricePage from "../routes/party/setprice/SetPricePage";
 import SetDatePage from "../routes/party/setdate/SetDatePage";
+import SignupPage from "../routes/signup/SignupPage";
+import LoginPage from "../routes/login/LoginPage";
+
 export const mainRouter = [
   {
     path: "",
@@ -77,6 +80,14 @@ export const mainRouter = [
       {
         path: "/transfer",
         element: <TransferPage />,
+      },
+      {
+        path: "/signup",
+        element: <SignupPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
       },
     ],
   },
