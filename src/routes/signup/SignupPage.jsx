@@ -76,7 +76,7 @@ export default function SignupPage() {
       if (emailRegex.test(email)) {
         const resp = await checkEmail(email);
 
-        if (resp.msg === "available") {
+        if (resp.status == 200) {
           window.alert("사용 가능한 email 입니다");
           setIsAvailableEmail(true);
         } else {

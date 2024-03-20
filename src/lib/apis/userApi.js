@@ -9,10 +9,10 @@ async function checkEmail(email) {
   try {
     const resp = await instance.get(`/users/check/${email}`);
 
-    return resp.data;
+    return resp;
   } catch (error) {
     console.log(error);
-    return { msg: "invalid" };
+    return error.response;
   }
 }
 
@@ -29,9 +29,6 @@ async function signup(reqBody) {
     return resp;
   } catch (error) {
     console.log(error);
-    if (error.response.status === 400) {
-      return error.response.data;
-    }
     return error.response;
   }
 }
