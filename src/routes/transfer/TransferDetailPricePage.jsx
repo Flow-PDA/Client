@@ -3,6 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import "./TransferDetailPricePage.css";
 import PrimaryButton from "../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
+import { Link } from "react-router-dom";
 
 export default function TransferDetailPricePage() {
   return (
@@ -29,12 +30,17 @@ export default function TransferDetailPricePage() {
             이체 가능 금액: 279,866원
           </div>
         </div>
-
-        <PrimaryButton
-          style={{ marginTop: "auto" }}
-          text="다음"
-          minWidth="100%"
-        />
+        <Link
+          to={`/transfer/transferDetailConfirmPage`}
+          preventScrollReset
+          className="text-decoration-none"
+        >
+          <PrimaryButton
+            style={{ marginTop: "auto" }}
+            text="다음"
+            minWidth="100%"
+          />
+        </Link>
       </Container>
     </>
   );

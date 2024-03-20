@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "/api",
+  baseURL: "http://localhost:3000/api",
 });
 
 instance.interceptors.response.use(
@@ -9,6 +9,7 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
+    console.log(error);
     if (error.response.status === 500) {
       // console.error("서버 에러 발생");
     }

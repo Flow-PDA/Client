@@ -4,6 +4,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import "./TransferDetailAccountNumPage.css";
 import PrimaryButton from "../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
+import { Link } from "react-router-dom";
 
 export default function TransferDetailAccountNumPage() {
   return (
@@ -50,11 +51,17 @@ export default function TransferDetailAccountNumPage() {
             </div>
           </div>
         </div>
-        <PrimaryButton
-          style={{ marginTop: "auto" }}
-          text="다음"
-          minWidth="100%"
-        />
+        <Link
+          to={`/transfer/transferDetailPricePage`}
+          preventScrollReset
+          className="text-decoration-none"
+        >
+          <PrimaryButton
+            style={{ marginTop: "auto" }}
+            text="다음"
+            minWidth="100%"
+          />
+        </Link>
       </Container>
     </>
   );
