@@ -109,9 +109,11 @@ export default function PartyInfoPage() {
           <Col>
             <div className="info-btn-container">
               <div className="info-link">목표 설정</div>
-              <button style={{ border: "none", backgroundColor: "#fff" }}>
-                <img src={Next} alt="arrow" />
-              </button>
+              <Link to={"/party/info/setgoal"}>
+                <button style={{ border: "none", backgroundColor: "#fff" }}>
+                  <img src={Next} alt="arrow" />
+                </button>
+              </Link>
             </div>
           </Col>
           <Col>
