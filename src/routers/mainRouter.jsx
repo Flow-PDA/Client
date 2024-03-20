@@ -5,6 +5,7 @@ import InterestPage from "../routes/Interest/InterestPage";
 import PartyPage from "../routes/party/PartyPage";
 import PartyCreatePage from "../routes/party/create/PartyCreatePage";
 import TransferPage from "../routes/transfer/TransferPage";
+import SignupPage from "../routes/signup/SignupPage";
 
 export const mainRouter = [
   {
@@ -37,6 +38,10 @@ export const mainRouter = [
       {
         path: "/transfer",
         element: <TransferPage />,
+      },
+      {
+        path: "/signup",
+        element: <SignupPage />,
       },
     ],
   },

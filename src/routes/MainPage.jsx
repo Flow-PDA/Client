@@ -2,7 +2,10 @@ import logo from "../assets/logo.svg";
 import "./MainPage.css";
 import PrimaryButton from "../components/common/button/PrimaryButton";
 import { Button, Col, Container, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
 const MainPage = () => {
+  const navigate = useNavigate();
   return (
     <Container className="main-container">
       <Row>
@@ -19,6 +22,7 @@ const MainPage = () => {
             className="start-button"
             text="시작하기"
             minWidth="100%"
+            onClick={(e) => navigate("/signup")}
           />
         </Col>
       </Row>
