@@ -1,4 +1,5 @@
 import instance from "./base";
+import authInstance from "./base";
 
 // 이체 내역
 export async function fetchTransferList(partyKey) {
@@ -13,6 +14,17 @@ export async function fetchRecentAccountList(partyKey) {
   return response.data.result;
 }
 
+//이체하기
+// @param {*} reqBody required : partyKey, name, accountNumber, price
+export async function transfer({ reqBody, partyKey }) {
+  console.log(reqBody);
+  const response = await authInstance.post(`/transfers/${partyKey}`, reqBody);
+  return response;
+  //여기 오류 난다
+}
+
 export default {
   fetchTransferList,
+  fetchRecentAccountList,
+  transfer,
 };
