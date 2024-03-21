@@ -1,0 +1,57 @@
+.transfer-how-sentence {
+  font-size: 1.8rem;
+  font-weight: 600;
+
+  margin-bottom: 3vh;
+  margin-top: 3vh;
+}
+
+.transfer-input {
+  width: 90vw;
+  margin-bottom: 0.5rem;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: solid 2px #efefef;
+}
+
+.recent-account-sentence {
+  margin: 2vh 0;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.recent-account {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2vh;
+  margin-left: 1vw;
+}
+
+.recent-account-CI {
+  align-items: center;
+}
+
+.recent-account-name {
+  font-weight: 600;
+}
+
+.recent-account-number {
+  color: #494949;
+}
+
+.recent-account-info {
+  margin-left: 4vw;
+}
+
+.transfer-detail-page {
+  display: flex;
+  flex-direction: column;
+  height: 92vh;
+
+  /* Fix! 나중에 height는 수정해야될듯.. */
+}
+
+.account-number {
+  margin-bottom: 2vh;
+}

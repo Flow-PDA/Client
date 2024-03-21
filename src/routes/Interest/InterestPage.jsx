@@ -2,7 +2,6 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
 import InterestButton from "../../components/common/button/InterestButton";
 import "./InterestPage.css";
-import HorizontalLine from "../../components/line/HorizontalLine";
 import InterestPending from "./InterestPending";
 import { useState } from "react";
 import InterestApproval from "./InterestApproval";

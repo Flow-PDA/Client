@@ -27,7 +27,7 @@ const MainPage = () => {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col style={{ marginBottom: "2vh" }}>
           <span>이미 계정이 있나요? </span>
           <span className="login-button" onClick={(e) => navigate("/login")}>
             로그인
