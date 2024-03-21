@@ -16,6 +16,7 @@ import SetPricePage from "../routes/party/setprice/SetPricePage";
 import SetDatePage from "../routes/party/setdate/SetDatePage";
 import SignupPage from "../routes/signup/SignupPage";
 import LoginPage from "../routes/login/LoginPage";
+import LiveStockPage from "../routes/invest/livestock/LiveStockPage";
 import { ProtectedLayout } from "../routes/ProtectedLayout";
 
 export const mainRouter = [
@@ -113,6 +114,10 @@ export const mainRouter = [
       {
         path: "/login",
         element: <LoginPage />,
+      },
+      {
+        path: "livestock",
+        element: <LiveStockPage />,
       },
     ],
   },
