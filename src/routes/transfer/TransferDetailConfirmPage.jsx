@@ -14,6 +14,8 @@ export default function TransferDetailConfirmPage() {
   const price = parseInt(location.state.price);
   const [partyInfo, setPartyInfo] = useState([]);
 
+  const navigate = useNavigate();
+
   const partyKey = 25; //TODO: 수정 필요
 
   const handleTransferButtonClick = () => async (e) => {
@@ -32,7 +34,7 @@ export default function TransferDetailConfirmPage() {
 
       if (resp.status == 201) {
         alert("이체 완료");
-        navigate("/party");
+        navigate("/transfer");
       } else {
         window.alert("이체 실패");
       }
