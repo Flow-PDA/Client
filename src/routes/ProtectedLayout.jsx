@@ -17,10 +17,18 @@ export const ProtectedLayout = () => {
     return auth !== "";
   }, []);
 
-  if (authRequired() && !checkAuth(auth)) {
-    return <Navigate to="/" />;
+  if (authRequired()) {
+    return checkAuth(auth) ? (
+      <>
+        <Outlet />
+      </>
+    ) : (
+      <Navigate to="/" />
+    );
   } else {
-    return (
+    return checkAuth(auth) ? (
+      <Navigate to="/party" />
+    ) : (
       <>
         <Outlet />
       </>
