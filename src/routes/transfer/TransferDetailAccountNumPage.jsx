@@ -49,7 +49,7 @@ export default function TransferDetailAccountNumPage() {
             t.name === account.name && t.accountNumber === account.accountNumber
         )
     )
-    .slice(0, 5);
+    .slice(0, 6);
 
   useEffect(() => {
     callTransferData();
