@@ -40,6 +40,17 @@ export default function TransferDetailAccountNumPage() {
     }
   };
 
+  const recentAccounts = recentAccountData
+    .filter(
+      (account, index, self) =>
+        index ===
+        self.findIndex(
+          (t) =>
+            t.name === account.name && t.accountNumber === account.accountNumber
+        )
+    )
+    .slice(0, 5);
+
   useEffect(() => {
     callTransferData();
   }, []);
@@ -88,7 +99,7 @@ export default function TransferDetailAccountNumPage() {
 
         <div className="recent-account-sentence">최근 보낸 계좌</div>
         <div className="recent-account-container">
-          {recentAccountData.map((data, index) => (
+          {recentAccounts.map((data, index) => (
             <React.Fragment key={index}>
               <div
                 className="recent-account"
