@@ -26,6 +26,11 @@ export default function TransferDetailAccountNumPage() {
     });
   };
 
+  const handleRecentAccountClick = (selectedAccount) => {
+    setName(selectedAccount.name);
+    setAccountNumber(selectedAccount.accountNumber);
+  };
+
   const callTransferData = async () => {
     try {
       const response = await fetchTransferList(partyKey);
@@ -85,7 +90,10 @@ export default function TransferDetailAccountNumPage() {
         <div className="recent-account-container">
           {recentAccountData.map((data, index) => (
             <React.Fragment key={index}>
-              <div className="recent-account">
+              <div
+                className="recent-account"
+                onClick={() => handleRecentAccountClick(data)}
+              >
                 <div className="recent-account-CI">
                   <img src={shinhan_CI} alt="shinhan_CI" width="35vw" />
                 </div>
