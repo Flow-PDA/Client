@@ -1,6 +1,8 @@
 .transfer-possible-price-sentence {
   text-align: center;
-  margin-top: 2vh;
+  margin-top: 4vh;
+  font-size: 1.3rem;
+  font-weight: 500;
 }
 
 .transfer-possible-price {
@@ -12,7 +14,7 @@
 
 .full-transfer-sentence {
   font-weight: bold;
-  margin-bottom: 2vh;
+  margin-bottom: 2.5vh;
   font-size: 1.2rem;
 }
 
@@ -20,17 +22,22 @@
 }
 
 .transfer-date {
+  font-size: 1.1rem;
 }
 
+.transfer-name {
+  font-size: 1.1rem;
+}
 .transfer-price {
+  font-size: 1.1rem;
   text-align: right;
 }
 .transfer-second-line {
-  margin-bottom: 1vh;
+  margin-bottom: 1.2vh;
 }
 
 .transfer-deposit {
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .transfer-deposit {
