@@ -1,55 +1,76 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import "./InterestPage.css";
 import HorizontalLine from "../../components/line/HorizontalLine";
-import PrimaryModal from "../../components/common/modal/PrimaryModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { delApproved, getApproved } from "../../lib/apis/interest.jsx";
+import Modal from "../../components/common/modal/ApproveInterestModal";
 
 const InterestApproval = () => {
-  const [showModal, setShowModal] = useState(false); // 모달 상태를 관리합니다.
+  const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
+  const [stock, setStock] = useState([]);
 
-  const handleShowModal = () => setShowModal(true); // 모달을 열기 위한 함수입니다.
-  const handleCloseModal = () => setShowModal(false); // 모달을 닫기 위한 함수입니다.
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await getApproved(1); // 임시로 1로 세팅
+        setStock(res.data.result);
+        console.log(stock);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
-  const interestStock = [
-    { date: "3.6", company: "삼성전자", name: "최투자" },
-    { date: "3.6", company: "삼성전자", name: "최투자" },
-    { date: "3.6", company: "삼성전자", name: "최투자" },
-    { date: "3.6", company: "삼성전자", name: "최투자" },
-    { date: "3.6", company: "삼성전자", name: "최투자" },
-    { date: "3.6", company: "삼성전자", name: "최투자" },
-    { date: "3.6", company: "삼성전자", name: "최투자" },
-    { date: "3.6", company: "삼성전자", name: "최투자" },
-  ];
+    fetchData(); // fetchData 함수를 즉시 호출합니다.
+  }, []);
+
+  // 거절 모달 열기 함수
+  function openRemoveModal() {
+    setRemoveModalIsOpen(true);
+  }
+
+  // 거절 모달 닫기 함수
+  async function closeRemoveModal(partyKey, interestStockKey) {
+    const reqBody = {
+      isApproved: false,
+    };
+
+    await delApproved(partyKey, interestStockKey);
+    setRemoveModalIsOpen(false);
+    window.location.reload();
+  }
 
   return (
     <Container>
-      {interestStock.map((data, index) => (
-        <Row className="interest-list" key={index}>
-          <Col xs={2} className="interest-date">
-            {data.date}
-          </Col>
-          <Col xs={6}>
-            <Row className="interest-company">{data.company}</Row>
-            <Row className="interest-name">{data.name}</Row>
-          </Col>
-          <Col xs={4} className="interest-remove-button-col">
-            <Button
-              className="interest-remove-button"
-              onClick={handleShowModal}
-            >
-              종목뺴기
-            </Button>
-            <PrimaryModal
-              show={showModal}
-              handleClose={handleCloseModal}
-              contentText={"종목을 제거하시겠습니까?"}
-              buttonText={"종목빼기"}
-            />{" "}
-            {/* 모달 컴포넌트를 렌더링합니다. */}
-          </Col>
-          <HorizontalLine />
-        </Row>
-      ))}
+      {stock.length > 0 &&
+        stock.map((data, index) => (
+          <Row className="interest-list" key={index}>
+            <Col xs={2} className="interest-date">
+              {`${new Date(data.createdAt).getMonth() + 1}.${new Date(
+                data.createdAt
+              ).getDate()}`}
+            </Col>
+            <Col xs={6}>
+              <Row className="interest-company">{data.stockName}</Row>
+              <Row className="interest-name">{data.name}</Row>
+            </Col>
+            <Col xs={4} className="interest-remove-button-col">
+              <Button
+                className="interest-remove-button"
+                onClick={openRemoveModal}
+              >
+                종목빼기
+              </Button>
+              <Modal
+                isOpen={removeModalIsOpen}
+                closeModal={(e) => closeRemoveModal(1, data.interestStockKey)} //1은 임시로 넣어놓은 partyKey
+                stockName={data.stockName}
+                buttonText="종목빼기"
+                color="#f46060"
+              />
+            </Col>
+            <HorizontalLine />
+          </Row>
+        ))}
     </Container>
   );
 };

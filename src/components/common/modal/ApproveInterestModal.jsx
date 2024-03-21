@@ -8,7 +8,7 @@ const customStyles = {
   overlay: {
     backgroundColor: " rgba(0, 0, 0, 0.4)",
     width: "100%",
-    height: "100vh",
+    height: "100%",
     zIndex: "10",
     position: "fixed",
     top: "0",
@@ -23,17 +23,17 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     border: "none", // 테두리 없음
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 그림자
-    borderRadius: "8px", // 모달 창 모서리를 둥글게 만듭니다.
-    maxWidth: "80%", // 최대 너비
+    borderRadius: "20px", // 모달 창 모서리를 둥글게 만듭니다.
+    minWidth: "80vw", // 최대 너비
   },
 };
 
-const PrimaryModal = ({
+const ApproveInterestModal = ({
   isOpen, // 필수
   closeModal, //필수
   stockName, //옵셔널
-  titleText, //필수
   buttonText, //필수
+  color = "#375AFF",
 }) => {
   return (
     <Modal
@@ -42,9 +42,11 @@ const PrimaryModal = ({
       style={customStyles}
       contentLabel="Example Modal"
     >
-      <div style={{ fontSize: "1.2rem", padding: "5vh 0" }}>
-        {stockName && <span style={{ fontWeight: 600 }}>{stockName}</span>}
-        <span>{titleText}</span>
+      <div style={{ fontSize: "1.2rem", padding: "4vh 0" }}>
+        <span style={{ fontWeight: 600 }}>{stockName}</span>
+        <span>종목을 </span> <br />
+        <span style={{ color: color, fontWeight: 600 }}>{buttonText}</span>
+        <span>하시겠습니까?</span>
       </div>
 
       <PrimaryButton
@@ -52,9 +54,10 @@ const PrimaryModal = ({
         text={buttonText}
         minWidth="100%"
         onClick={closeModal}
+        backgroundColor={color}
       />
     </Modal>
   );
 };
 
-export default PrimaryModal;
+export default ApproveInterestModal;
