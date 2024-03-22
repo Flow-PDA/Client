@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Suspense } from "react";
+
 import "./LiveStockPage.css";
 import axios from "axios";
 import Swipe from "../../../components/common/swiper/Swiper";

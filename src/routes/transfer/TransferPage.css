@@ -1,37 +1,47 @@
 .transfer-possible-price-sentence {
   text-align: center;
+  margin-top: 4vh;
+  font-size: 1.3rem;
+  font-weight: 500;
 }
 
 .transfer-possible-price {
   text-align: center;
   font-size: 2rem;
   font-weight: 500;
+  margin-bottom: 3vh;
 }
 
 .full-transfer-sentence {
   font-weight: bold;
-  margin-bottom: 1vh;
+  margin-bottom: 2.5vh;
+  font-size: 1.2rem;
 }
 
 .transfer-first-line {
-  display: flex;
-  margin-left: 1vw;
 }
 
 .transfer-date {
-  margin-right: 12vw;
+  font-weight: 500;
+  font-size: 1.1rem;
 }
 
+.transfer-name {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
 .transfer-price {
-  margin-left: auto;
-  justify-content: flex-end;
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-align: right;
 }
 .transfer-second-line {
-  margin-bottom: 1vh;
+  font-weight: 500;
+  margin-bottom: 1.8vh;
 }
 
 .transfer-deposit {
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .transfer-deposit {

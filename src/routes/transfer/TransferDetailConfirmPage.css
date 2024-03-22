@@ -1,0 +1,23 @@
+.transfer-confirm-sentence {
+  margin-top: 23vh;
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.blue-text {
+  color: #375aff;
+}
+
+.transfer-detail-info {
+  margin-bottom: 1vh;
+}
+
+.transfer-detail-title {
+  margin-left: 1vw;
+}
+
+.transfer-detail-content {
+  text-align: right;
+  margin-right: 1vw;
+}
