@@ -1,0 +1,10 @@
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
+}
+.swiper-wrapper {
+  width: 100vw !important;
+}
+.swiper-slide {
+  width: 94vw !important;
+}

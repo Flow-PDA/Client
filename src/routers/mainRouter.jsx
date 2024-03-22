@@ -17,11 +17,14 @@ import SetDatePage from "../routes/party/setdate/SetDatePage";
 import SignupPage from "../routes/signup/SignupPage";
 import LoginPage from "../routes/login/LoginPage";
 import MyPartyTransactionDetail from "../routes/party/mypartytransaction/MyPartyTransactionDetail";
+import LiveStockPage from "../routes/invest/livestock/LiveStockPage";
+import { ProtectedLayout } from "../routes/ProtectedLayout";
+
 
 export const mainRouter = [
   {
     path: "",
-    element: <Layout />,
+    element: <ProtectedLayout />,
     children: [
       {
         path: "",
@@ -118,6 +121,10 @@ export const mainRouter = [
       {
         path: "/login",
         element: <LoginPage />,
+      },
+      {
+        path: "livestock",
+        element: <LiveStockPage />,
       },
     ],
   },
