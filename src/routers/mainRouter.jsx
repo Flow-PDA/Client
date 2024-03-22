@@ -18,6 +18,9 @@ import SignupPage from "../routes/signup/SignupPage";
 import LoginPage from "../routes/login/LoginPage";
 import MyPartyTransactionDetail from "../routes/party/mypartytransaction/MyPartyTransactionDetail";
 import LiveStockPage from "../routes/invest/livestock/LiveStockPage";
+import MarketStockPage from "../routes/invest/market/MarketStockpage";
+import RisingStockPage from "../routes/invest/rising/RisingStockPage";
+import StrategyStockPage from "../routes/invest/strategy/StrategyStockPage";
 import { ProtectedLayout } from "../routes/ProtectedLayout";
 import InterestStockDetailChartPage from "../routes/interest/intereststock/chart/InterestStockDetailChartPage";
 
@@ -141,6 +144,18 @@ export const mainRouter = [
       {
         path: "livestock",
         element: <LiveStockPage />,
+      },
+      {
+        path: "risingstock",
+        element: <RisingStockPage />,
+      },
+      {
+        path: "strategystock",
+        element: <StrategyStockPage />,
+      },
+      {
+        path: "marketstock",
+        element: <MarketStockPage />,
       },
     ],
   },
