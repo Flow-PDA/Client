@@ -8,7 +8,7 @@ export default function InterestStockDetailChartPage() {
     <>
       <TopNavigationBar text={"종목 상세정보"} />
       <Container>
-        <Row>
+        <Row className="interest-stock-detail-row">
           <div className="interest-stock-detail-name">삼성전자</div>
           <div className="interest-stock-detail-price">73,300원</div>
         </Row>
