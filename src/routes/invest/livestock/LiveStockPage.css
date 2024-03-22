@@ -35,6 +35,7 @@
 }
 .live-issue-btn {
   font-size: 0.9rem;
+  border-radius: 1rem;
   border: none;
 }
 .live-issue-btn.selected {
@@ -68,7 +69,12 @@
 }
 .red-text {
   color: #f46060;
+  font-weight: 600;
 }
 .blue-text {
   color: #375aff;
+  font-weight: 600;
+}
+.live-stock-name {
+  font-size: 0.9rem;
 }

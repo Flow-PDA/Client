@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import fetchData from "./crawlData";
+import React, { useState, useEffect, Suspense } from "react";
 import "./LiveStockPage.css";
 import axios from "axios";
 import Swipe from "../../../components/common/swiper/Swiper";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 import { Row, Col, Container } from "react-bootstrap";
 import { interval } from "date-fns";
-
+import { SyncLoader } from "react-spinners";
+import { Sync } from "@mui/icons-material";
 export default function LiveStockPage() {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [kospiDatas, setKospiDatas] = useState([]);
   const [kosdaqDatas, setKosdaqDatas] = useState([]);
   const [nasdaqDatas, setNasdaqDatas] = useState([]);
   const [issueDatas, setIssueDatas] = useState([]);
-
+  const [stockDatas, setStockDatas] = useState([]);
   const [stocks, setStocks] = useState([
     {
       id: 1,
@@ -58,13 +58,11 @@ export default function LiveStockPage() {
   ]);
 
   const handleClick = (tag) => {
+    console.log(tag);
     setSelectedIndex(tag);
     fetchIssueData(tag);
   };
-  const priceData = (tag) => {
-    fetchIssueData(tag)
 
-  }
   const fetchKospiData = async () => {
     try {
       const response = await axios.get(
@@ -100,26 +98,56 @@ export default function LiveStockPage() {
 
   const fetchIssueData = async (tag) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/stocks/hotIssue?tag=${tag}`,
-        { tag: tag }
-      );
-      console.log(response.data);
-      setIssueDatas(response.data);
+      console.log(tag);
+      const response = await axios
+        .get(`http://localhost:3000/api/stocks/hotIssue?tag=${tag}`, {
+          tag: tag,
+        })
+        .then((response) => {
+          console.log(tag);
+          const data = response.data;
+          setIssueDatas(data);
+          Promise.all(
+            data.map(async (d) => {
+              let items = [];
+              return await axios
+                .get(
+                  `http://localhost:3000/api/stocks/inquire?stock_code=${d.stock_code}`
+                )
+                .then((stock_res) => {
+                  const tmp_data = {
+                    rank: d.rank,
+                    stbd_nm: d.stbd_nm,
+                    stock_code: d.stock_code,
+                    prdy_vrss: stock_res.data.prdy_vrss,
+                    prdy_vrss_sign: stock_res.data.prdy_vrss_sign,
+                    prdy_ctrt: stock_res.data.prdy_ctrt,
+                    stck_prpr: stock_res.data.stck_prpr,
+                  };
+                  console.log(tmp_data);
+                  // const items = [...stockDatas];
+                  items.push(tmp_data);
+                  console.log(items);
+                  return items;
+                });
+            })
+          ).then((items) => {
+            console.log(items);
+            setStockDatas(items);
+          });
+        });
     } catch (err) {
       console.error(err);
     }
   };
-  // fetchIssueData(1);
 
   useEffect(() => {
     fetchKospiData();
     fetchKosdaqData();
     fetchNasdaqData();
-  }, []); // 빈 배열을 넘겨주어 한 번만 실행되도록 설정
-  useEffect(() => {
     fetchIssueData(1);
-  }, []);
+  }, []); // 빈 배열을 넘겨주어 한 번만 실행되도록 설정
+  useEffect(() => {}, []);
   return (
     <>
       <TopNavigationBar></TopNavigationBar>
@@ -132,18 +160,24 @@ export default function LiveStockPage() {
           <h3>주요지수</h3>
           <div className="live-all-point-container">
             <div className="live-point-container">
-              <h4>코스피</h4>
-              <div
-                className={kospiDatas.value === "+" ? "red-text" : "blue-text"}
-                style={{ fontSize: "1.5rem", fontWeight: "600" }}
-              >
-                {kospiDatas.kospi_point}
-              </div>
-              <div
-                className={kospiDatas.value === "+" ? "red-text" : "blue-text"}
-              >
-                {kospiDatas.change}
-              </div>
+              <Suspense fallback={<SyncLoader />}>
+                <h4>코스피</h4>
+                <div
+                  className={
+                    kospiDatas.value === "+" ? "red-text" : "blue-text"
+                  }
+                  style={{ fontSize: "1.5rem", fontWeight: "600" }}
+                >
+                  {kospiDatas.kospi_point}
+                </div>
+                <div
+                  className={
+                    kospiDatas.value === "+" ? "red-text" : "blue-text"
+                  }
+                >
+                  {kospiDatas.change}
+                </div>
+              </Suspense>
             </div>
             <div className="live-point-container">
               <h4>코스닥</h4>
@@ -212,48 +246,36 @@ export default function LiveStockPage() {
               기관순매수
             </button>
           </div>
-          {issueDatas.map((issueData) => (
-            <Row className="myparty-stock">
-              <Col xs={2}>
-                <img
-                  className="stock-img"
-                  src={`https://file.alphasquare.co.kr/media/images/stock_logo/kr/${issueData.stock_code}.png`}
-                  alt="image"
-                />
-              </Col>
-              <Col xs={4}>
-                <div>
-                  <div>{issueData.stbd_nm}</div>
-                  {/* <div>{stock.quantity}</div> */}
-                </div>
-              </Col>
-            </Row>
-          ))}
-          {issueDatas &&
-            issueDatas.map((data) => {
-              <div>{data.stock_code}</div>;
-            })}
-          {stocks.map((stock) => (
-            <Row key={stock.id} className="myparty-stock">
-              <Col xs={2}>
-                <img
-                  className="stock-img"
-                  src={`https://file.alphasquare.co.kr/media/images/stock_logo/kr/${stock.code}.png`}
-                  alt="stock"
-                />
-              </Col>
-              <Col xs={4}>
-                <div>
-                  <div>{stock.name}</div>
-                  <div>{stock.quantity}</div>
-                </div>
-              </Col>
-              <Col className="myparty-stock-price-container" xs={6}>
-                <div>{stock.price}</div>
-                <div>{stock.change}</div>
-              </Col>
-            </Row>
-          ))}
+
+          {stockDatas &&
+            stockDatas.map((stock) => (
+              <Row key={stock[0].stock_code} className="myparty-stock">
+                <Col xs={2}>
+                  <img
+                    className="stock-img"
+                    src={`https://file.alphasquare.co.kr/media/images/stock_logo/kr/${stock[0].stock_code}.png`}
+                    alt="stock"
+                  />
+                </Col>
+                <Col xs={6}>
+                  <div>
+                    <div className="live-stock-name">{stock[0].stbd_nm}</div>
+                  </div>
+                </Col>
+                <Col className="myparty-stock-price-container" xs={4}>
+                  <div>{stock[0].stck_prpr}원</div>
+                  <div
+                    className={
+                      stock[0].prdy_vrss_sign === "1" || "2"
+                        ? "red-text"
+                        : "blue-text"
+                    }
+                  >
+                    {stock[0].prdy_vrss}({stock[0].prdy_ctrt}%)
+                  </div>
+                </Col>
+              </Row>
+            ))}
         </Row>
       </Container>
     </>
