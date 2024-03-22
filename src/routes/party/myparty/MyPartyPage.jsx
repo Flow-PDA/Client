@@ -3,6 +3,7 @@ import "./MyPartyPage.css";
 import Back from "../../../assets/arrow.png";
 import Bottom from "../../../assets/bottom_arrow.png";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
+import { Link } from "react-router-dom";
 import { Button, Col, Row, Container } from "react-bootstrap";
 export default function MyPartyPage() {
   const [stocks, setStocks] = useState([
@@ -90,12 +91,23 @@ export default function MyPartyPage() {
             <p>+670,000원(9%)</p>
           </div>
           <div className="myparty-deposit-btn-container">
-            <Button variant="primary" style={{ width: "25vw", height: "10vw" }}>
-              투자하기
-            </Button>
-            <Button variant="primary" style={{ width: "25vw", height: "10vw" }}>
-              이체하기
-            </Button>
+            <Link to={"/livestock"}>
+              <Button
+                variant="primary"
+                style={{ width: "25vw", height: "10vw" }}
+              >
+                투자하기
+              </Button>
+            </Link>
+
+            <Link to={"/transfer"}>
+              <Button
+                variant="primary"
+                style={{ width: "25vw", height: "10vw" }}
+              >
+                이체하기
+              </Button>
+            </Link>
           </div>
           <hr style={{ marginTop: "1.5rem", width: "90vw" }} />
         </Row>

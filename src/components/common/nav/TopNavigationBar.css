@@ -1,3 +1,9 @@
+.navbar {
+  position: sticky !important;
+  background-color: white;
+  top: 0;
+}
+
 .nav-item-text {
   font-size: 1.3rem;
   font-weight: 600;
