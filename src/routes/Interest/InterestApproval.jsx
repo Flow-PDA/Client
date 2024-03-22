@@ -1,9 +1,9 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import "./InterestPage.css";
-import HorizontalLine from "../../components/line/HorizontalLine";
+import HorizontalLine from "../../components/line/HorizontalLine.jsx";
 import { useEffect, useState } from "react";
 import { delApproved, getApproved } from "../../lib/apis/interest.jsx";
-import Modal from "../../components/common/modal/ApproveInterestModal";
+import Modal from "../../components/common/modal/ApproveInterestModal.jsx";
 
 const InterestApproval = () => {
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
