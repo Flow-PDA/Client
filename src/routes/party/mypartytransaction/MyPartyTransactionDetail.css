@@ -1,0 +1,34 @@
+.full-transaction-history-sentence {
+  font-weight: bold;
+  margin: 2.5vh 0;
+  font-size: 1.2rem;
+}
+
+.transaction-date {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.transaction-stock-name {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.transaction-name {
+  text-align: right;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+.transaction-second-line {
+  margin-bottom: 1.8vh;
+  font-size: 1.1rem;
+}
+
+.transaction-detail {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.red-text {
+  color: #f46060;
+}

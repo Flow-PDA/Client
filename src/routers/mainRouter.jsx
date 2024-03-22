@@ -16,8 +16,10 @@ import SetPricePage from "../routes/party/setprice/SetPricePage";
 import SetDatePage from "../routes/party/setdate/SetDatePage";
 import SignupPage from "../routes/signup/SignupPage";
 import LoginPage from "../routes/login/LoginPage";
+import MyPartyTransactionDetail from "../routes/party/mypartytransaction/MyPartyTransactionDetail";
 import LiveStockPage from "../routes/invest/livestock/LiveStockPage";
 import { ProtectedLayout } from "../routes/ProtectedLayout";
+
 
 export const mainRouter = [
   {
@@ -48,6 +50,11 @@ export const mainRouter = [
           {
             path: "myparty",
             element: <MyPartyPage />,
+            index: true,
+          },
+          {
+            path: "myPartyTransactionDetail",
+            element: <MyPartyTransactionDetail />,
             index: true,
           },
           {

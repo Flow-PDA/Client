@@ -1,16 +1,16 @@
 import instance from "./base";
-import authInstance from "./base";
+import { authInstance } from "./base";
 
 // 이체 내역
 export async function fetchTransferList(partyKey) {
-  const response = await instance.get(`/transfers/${partyKey}`);
+  const response = await authInstance.get(`/transfers/${partyKey}`);
 
   return response.data.result;
 }
 
 //최근 보낸 계좌
 export async function fetchRecentAccountList(partyKey) {
-  const response = await instance.get(`/transfers/${partyKey}/recents`);
+  const response = await authInstance.get(`/transfers/${partyKey}/recents`);
   return response.data.result;
 }
 
@@ -20,7 +20,6 @@ export async function transfer({ reqBody, partyKey }) {
   console.log(reqBody);
   const response = await authInstance.post(`/transfers/${partyKey}`, reqBody);
   return response;
-  //여기 오류 난다
 }
 
 export default {

@@ -34,7 +34,7 @@
     "redux-persist": "^6.0.0",
     "swiper": "^11.0.7"
     "react-redux": "^9.1.0",
-    "redux-persist": "^6.0.0"
+   
   },
   "devDependencies": {
     "@types/react": "^18.2.64",
