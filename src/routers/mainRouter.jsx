@@ -16,7 +16,7 @@ import SetPricePage from "../routes/party/setprice/SetPricePage";
 import SetDatePage from "../routes/party/setdate/SetDatePage";
 import SignupPage from "../routes/signup/SignupPage";
 import LoginPage from "../routes/login/LoginPage";
-import MyPartyTransactionHistory from "../routes/party/mypartytransaction/MyPartyTransactionHistory";
+import MyPartyTransactionDetail from "../routes/party/mypartytransaction/MyPartyTransactionDetail";
 
 export const mainRouter = [
   {
@@ -50,8 +50,8 @@ export const mainRouter = [
             index: true,
           },
           {
-            path: "myPartyTransactionHistory",
-            element: <MyPartyTransactionHistory />,
+            path: "myPartyTransactionDetail",
+            element: <MyPartyTransactionDetail />,
             index: true,
           },
           {
