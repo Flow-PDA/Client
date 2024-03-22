@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "../routes/Layout";
+
 import MainPage from "../routes/MainPage";
-import InterestPage from "../routes/Interest/InterestPage";
+import InterestPage from "../routes/interest/InterestPage";
 import PartyPage from "../routes/party/PartyPage";
 import PartyCreatePage from "../routes/party/create/PartyCreatePage";
 import MyPartyPage from "../routes/party/myparty/MyPartyPage";
@@ -19,6 +19,7 @@ import LoginPage from "../routes/login/LoginPage";
 import MyPartyTransactionDetail from "../routes/party/mypartytransaction/MyPartyTransactionDetail";
 import LiveStockPage from "../routes/invest/livestock/LiveStockPage";
 import { ProtectedLayout } from "../routes/ProtectedLayout";
+import InterestStockDetailChartPage from "../routes/interest/intereststock/chart/InterestStockDetailChartPage";
 
 
 export const mainRouter = [
@@ -31,8 +32,19 @@ export const mainRouter = [
         element: <MainPage />,
       },
       {
-        path: "/interests",
-        element: <InterestPage />,
+        path: "interests",
+        children: [
+          {
+            path: "",
+            element: <InterestPage />,
+            index: true,
+          },
+          {
+            path: "stock",
+            element: <InterestStockDetailChartPage />,
+            index: true,
+          },
+        ],
       },
       {
         path: "party",
