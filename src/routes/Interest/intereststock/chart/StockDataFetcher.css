@@ -1,0 +1,37 @@
+.stock-data-partyname {
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 2vh 0 1vh 0;
+}
+
+.stock-data-avg {
+  padding: 1vh 0;
+}
+
+.stock-data-quantity {
+  padding: 1vh 0;
+}
+
+.stock-data-total {
+  display: flex;
+  align-items: center;
+}
+
+.stock-data-quantity,
+.stock-data-avg,
+.stock-data-total {
+  color: #616161;
+}
+
+.stock-data-avg-data,
+.stock-data-quantity-data,
+.stock-data-total-data {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.stock-data-total-profit {
+  font-size: 0.8rem;
+  color: #f46060;
+}

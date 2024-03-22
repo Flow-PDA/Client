@@ -21,7 +21,6 @@ import LiveStockPage from "../routes/invest/livestock/LiveStockPage";
 import { ProtectedLayout } from "../routes/ProtectedLayout";
 import InterestStockDetailChartPage from "../routes/interest/intereststock/chart/InterestStockDetailChartPage";
 
-
 export const mainRouter = [
   {
     path: "",
@@ -39,11 +38,16 @@ export const mainRouter = [
             element: <InterestPage />,
             index: true,
           },
+        ],
+      },
+      {
+        path: "stockDetail/:stockKey",
+        children: [
           {
-            path: ":stockKey",
+            path: "chart",
             element: <InterestStockDetailChartPage />,
-            index: true,
           },
+          // 호가, 뉴스 추가할 것
         ],
       },
       {
