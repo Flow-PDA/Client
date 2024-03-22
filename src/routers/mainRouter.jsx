@@ -40,7 +40,7 @@ export const mainRouter = [
             index: true,
           },
           {
-            path: "stock",
+            path: ":stockKey",
             element: <InterestStockDetailChartPage />,
             index: true,
           },
