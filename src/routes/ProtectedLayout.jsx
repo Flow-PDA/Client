@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useCallback } from "react";
+import { AuthProvider } from "../lib/contexts/AuthContext";
 
 export const ProtectedLayout = () => {
   const auth = useSelector((state) => state.user.userInfo?.accessToken);
@@ -19,9 +20,9 @@ export const ProtectedLayout = () => {
 
   if (authRequired()) {
     return checkAuth(auth) ? (
-      <>
+      <AuthProvider>
         <Outlet />
-      </>
+      </AuthProvider>
     ) : (
       <Navigate to="/" />
     );

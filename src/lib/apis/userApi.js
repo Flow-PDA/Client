@@ -1,4 +1,4 @@
-import instance from "./base";
+import instance, { authInstance } from "./base";
 
 /**
  * check if email is valid
@@ -51,4 +51,26 @@ async function login(email, password) {
   }
 }
 
-export { checkEmail, signup, login };
+/**
+ * sample API for authentication
+ * @param {*} userKey
+ * @returns
+ */
+async function modifyTest(userKey) {
+  try {
+    const reqBody = { name: "123" };
+    const resp = await authInstance.put(`/users/${userKey}`, reqBody);
+
+    // console.log(resp);
+    return resp;
+  } catch (error) {
+    // console.log(error);
+    if (error.response.status == 401) {
+      // console.log("throw error");
+      throw error;
+    }
+    return error.response;
+  }
+}
+
+export { checkEmail, signup, login, modifyTest };
