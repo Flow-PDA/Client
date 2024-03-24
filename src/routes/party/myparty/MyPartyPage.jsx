@@ -3,9 +3,10 @@ import "./MyPartyPage.css";
 import Back from "../../../assets/arrow.png";
 import Bottom from "../../../assets/bottom_arrow.png";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Button, Col, Row, Container } from "react-bootstrap";
 export default function MyPartyPage() {
+  const partyKey = useParams().partyKey;
   const [stocks, setStocks] = useState([
     {
       id: 1,
@@ -91,7 +92,7 @@ export default function MyPartyPage() {
             <p>+670,000원(9%)</p>
           </div>
           <div className="myparty-deposit-btn-container">
-            <Link to={"/livestock"}>
+            <Link to={`/livestock/${partyKey}`}>
               <Button
                 variant="primary"
                 style={{ width: "25vw", height: "10vw" }}
