@@ -16,7 +16,13 @@ export async function fetchPartyCreate(name, accountNumber) {
   return response.data.result;
 }
 
+// 모든 모임 조회
+export async function fetchPartyInquire() {
+  const response = await authInstance.get(`/parties`);
+  return response.data.result;
+}
 export default {
   fetchPartyInfo,
   fetchPartyCreate,
+  fetchPartyInquire,
 };
