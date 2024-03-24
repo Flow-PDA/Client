@@ -67,7 +67,7 @@ export const mainRouter = [
             index: true,
           },
           {
-            path: "myparty",
+            path: ":partyKey/myparty",
             element: <MyPartyPage />,
             index: true,
           },
@@ -142,7 +142,7 @@ export const mainRouter = [
         element: <LoginPage />,
       },
       {
-        path: "livestock",
+        path: "livestock/:partyKey",
         element: <LiveStockPage />,
       },
       {
