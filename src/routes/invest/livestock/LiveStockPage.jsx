@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import fetchData from "./crawlData";
 import "./LiveStockPage.css";
 import axios from "axios";
 import Swipe from "../../../components/common/swiper/Swiper";
@@ -62,9 +61,8 @@ export default function LiveStockPage() {
     fetchIssueData(tag);
   };
   const priceData = (tag) => {
-    fetchIssueData(tag)
-
-  }
+    fetchIssueData(tag);
+  };
   const fetchKospiData = async () => {
     try {
       const response = await axios.get(
