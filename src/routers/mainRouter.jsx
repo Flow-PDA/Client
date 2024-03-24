@@ -23,6 +23,7 @@ import RisingStockPage from "../routes/invest/rising/RisingStockPage";
 import StrategyStockPage from "../routes/invest/strategy/StrategyStockPage";
 import { ProtectedLayout } from "../routes/ProtectedLayout";
 import InterestStockDetailChartPage from "../routes/interest/intereststock/chart/InterestStockDetailChartPage";
+import InterestStockDetailAskingPricePage from "../routes/interest/intereststock/askingPrice/InterestStockDetailAskingPricePage";
 
 export const mainRouter = [
   {
@@ -51,6 +52,10 @@ export const mainRouter = [
             element: <InterestStockDetailChartPage />,
           },
           // 호가, 뉴스 추가할 것
+          {
+            path: "askingPrice",
+            element: <InterestStockDetailAskingPricePage />,
+          },
         ],
       },
       {
