@@ -17,10 +17,18 @@ const fetchUserLogin = createAsyncThunk(
   }
 );
 
-export const userSlice = createSlice({
+const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    clearUserStore(state) {
+      // console.log("clear");
+      state.userInfo = {};
+      // state.userInfo.accessToken = "12";
+      state.loginReqState = "";
+      state.groupInfo = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchUserLogin.fulfilled, (state, action) => {
       // console.log(action.payload);
@@ -40,4 +48,5 @@ export const userSlice = createSlice({
 });
 
 export { fetchUserLogin };
+export const { clearUserStore } = userSlice.actions;
 export default userSlice.reducer;

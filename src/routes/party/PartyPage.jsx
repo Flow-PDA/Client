@@ -1,19 +1,36 @@
-import React, { useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
 import "./PartyPage.css";
+import { modifyTest } from "../../lib/apis/userApi";
+import { AuthContext } from "../../lib/contexts/AuthContext";
 // 특정 모임 정보 api
 // 잔고 api
 
 export default function PartyPage() {
   const [deposit, setDeposit] = useState([]);
+  const { throwAuthError } = useContext(AuthContext);
+
+  const test = useCallback(async (e) => {
+    e.preventDefault();
+    try {
+      const res = await modifyTest(2);
+      console.log(res);
+    } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
+    }
+  }, []);
 
   return (
     <>
       <TopNavigationBar text="모임 생성"></TopNavigationBar>
       <Container className="page-container">
+        <button onClick={test}>test</button>
         <div className="party-container">
           <div className="alert-container">
             <img src="../../../public/alert.png" alt="alert" />

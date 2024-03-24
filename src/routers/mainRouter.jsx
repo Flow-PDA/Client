@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "../routes/Layout";
+
 import MainPage from "../routes/MainPage";
-import InterestPage from "../routes/Interest/InterestPage";
+import InterestPage from "../routes/interest/InterestPage";
 import PartyPage from "../routes/party/PartyPage";
 import PartyCreatePage from "../routes/party/create/PartyCreatePage";
 import MyPartyPage from "../routes/party/myparty/MyPartyPage";
@@ -18,8 +18,11 @@ import SignupPage from "../routes/signup/SignupPage";
 import LoginPage from "../routes/login/LoginPage";
 import MyPartyTransactionDetail from "../routes/party/mypartytransaction/MyPartyTransactionDetail";
 import LiveStockPage from "../routes/invest/livestock/LiveStockPage";
+import MarketStockPage from "../routes/invest/market/MarketStockpage";
+import RisingStockPage from "../routes/invest/rising/RisingStockPage";
+import StrategyStockPage from "../routes/invest/strategy/StrategyStockPage";
 import { ProtectedLayout } from "../routes/ProtectedLayout";
-
+import InterestStockDetailChartPage from "../routes/interest/intereststock/chart/InterestStockDetailChartPage";
 
 export const mainRouter = [
   {
@@ -31,8 +34,24 @@ export const mainRouter = [
         element: <MainPage />,
       },
       {
-        path: "/interests",
-        element: <InterestPage />,
+        path: "interests",
+        children: [
+          {
+            path: "",
+            element: <InterestPage />,
+            index: true,
+          },
+        ],
+      },
+      {
+        path: "stockDetail/:stockKey",
+        children: [
+          {
+            path: "chart",
+            element: <InterestStockDetailChartPage />,
+          },
+          // 호가, 뉴스 추가할 것
+        ],
       },
       {
         path: "party",
@@ -125,6 +144,18 @@ export const mainRouter = [
       {
         path: "livestock",
         element: <LiveStockPage />,
+      },
+      {
+        path: "risingstock",
+        element: <RisingStockPage />,
+      },
+      {
+        path: "strategystock",
+        element: <StrategyStockPage />,
+      },
+      {
+        path: "marketstock",
+        element: <MarketStockPage />,
       },
     ],
   },
