@@ -64,6 +64,10 @@ export default function LiveStockPage() {
     fetchIssueData(tag);
   };
 
+  const priceData = (tag) => {
+    fetchIssueData(tag);
+  };
+
   const fetchKospiData = async () => {
     try {
       const response = await axios.get(
