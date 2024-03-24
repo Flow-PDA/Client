@@ -18,7 +18,7 @@ export default function TransferDetailAccountNumPage() {
 
   const navigate = useNavigate();
 
-  const partyKey = 25; //partyKey 수정 필요
+  const partyKey = 1; //TODO: 수정 필요
 
   const handleNextButtonClick = () => {
     navigate("/transfer/transferDetailPricePage", {
@@ -60,7 +60,7 @@ export default function TransferDetailAccountNumPage() {
       const response = await fetchRecentAccountList(partyKey);
       setRecentAccountData(response);
     } catch (error) {
-      console.error("이체 데이터 호출 중 에러:", error);
+      console.error("최근 이체 데이터 호출 중 에러:", error);
     }
   };
 

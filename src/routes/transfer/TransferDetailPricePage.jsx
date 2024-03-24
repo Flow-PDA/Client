@@ -12,7 +12,7 @@ export default function TransferDetailPricePage() {
   const accountNumber = location.state.accountNumber;
   const [price, setPrice] = useState("");
   const [transferData, setTransferData] = useState([]);
-  const partyKey = 25; //수정 필요
+  const partyKey = 1; //TODO: 수정 필요
 
   const navigate = useNavigate();
 

@@ -16,7 +16,7 @@ export default function TransferDetailConfirmPage() {
 
   const navigate = useNavigate();
 
-  const partyKey = 25; //TODO: 수정 필요
+  const partyKey = 1; //TODO: 수정 필요
 
   const handleTransferButtonClick = () => async (e) => {
     e.preventDefault();
