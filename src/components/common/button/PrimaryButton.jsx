@@ -3,7 +3,8 @@ import { Button } from "react-bootstrap";
 const PrimaryButton = ({
   text,
   minWidth,
-  minHeight = "1vh",
+  minHeight = "1.5vh",
+  height = "6.5vh",
   onClick,
   style,
   disabled,
@@ -19,6 +20,7 @@ const PrimaryButton = ({
         border: 0,
         minWidth: minWidth,
         minHeight: minHeight,
+        height: height,
         color: "white",
         fontSize: "1.2rem",
         fontWeight: "bold",
