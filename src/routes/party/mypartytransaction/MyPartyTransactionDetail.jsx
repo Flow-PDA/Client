@@ -26,7 +26,7 @@ export default function MyPartyTransactionDetail() {
 
   return (
     <>
-      <TopNavigationBar text={"거래내역"} />
+      <TopNavigationBar text={"거래내역"} type={1} />
       <Container>
         <div className="full-transaction-history-sentence">전체 내역</div>
         {transactionData.map((data, index) => (
@@ -61,13 +61,7 @@ export default function MyPartyTransactionDetail() {
               <Col xs={2}></Col>
               <Col
                 xs={10}
-                className={`transaction-second-line transaction-detail ${
-                  // Check if the next transaction-date is different from the current one
-                  index + 1 < transactionData.length &&
-                  data.createdAt !== transactionData[index + 1].createdAt
-                    ? "show" // If different, show the transaction-detail
-                    : "hide" // If same, hide the transaction-detail
-                }`}
+                className="transaction-second-line transaction-detail"
               >
                 {data.transactionType === 0 ? (
                   <span className="red-text">
