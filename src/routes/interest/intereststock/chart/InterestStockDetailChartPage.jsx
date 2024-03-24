@@ -1,8 +1,8 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
-import TopNavigationBar from "../../../../components/common/nav/TopNavigationBar.jsx";
+import TopNavigationBar from "../../../../components/common/nav/TopNavigationBar";
 import "./InterestStockDetailChartPage.css";
-import SampleChart from "./SampleChart.jsx";
-import StockDataFetcher from "./StockDataFetcher.js.jsx";
+import SampleChart from "./SampleChart";
+import StockDataFetcher from "./StockDataFetcher.js";
 
 export default function InterestStockDetailChartPage() {
   return (
