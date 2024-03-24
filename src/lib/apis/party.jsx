@@ -7,6 +7,16 @@ export async function fetchPartyInfo(partyKey) {
   return response.data.result;
 }
 
+// 모임 생성, 관리자 등록
+export async function fetchPartyCreate(name, accountNumber) {
+  const response = await authInstance.post(`/parties`, {
+    name,
+    accountNumber,
+  });
+  return response.data.result;
+}
+
 export default {
   fetchPartyInfo,
+  fetchPartyCreate,
 };
