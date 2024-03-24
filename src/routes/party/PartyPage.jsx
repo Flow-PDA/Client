@@ -54,12 +54,22 @@ export default function PartyPage() {
               <h3>+170,000원(20%)</h3>
             </div>
             <div className="deposit-button-container">
-              <Button variant="primary" style={{ backgroundColor: "#375AFF" }}>
-                투자
-              </Button>
-              <Button variant="primary" style={{ backgroundColor: "#375AFF" }}>
-                이체
-              </Button>
+              <Link to={"/livestock"}>
+                <Button
+                  variant="primary"
+                  style={{ backgroundColor: "#375AFF" }}
+                >
+                  투자
+                </Button>
+              </Link>
+              <Link to={"/transfer"}>
+                <Button
+                  variant="primary"
+                  style={{ backgroundColor: "#375AFF" }}
+                >
+                  이체
+                </Button>
+              </Link>
             </div>
           </div>
           <Link to={"/party/create"}>
