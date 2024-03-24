@@ -7,6 +7,16 @@ export async function fetchPartyInfo(partyKey) {
   return response.data.result;
 }
 
+//모임 주식 거래 내역 조회
+export async function fetchTransactionDetail(partyKey) {
+  const response = await authInstance.get(
+    `/stocks/${partyKey}/transactionDetail`
+  );
+
+  return response.data.result;
+}
+
 export default {
   fetchPartyInfo,
+  fetchTransactionDetail,
 };
