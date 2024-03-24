@@ -26,7 +26,7 @@ export default function MyPartyTransactionDetail() {
 
   return (
     <>
-      <TopNavigationBar text={"거래내역"} type={2} />
+      <TopNavigationBar text={"거래내역"} type={1} />
       <Container>
         <div className="full-transaction-history-sentence">전체 내역</div>
         {transactionData.map((data, index) => (
