@@ -5,88 +5,83 @@ import "./MyPartyTransactionDetail.css";
 import PrimaryButton from "../../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 import { Link } from "react-router-dom";
-import { fetchTransferList } from "../../../lib/apis/transfer";
+import { fetchTransactionDetail } from "../../../lib/apis/party";
 
 export default function MyPartyTransactionDetail() {
-  const [transferData, setTransferData] = useState([]);
+  const [transactionData, setTransactionData] = useState([]);
 
   const partyKey = 1; //TODO: 수정 필요
-  const callTransferData = async () => {
+  const callTransactionData = async () => {
     try {
-      const response = await fetchTransferList(partyKey);
-      setTransferData(response);
+      const response = await fetchTransactionDetail(partyKey);
+      setTransactionData(response);
     } catch (error) {
       console.error("이체 데이터 호출 중 에러:", error);
     }
   };
 
   useEffect(() => {
-    callTransferData();
+    callTransactionData();
   }, []);
-
-  let deposit = 0;
-
-  if (transferData[0]) {
-    deposit = transferData[0].deposit;
-  }
 
   return (
     <>
       <TopNavigationBar text={"거래내역"} />
       <Container>
         <div className="full-transaction-history-sentence">전체 내역</div>
+        {transactionData.map((data, index) => (
+          <React.Fragment key={index}>
+            <Row>
+              {index === 0 ||
+              `${new Date(data.createdAt).getMonth() + 1}.${new Date(
+                data.createdAt
+              ).getDate()}` !==
+                `${
+                  new Date(transactionData[index - 1].createdAt).getMonth() + 1
+                }.${new Date(
+                  transactionData[index - 1].createdAt
+                ).getDate()}` ? (
+                <Col xs={2} className="transaction-date">
+                  {`${new Date(data.createdAt).getMonth() + 1}.${new Date(
+                    data.createdAt
+                  ).getDate()}`}
+                </Col>
+              ) : (
+                <Col xs={2} className="transaction-date"></Col>
+              )}
 
-        <React.Fragment>
-          <Row>
-            <Col xs={2} className="transaction-date">
-              3.20
-            </Col>
-            <Col xs={4} className="transaction-stock-name">
-              삼성전자
-            </Col>
-            <Col xs={6} className="transaction-name">
-              이선영
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={2}></Col>
-            <Col xs={10} className="transaction-second-line transaction-detail">
-              <span className="red-text">1주 구매 (주당 65,400원)</span>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={2} className="transaction-date"></Col>
-            <Col xs={4} className="transaction-stock-name">
-              하이트 진로
-            </Col>
-            <Col xs={6} className="transaction-name">
-              김민우
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={2}></Col>
-            <Col xs={10} className="transaction-second-line transaction-detail">
-              <span className="red-text">1주 구매 (주당 65,400원)</span>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={2} className="transaction-date">
-              3.18
-            </Col>
-            <Col xs={4} className="transaction-stock-name">
-              삼성전자
-            </Col>
-            <Col xs={6} className="transaction-name">
-              한다현
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={2}></Col>
-            <Col xs={10} className="transaction-second-line transaction-detail">
-              <span className="red-text">1주 구매 (주당 65,400원)</span>
-            </Col>
-          </Row>
-        </React.Fragment>
+              <Col xs={4} className="transaction-stock-name">
+                {data.stockName}
+              </Col>
+              <Col xs={6} className="transaction-name">
+                {data.name}
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={2}></Col>
+              <Col
+                xs={10}
+                className={`transaction-second-line transaction-detail ${
+                  // Check if the next transaction-date is different from the current one
+                  index + 1 < transactionData.length &&
+                  data.createdAt !== transactionData[index + 1].createdAt
+                    ? "show" // If different, show the transaction-detail
+                    : "hide" // If same, hide the transaction-detail
+                }`}
+              >
+                {data.transactionType === 0 ? (
+                  <span className="red-text">
+                    {data.volume}주 구매 (주당 {data.price.toLocaleString()}원)
+                  </span>
+                ) : (
+                  <span className="blue-text">
+                    {data.volume}주 판매 (주당 {data.price.toLocaleString()}원)
+                  </span>
+                )}
+              </Col>
+            </Row>
+          </React.Fragment>
+        ))}
       </Container>
     </>
   );
