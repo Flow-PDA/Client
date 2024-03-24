@@ -1,25 +1,38 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { fetchShinhanInvest } from "../../../lib/apis/shinhanApi";
+import { Container, Row, Col } from "react-bootstrap";
+import "./StrategyStockPage.css";
 
 export default function StrategyStockPage() {
   const [datas, setDatas] = useState([]);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3000/api/stocks/investStrategy"
-      );
+      const response = await fetchShinhanInvest();
       console.log(response);
-    } catch (err) {
-      console.log(err);
+      setDatas(response);
+    } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
     }
   };
-  useEffect (() => {
+  useEffect(() => {
     fetchData();
   }, []);
   return (
     <>
-      <div>1</div>
+      1
+      <Container className="strategy-container">
+        {datas.map((data) => (
+          <div>
+            <div>{data.title}</div>
+            <div>{data.writer}</div>
+            <div>{data.content.slice(0, 40)}</div>
+          </div>
+        ))}
+      </Container>
     </>
   );
 }
