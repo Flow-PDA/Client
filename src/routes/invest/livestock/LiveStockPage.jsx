@@ -1,4 +1,8 @@
+
+import React, { useState, useEffect } from "react";
+
 import React, { useState, useEffect, Suspense } from "react";
+
 
 import "./LiveStockPage.css";
 import axios from "axios";
@@ -61,6 +65,10 @@ export default function LiveStockPage() {
   const handleClick = (tag) => {
     console.log(tag);
     setSelectedIndex(tag);
+    fetchIssueData(tag);
+  };
+
+  const priceData = (tag) => {
     fetchIssueData(tag);
   };
 

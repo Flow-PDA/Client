@@ -10,7 +10,7 @@ import { fetchTransferList } from "../../lib/apis/transfer";
 export default function TransferPage() {
   const [transferData, setTransferData] = useState([]);
 
-  const partyKey = 25;
+  const partyKey = 1; //TODO: 수정 필요
   const callTransferData = async () => {
     try {
       const response = await fetchTransferList(partyKey);
