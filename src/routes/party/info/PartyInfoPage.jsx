@@ -1,46 +1,97 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./PartyInfoPage.css";
 import { Col, Row, Container, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import {
+  fetchPartyInfo,
+  fetchPartyAdmin,
+  fetchPartyMemberInquire,
+  fetchSearchUser,
+  fetchDeleteUser,
+} from "../../../lib/apis/party";
 import Next from "../../../assets/arrow.png";
 import Bottom from "../../../assets/bottom_arrow.png";
 import Up from "../../../assets/up_arrow.png";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
+import party from "../../../lib/apis/party";
+
 export default function PartyInfoPage() {
-  const [info, setInfo] = useState({
-    created_at: "2024-03-09",
-    goal: "여행",
-    goal_price: 1000000,
-    goal_date: "2025-06-29",
-  });
-  const [members, setMembers] = useState([
-    {
-      id: 1,
-      name: "김민우",
-    },
-    {
-      id: 2,
-      name: "이선영",
-    },
-    {
-      id: 3,
-      name: "정찬진",
-    },
-    {
-      id: 4,
-      name: "한다현",
-    },
-  ]);
+  const partyKey = useParams().partyKey;
+  const [info, setInfo] = useState([]);
+  const [admin, setAdmin] = useState([]);
+  const [member, setMember] = useState([]);
+  const [members, setMembers] = useState([]);
   const [users, setUsers] = useState([]);
+
   const showUser = () => {
     setUsers((prevUsers) => (prevUsers.length === 0 ? members : []));
   };
+  const deleteUser = async (userKey) => {
+    try {
+      const response = await fetchDeleteUser(partyKey, userKey);
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  // 모임 정보 조회
+  const fetchData = async () => {
+    const response = await fetchPartyInfo(partyKey);
+    console.log(response);
+    setInfo(response);
+  };
+
+  // 현재 접속 중인 유저의 권한
+  const fetchAdmin = async () => {
+    try {
+      const response = await fetchPartyAdmin(partyKey);
+      console.log(response.data);
+      setAdmin(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // 모임의 속한 인원 전부 조회
+  const fetchMember = async () => {
+    try {
+      const response = await fetchPartyMemberInquire(partyKey);
+      console.log(response.data.result[0]);
+      setMember(response.data.result);
+      const temps = response.data.result;
+      temps.map(async (temp) => {
+        const resp = await fetchSearchUser(partyKey, temp.userKey);
+        members.push(resp.data);
+        console.log(members);
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // 3자리 단위로 숫자 끊기
+  const addCommasToNumber = (number) => {
+    // 숫자가 아닌 값이 들어온 경우 빈 문자열 반환
+    if (typeof number !== "number") return "";
+
+    const numberString = number.toString();
+    const parts = numberString.split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+  };
+
+  useEffect(() => {
+    fetchData();
+    fetchAdmin();
+    fetchMember();
+  }, []);
+
   return (
     <>
       <TopNavigationBar></TopNavigationBar>
       <Container className="info-container">
         <Row className="info-top-container">
-          <div className="info-title">177의 모임투자</div>
+          <div className="info-title">{info.name}의 모임투자</div>
           <div className="info-detail">
             <div>
               <div>모임 시작일</div>
@@ -49,10 +100,12 @@ export default function PartyInfoPage() {
               <div>목표 날짜</div>
             </div>
             <div>
-              <div>{info.created_at}</div>
+              <div>
+                {!info.createdAt ? info.createdAt : info.createdAt.slice(0, 10)}
+              </div>
               <div>{info.goal}</div>
-              <div>{info.goal_price}</div>
-              <div>{info.goal_date}</div>
+              <div>{addCommasToNumber(info.goalPrice)}원</div>
+              <div>{info.goalDate}</div>
             </div>
           </div>
         </Row>
@@ -78,18 +131,23 @@ export default function PartyInfoPage() {
           </Col>
           <Col className="info-member-container">
             {users.length > 1 &&
-              members.map((member) => (
-                <div key={member.key} className="info-member">
-                  <div>{member.name}</div>
+              members.map((mem) => (
+                <div key={mem.userKey} className="info-member">
+                  <div>{mem.userName}</div>
                   <Button
                     className="text-center"
                     variant="danger"
+                    onClick={() => {
+                      console.log(mem.userKey);
+                      deleteUser(mem.userKey);
+                    }}
                     style={{
                       height: "2.4rem",
                       backgroundColor: "#F46060",
                       marginRight: "1rem",
                       textAlign: "center",
                     }}
+                    disabled={admin.role === 0} // 버튼 비활성화 조건 추가
                   >
                     내보내기
                   </Button>
@@ -99,7 +157,7 @@ export default function PartyInfoPage() {
           <Col>
             <div className="info-btn-container">
               <div className="info-link">친구 초대</div>
-              <Link to={"/party/info/invite"}>
+              <Link to={`/party/${partyKey}/info/invite`}>
                 <button style={{ border: "none", backgroundColor: "#fff" }}>
                   <img src={Next} alt="arrow" />
                 </button>
@@ -109,7 +167,7 @@ export default function PartyInfoPage() {
           <Col>
             <div className="info-btn-container">
               <div className="info-link">목표 설정</div>
-              <Link to={"/party/info/setgoal"}>
+              <Link to={`/party/${partyKey}/info/setgoal`}>
                 <button style={{ border: "none", backgroundColor: "#fff" }}>
                   <img src={Next} alt="arrow" />
                 </button>
