@@ -28,7 +28,19 @@ export default function RisingStockPage() {
       <Container className="rising-container">
         {datas.map((data, index) => (
           <Row key={data.stock_code} className="rising-stock">
-            <Col xs={2} style={{ fontSize: "1.3rem" }}>
+            {/* style={{ fontSize: "1.3rem" }} */}
+            <Col
+              xs={2}
+              className={
+                index === 0
+                  ? "gold-text"
+                  : index === 1
+                  ? "silver-text"
+                  : index === 2
+                  ? "brown-text"
+                  : "normal-text"
+              }
+            >
               {index + 1}
             </Col>
             <Col xs={4}>
@@ -38,8 +50,10 @@ export default function RisingStockPage() {
                 alt="stock"
               />
             </Col>
-            <Col xs={6}>
-              <div>{data.stbd_nm}</div>
+            <Col xs={6} style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "1.2rem", fontWeight: "600" }}>
+                {data.stbd_nm}
+              </div>
               <div>{data.stock_code}</div>
             </Col>
           </Row>

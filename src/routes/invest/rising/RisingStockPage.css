@@ -9,11 +9,29 @@
   align-items: center;
   border-top: 1px solid #dadada;
   width: 90vw;
-  height: 10vh;
-  gap: 2rem;
+  height: 18vh;
 }
 .rising-stock-img {
   width: 15vw;
   height: 7vh;
   border-radius: 50%;
+}
+.gold-text {
+  color: #d5a11e;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.silver-text {
+  color: #a3a3a3;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.brown-text {
+  color: #cd7f32;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.normal-text {
+  font-size: 1.1rem;
+  font-weight: 700;
 }
