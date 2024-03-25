@@ -4,7 +4,10 @@ import "./InterestStockDetailChartPage.css";
 import SampleChart from "./SampleChart";
 import StockDataFetcher from "./StockDataFetcher.js";
 import { useEffect, useState } from "react";
-import { fetchHankookStockBalance } from "../../../../lib/apis/hankookApi.jsx";
+import {
+  fetchHankookStockBalance,
+  fetchHankookStockCurrent,
+} from "../../../../lib/apis/hankookApi.jsx";
 import { useParams } from "react-router-dom";
 import { fetchPartyInfo } from "../../../../lib/apis/party.jsx";
 import { fetchStockInfo } from "../../../../lib/apis/stock.jsx";
@@ -18,12 +21,12 @@ export default function InterestStockDetailChartPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const stockInfo = await fetchStockInfo(stockKey);
+        const stockInfo = await fetchHankookStockCurrent(stockKey);
         const fetchData = await fetchHankookStockBalance(partyKey, stockKey);
         const party = await fetchPartyInfo(partyKey);
 
         // console.log("client ", party);
-        // console.log(stockInfo);
+        console.log(stockInfo);
         setStockInfo(stockInfo);
 
         setStockBalance({
@@ -46,7 +49,7 @@ export default function InterestStockDetailChartPage() {
         <Row className="stock-detail-row">
           <div className="stock-detail-name">{stockInfo.stockName}</div>
           <div className="stock-detail-price">
-            {parseInt(stockInfo.currentPrice).toLocaleString()}원
+            {parseInt(stockInfo.stck_prpr).toLocaleString()}원
           </div>
         </Row>
         <Row className="stock-detail-menu-row">
