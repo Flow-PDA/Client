@@ -48,9 +48,9 @@ export default function PartyPage() {
   }, []);
   return (
     <>
+      <button onClick={test}>test</button>
       <TopNavigationBar text="모임 생성"></TopNavigationBar>
       <Container className="page-container">
-        <button onClick={test}>test</button>
         <div className="party-container">
           <div className="alert-container">
             <img src="../../../public/alert.png" alt="alert" />
