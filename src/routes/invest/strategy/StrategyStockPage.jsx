@@ -6,7 +6,6 @@ import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 
 export default function StrategyStockPage() {
   const [datas, setDatas] = useState([]);
-
   const fetchData = async () => {
     try {
       const response = await fetchShinhanInvest();
@@ -26,8 +25,12 @@ export default function StrategyStockPage() {
     <>
       <TopNavigationBar text="투자 전략"></TopNavigationBar>
       <Container className="strategy-container">
-        {datas.map((data) => (
-          <div className="strategy-data-container">
+        {datas.map((data, index) => (
+          <div
+            className="strategy-data-container"
+            key={index}
+            onClick={() => window.open(`${data.attachment_url}`, "_blank")}
+          >
             <div className="strategy-content">
               <div style={{ fontSize: "1.2rem", fontWeight: "600" }}>
                 {data.title.slice(0, 15)}..

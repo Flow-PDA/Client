@@ -26,8 +26,12 @@ export default function MarketStockpage() {
     <>
       <TopNavigationBar text="마켓 이슈"></TopNavigationBar>
       <Container className="strategy-container">
-        {datas.map((data) => (
-          <div className="strategy-data-container" onClick={()=>{}}>
+        {datas.map((data, index) => (
+          <div
+            className="strategy-data-container"
+            onClick={() => window.open(`${data.attachment_url}`, "_blank")}
+            key={index}
+          >
             <div className="strategy-content">
               <div style={{ fontSize: "1.2rem", fontWeight: "600" }}>
                 {data.title.slice(0, 15)}..
