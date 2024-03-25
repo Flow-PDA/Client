@@ -19,7 +19,6 @@
 .stock-detail-menu-button {
   font-weight: 600;
   text-align: center;
-  max-width: 14vw !important;
 }
 
 .asking-price-button {
@@ -66,4 +65,9 @@
 .stock-detail-buy-text,
 .stock-detail-sell-text {
   font-weight: bold;
+}
+
+.sample-asking-price-chart-wrapper {
+  overflow-y: auto;
+  max-height: 60vh;
 }

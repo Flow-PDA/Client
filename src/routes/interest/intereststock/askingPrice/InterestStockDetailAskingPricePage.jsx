@@ -1,6 +1,7 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import TopNavigationBar from "../../../../components/common/nav/TopNavigationBar";
 import "./InterestStockDetailAskingPrice.css";
+import SampleAskingPriceChart from "./SampleAskingPriceChart";
 
 export default function InterestStockDetailAskingPricePage() {
   return (
@@ -22,6 +23,10 @@ export default function InterestStockDetailAskingPricePage() {
             뉴스
           </Col>
         </Row>
+        <hr />
+        <div className="sample-asking-price-chart-wrapper">
+          <SampleAskingPriceChart />
+        </div>
 
         <Row className="stock-detail-transaction-button">
           <Button className="stock-detail-sell-button">
