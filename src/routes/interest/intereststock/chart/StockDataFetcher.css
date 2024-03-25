@@ -32,3 +32,8 @@
   font-size: 0.8rem;
   color: #f46060;
 }
+
+.stock-data-total-negative-profit {
+  font-size: 0.8rem;
+  color: #375aff;
+}

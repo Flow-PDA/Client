@@ -44,7 +44,7 @@ export const mainRouter = [
         ],
       },
       {
-        path: "stockDetail/:stockKey",
+        path: "stockDetail/:partyKey/:stockKey",
         children: [
           {
             path: "chart",
