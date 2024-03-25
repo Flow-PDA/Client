@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import "./TransferDetailConfirmPage.css";
 import PrimaryButton from "../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { fetchPartyInfo } from "../../lib/apis/party";
 import { transfer } from "../../lib/apis/transfer";
 
@@ -16,7 +16,7 @@ export default function TransferDetailConfirmPage() {
 
   const navigate = useNavigate();
 
-  const partyKey = 1; //TODO: 수정 필요
+  const partyKey = useParams().partyKey;
 
   const handleTransferButtonClick = () => async (e) => {
     e.preventDefault();
@@ -34,7 +34,8 @@ export default function TransferDetailConfirmPage() {
 
       if (resp.status == 201) {
         alert("이체 완료");
-        navigate("/transfer");
+
+        navigate(`/transfer/${partyKey}`);
       } else {
         window.alert("이체 실패");
       }

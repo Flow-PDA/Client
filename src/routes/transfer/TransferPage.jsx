@@ -4,13 +4,13 @@ import { Container, Row, Col } from "react-bootstrap";
 import "./TransferPage.css";
 import PrimaryButton from "../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchTransferList } from "../../lib/apis/transfer";
 
 export default function TransferPage() {
   const [transferData, setTransferData] = useState([]);
 
-  const partyKey = 1; //TODO: 수정 필요
+  const partyKey = useParams().partyKey;
   const callTransferData = async () => {
     try {
       const response = await fetchTransferList(partyKey);

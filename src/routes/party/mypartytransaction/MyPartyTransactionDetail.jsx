@@ -4,13 +4,14 @@ import { Container, Row, Col } from "react-bootstrap";
 import "./MyPartyTransactionDetail.css";
 import PrimaryButton from "../../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
-import { Link } from "react-router-dom";
+
 import { fetchTransactionDetail } from "../../../lib/apis/party";
+import { Link, useParams } from "react-router-dom";
 
 export default function MyPartyTransactionDetail() {
   const [transactionData, setTransactionData] = useState([]);
 
-  const partyKey = 1; //TODO: 수정 필요
+  const partyKey = useParams().partyKey;
   const callTransactionData = async () => {
     try {
       const response = await fetchTransactionDetail(partyKey);

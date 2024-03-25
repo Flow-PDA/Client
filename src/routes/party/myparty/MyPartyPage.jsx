@@ -101,7 +101,7 @@ export default function MyPartyPage() {
               </Button>
             </Link>
 
-            <Link to={"/transfer"}>
+            <Link to={`/transfer/${partyKey}`}>
               <Button
                 variant="primary"
                 style={{ width: "25vw", height: "10vw" }}

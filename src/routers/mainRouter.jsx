@@ -77,7 +77,7 @@ export const mainRouter = [
             index: true,
           },
           {
-            path: "myPartyTransactionDetail",
+            path: ":partyKey/myPartyTransactionDetail",
             element: <MyPartyTransactionDetail />,
             index: true,
           },
@@ -114,25 +114,25 @@ export const mainRouter = [
         ],
       },
       {
-        path: "/transfer",
+        path: "transfer",
         children: [
           {
-            path: "",
+            path: ":partyKey/",
             element: <TransferPage />,
             index: true,
           },
           {
-            path: "transferDetailAccountNumPage",
+            path: ":partyKey/transferDetailAccountNumPage",
             element: <TransferDetailAccountNumPage />,
             index: true,
           },
           {
-            path: "transferDetailPricePage",
+            path: ":partyKey/transferDetailPricePage",
             element: <TransferDetailPricePage />,
             index: true,
           },
           {
-            path: "TransferDetailConfirmPage",
+            path: ":partyKey/TransferDetailConfirmPage",
             element: <TransferDetailConfirmPage />,
             index: true,
           },
