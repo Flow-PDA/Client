@@ -19,7 +19,7 @@
 .stock-detail-menu-button {
   font-weight: 600;
   text-align: center;
-  max-width: 14vw !important;
+  /* max-width: 14vw !important; */
 }
 
 .chart-button {
@@ -84,6 +84,12 @@
   background-color: #f46060 !important;
   border: 0 !important;
   /* margin-left: 7px !important; */
+}
+
+.stock-detail-interest-button {
+  background-color: #f46060 !important;
+  border: 0 !important;
+  height: 6vh;
 }
 
 .stock-detail-buy-text,
