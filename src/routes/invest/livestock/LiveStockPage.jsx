@@ -15,48 +15,6 @@ export default function LiveStockPage() {
   const [nasdaqDatas, setNasdaqDatas] = useState([]);
   const [issueDatas, setIssueDatas] = useState([]);
   const [stockDatas, setStockDatas] = useState([]);
-  const [stocks, setStocks] = useState([
-    {
-      id: 1,
-      name: "삼성전자",
-      quantity: "15주",
-      price: "1,000,000원",
-      change: "+150,000원(11%)",
-      code: "005930",
-    },
-    {
-      id: 2,
-      name: "LG전자",
-      quantity: "10주",
-      price: "1,000,000원",
-      change: "+150,000원(11%)",
-      code: "066570",
-    },
-    {
-      id: 3,
-      name: "카카오",
-      quantity: "5주",
-      price: "1,000,000원",
-      change: "+150,000원(11%)",
-      code: "035720",
-    },
-    {
-      id: 4,
-      name: "현대차",
-      quantity: "5주",
-      price: "1,000,000원",
-      change: "+150,000원(11%)",
-      code: "005380",
-    },
-    {
-      id: 5,
-      name: "기아",
-      quantity: "5주",
-      price: "1,000,000원",
-      change: "+150,000원(11%)",
-      code: "000270",
-    },
-  ]);
 
   const handleClick = (tag) => {
     console.log(tag);
@@ -95,6 +53,7 @@ export default function LiveStockPage() {
       const response = await axios.get(
         "http://localhost:3000/api/points/nasdaq"
       );
+      console.log(response.data[0]);
       setNasdaqDatas(response.data[0]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -152,7 +111,6 @@ export default function LiveStockPage() {
     fetchNasdaqData();
     fetchIssueData(1);
   }, []); // 빈 배열을 넘겨주어 한 번만 실행되도록 설정
-  useEffect(() => {}, []);
   return (
     <>
       <TopNavigationBar></TopNavigationBar>
@@ -271,7 +229,9 @@ export default function LiveStockPage() {
                   <div>{stock[0].stck_prpr}원</div>
                   <div
                     className={
-                      stock[0].prdy_vrss_sign === "1" || "2"
+                      stock[0].prdy_vrss_sign === "1"
+                        ? "red-text"
+                        : stock[0].prdy_vrss_sign === "2"
                         ? "red-text"
                         : "blue-text"
                     }

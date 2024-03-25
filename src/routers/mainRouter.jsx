@@ -77,7 +77,7 @@ export const mainRouter = [
             index: true,
           },
           {
-            path: "info",
+            path: ":partyKey/info",
             children: [
               {
                 path: "",

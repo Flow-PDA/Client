@@ -13,7 +13,7 @@ import "./TopNavigationBar.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const TopNavigationBar = ({ text, type = 0 }) => {
+const TopNavigationBar = ({ text, type = 0, partyKey }) => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [toggleOpen, setToggleOpen] = useState(false);
@@ -27,7 +27,9 @@ const TopNavigationBar = ({ text, type = 0 }) => {
     setToggleOpen(false);
   };
 
-  const handleSettingButtonClick = () => {};
+  const handleSettingButtonClick = (partyKey) => {
+    navigate(`/party/${partyKey}/info`);
+  };
   const handleHomeButtonClick = () => {};
 
   const handletoggleButtonClick = () => {
@@ -160,7 +162,9 @@ const TopNavigationBar = ({ text, type = 0 }) => {
           </Navbar.Brand>
           <Nav.Item className="nav-item-text">{text}</Nav.Item>
           <Navbar.Brand
-            onClick={handleSettingButtonClick}
+            onClick={() => {
+              handleSettingButtonClick(partyKey);
+            }}
             className="navbar-brand icon-right"
           >
             <Image src={SettingButton} alt="Setting" />

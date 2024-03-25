@@ -83,7 +83,7 @@ export default function MyPartyPage() {
   };
   return (
     <>
-      <TopNavigationBar text="177의 모임투자"></TopNavigationBar>
+      <TopNavigationBar text="177의 모임투자" type={2} partyKey={partyKey}></TopNavigationBar>
       <Container className="myparty-container">
         <Row className="myparty-deposit-container">
           <div className="myparty-deposit-detail-container">

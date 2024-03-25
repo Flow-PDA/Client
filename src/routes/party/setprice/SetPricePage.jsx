@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import "./SetPricePage.css";
 import { Button, Col, Row, Container } from "react-bootstrap";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import PrimaryButton from "../../../components/common/button/PrimaryButton";
 
 export default function SetPricePage() {
+  const navigate = useNavigate();
+  const partyKey = useParams().partyKey;
+  const [price, setPrice] = useState("");
+  const { state } = useLocation();
+  const props = { state, price };
+
+  const priceCreate = () => {
+    if (!price) {
+      alert("목표 금액을 입력하세요.");
+    } else {
+      navigate(`/party/${partyKey}/info/setdate`, { state: props });
+    }
+  };
   return (
     <>
       <TopNavigationBar></TopNavigationBar>
@@ -18,16 +31,22 @@ export default function SetPricePage() {
             목표를 향해 함께 나아가기 위해 어떤 목표를 설정해볼까요?
           </p>
           <input
-            type="text"
+            type="number"
             placeholder="목표 금액"
             className="setprice-input"
+            onChange={(e) => {
+              setPrice(Number(e.target.value));
+            }}
+            value={price}
           />
           <div className="setprice-deposit">현재 보유 금액 : 279,666원</div>
         </Row>
         <Row className="setprice-bottom">
-          <Link to={"/party/info/setdate"}>
-            <PrimaryButton text="다음" minWidth="100%"></PrimaryButton>
-          </Link>
+          <PrimaryButton
+            text="다음"
+            minWidth="100%"
+            onClick={priceCreate}
+          ></PrimaryButton>
         </Row>
       </Container>
     </>
