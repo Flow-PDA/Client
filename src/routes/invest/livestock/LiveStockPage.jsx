@@ -271,7 +271,9 @@ export default function LiveStockPage() {
                   <div>{stock[0].stck_prpr}원</div>
                   <div
                     className={
-                      stock[0].prdy_vrss_sign === "1" || "2"
+                      stock[0].prdy_vrss_sign === "1"
+                        ? "red-text"
+                        : stock[0].prdy_vrss_sign === "2"
                         ? "red-text"
                         : "blue-text"
                     }
