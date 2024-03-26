@@ -23,7 +23,7 @@ import RisingStockPage from "../routes/invest/rising/RisingStockPage";
 import StrategyStockPage from "../routes/invest/strategy/StrategyStockPage";
 import { ProtectedLayout } from "../routes/ProtectedLayout";
 import InterestStockDetailChartPage from "../routes/interest/intereststock/chart/InterestStockDetailChartPage";
-
+import SearchStockPage from "../routes/invest/SearchStockPage";
 export const mainRouter = [
   {
     path: "",
@@ -144,6 +144,10 @@ export const mainRouter = [
       {
         path: "livestock/:partyKey",
         element: <LiveStockPage />,
+      },
+      {
+        path: "livestock/:partyKey/search",
+        element: <SearchStockPage />,
       },
       {
         path: "risingstock",
