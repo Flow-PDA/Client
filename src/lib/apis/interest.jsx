@@ -31,9 +31,17 @@ export async function vote(partyKey, interestStockKey, reqBody) {
   return response;
 }
 
+// [POST] 관심 목록 등록
+//reqBody에 stockKey, userKey, partyKey 필요
+export async function regist(partyKey, reqBody) {
+  const response = await authInstance.post(`interests/${partyKey}`, reqBody);
+  return response;
+}
+
 export default {
   getApproval,
   getApproved,
   delApproved,
   vote,
+  regist,
 };

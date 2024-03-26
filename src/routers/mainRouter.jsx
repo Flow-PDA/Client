@@ -37,7 +37,7 @@ export const mainRouter = [
         path: "interests",
         children: [
           {
-            path: "",
+            path: ":partyKey",
             element: <InterestPage />,
             index: true,
           },

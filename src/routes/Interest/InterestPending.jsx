@@ -5,19 +5,21 @@ import { useEffect, useState } from "react";
 import { getApproval, vote } from "../../lib/apis/interest";
 import Modal from "../../components/common/modal/ApproveInterestModal";
 
-const InterestPending = () => {
+export default function InterestPending({ partyKey }) {
   const [stock, setStock] = useState([]);
   const [approveModalIsOpen, setApproveModalIsOpen] = useState(false);
   const [rejectModalIsOpen, setRejectModalIsOpen] = useState(false);
   // const [isApprovalPending, setIsApprovalPending] = useState(false); // 승인 대기 상태 추가
 
   useEffect(() => {
+    console.log("PendingPage", partyKey);
     async function fetchData() {
       try {
-        const res = await getApproval(1); // 임시로 partyKey 1로 세팅
+        const res = await getApproval(partyKey); // 임시로 partyKey 1로 세팅
         setStock(res.data.result);
       } catch (error) {
         console.error(error);
+        throw Error(error);
       }
     }
 
@@ -36,7 +38,6 @@ const InterestPending = () => {
     };
     await vote(partyKey, interestStockKey, reqBody);
     setApproveModalIsOpen(false); // 승인 후 승인 대기 상태 해제
-    // setApproveModalIsOpen(false);
     window.location.reload();
   }
 
@@ -114,6 +115,4 @@ const InterestPending = () => {
       </Container>
     </>
   );
-};
-
-export default InterestPending;
+}
