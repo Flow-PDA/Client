@@ -5,14 +5,15 @@ import { useEffect, useState } from "react";
 import { delApproved, getApproved } from "../../lib/apis/interest.jsx";
 import Modal from "../../components/common/modal/ApproveInterestModal.jsx";
 
-const InterestApproval = () => {
+export default function InterestApproval({ partyKey }) {
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
   const [stock, setStock] = useState([]);
 
   useEffect(() => {
+    console.log("ApprovalPage", partyKey);
     async function fetchData() {
       try {
-        const res = await getApproved(1); // 임시로 1로 세팅
+        const res = await getApproved(partyKey); // 임시로 1로 세팅
         setStock(res.data.result);
         console.log(stock);
       } catch (error) {
@@ -73,6 +74,4 @@ const InterestApproval = () => {
         ))}
     </Container>
   );
-};
-
-export default InterestApproval;
+}
