@@ -13,3 +13,21 @@ export async function fetchStockInfo(stockKey) {
     throw Error(error);
   }
 }
+
+export async function fetchNewsData(stock_name) {
+  try {
+    const response = await authInstance.get(
+      `/stocks/news?stock_name=${stock_name}`
+    );
+    console.log(stock_name);
+    console.log(response);
+    return response;
+  } catch (err) {
+    console.error(error);
+  }
+}
+
+export default {
+  fetchStockInfo,
+  fetchNewsData,
+};
