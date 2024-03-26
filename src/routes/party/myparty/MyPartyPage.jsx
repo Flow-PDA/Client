@@ -4,9 +4,12 @@ import Back from "../../../assets/arrow.png";
 import Bottom from "../../../assets/bottom_arrow.png";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 import { Link, useParams } from "react-router-dom";
+import { fetchNewsData } from "../../../lib/apis/stock";
 import { Button, Col, Row, Container } from "react-bootstrap";
+import News from "../../../components/common/news/News";
 export default function MyPartyPage() {
   const partyKey = useParams().partyKey;
+  const [news, setNews] = useState([]);
   const [stocks, setStocks] = useState([
     {
       id: 1,
@@ -83,7 +86,11 @@ export default function MyPartyPage() {
   };
   return (
     <>
-      <TopNavigationBar text="177의 모임투자" type={2} partyKey={partyKey}></TopNavigationBar>
+      <TopNavigationBar
+        text="177의 모임투자"
+        type={2}
+        partyKey={partyKey}
+      ></TopNavigationBar>
       <Container className="myparty-container">
         <Row className="myparty-deposit-container">
           <div className="myparty-deposit-detail-container">
@@ -153,6 +160,7 @@ export default function MyPartyPage() {
             style={{ width: "2rem", height: "1rem" }}
           />
         </Row>
+        <News news={news} setNews={setNews}></News>
       </Container>
     </>
   );
