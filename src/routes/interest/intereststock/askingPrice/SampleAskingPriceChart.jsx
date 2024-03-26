@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import "./SampleAskingPriceChart.css";
-// import MDSpinner from "react-md-spinner";
+import Modal from "../../../../components/common/modal/StockAskingModal";
 
 export default function SampleAskingPriceChart() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false); // 모달 상태 추가
-  const [selectedPrice, setSelectedPrice] = useState(null); // 선택된 가격 상태 추가
-  const [selectedPercent, setSelectedPercent] = useState(null); // 선택된 퍼센트 상태 추가
-
-  const handlePriceClick = (price, percent) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPrice, setSelectedPrice] = useState(null);
+  const [selectedPercent, setSelectedPercent] = useState(null);
+  const [selectedType, setSelectedType] = useState(null);
+  const handlePriceClick = (price, percent, type) => {
     setSelectedPrice(price);
     setSelectedPercent(percent);
     setModalOpen(true);
+    setSelectedType(type);
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
-  };
+  // 승인 모달 열기 함수
+  function openModal() {
+    setModalOpen(true);
+  }
+
+  // 승인 모달 닫기 함수
+  async function closeModal() {
+    setModalOpen(false); // 승인 후 승인 대기 상태 해제
+  }
 
   const [orderBook, setOrderBook] = useState({
     asks: [
@@ -47,8 +53,6 @@ export default function SampleAskingPriceChart() {
     timestamp: Date.now(),
   });
 
-  console.log(modalOpen);
-
   useEffect(() => {
     const interval = setInterval(() => {
       updateOrderBook();
@@ -76,10 +80,6 @@ export default function SampleAskingPriceChart() {
             : Math.floor(Math.random() * (1500 - 100 + 1)) + 100,
       })),
     }));
-  };
-
-  const numberWithCommas = (x) => {
-    return x.toLocaleString();
   };
 
   const sumQuantity = (asks, bids) => {
@@ -123,15 +123,15 @@ export default function SampleAskingPriceChart() {
 
           <td
             className={`td-price asks-price`}
-            onClick={() => handlePriceClick(v.price, v.percent)} // 모달을 열기 위해 클릭 핸들러 추가
+            onClick={() => handlePriceClick(v.price, v.percent, "asks")}
           >
-            {numberWithCommas(v.price)}
+            {v.price.toLocaleString()}
           </td>
           <td
             className="td-percent asks-percent"
-            onClick={() => handlePriceClick(v.price, v.percent)} // 모달을 열기 위해 클릭 핸들러 추가
+            onClick={() => handlePriceClick(v.price, v.percent, "asks")}
           >
-            +{numberWithCommas(v.percent)}%
+            +{v.percent.toLocaleString()}%
           </td>
 
           <td></td>
@@ -152,9 +152,17 @@ export default function SampleAskingPriceChart() {
       return (
         <tr key={key} className={askClassName}>
           <td></td>
-          <td className="td-price bids-price">{numberWithCommas(v.price)} </td>
-          <td className="td-percent bids-percent">
-            -{numberWithCommas(v.percent)}%
+          <td
+            className="td-price bids-price"
+            onClick={() => handlePriceClick(v.price, v.percent, "bids")}
+          >
+            {v.price.toLocaleString()}{" "}
+          </td>
+          <td
+            className="td-percent bids-percent"
+            onClick={() => handlePriceClick(v.price, v.percent, "bids")}
+          >
+            -{v.percent.toLocaleString()}%
           </td>
           <td className="td-quantity">
             <div
@@ -181,30 +189,19 @@ export default function SampleAskingPriceChart() {
   return (
     <div className="box_orderbook bg-white rounded shadow-sm">
       <table className="orderbook table">
-        {/* <thead className="table-active">
-          <tr>
-            <th className="text-left" colSpan="4">
-              일반호가
-            </th>
-          </tr>
-        </thead> */}
+        <Modal
+          isOpen={modalOpen}
+          closeModal={(e) => closeModal()}
+          stockPrice={selectedPrice}
+          stockPercent={selectedPercent}
+          type={selectedType}
+        />
+
         <tbody>
           {renderAsks(asks, sum, orderBook.timestamp)}
           {renderBids(bids, sum, orderBook.timestamp)}
         </tbody>
       </table>
-      {/* TODO: modal 보이게하기 */}
-      {/* {modalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeModal}>
-              &times;
-            </span>
-            <p>Price: {selectedPrice}</p>
-            <p>Percent: {selectedPercent}%</p>
-          </div>
-        </div>
-      )} */}
     </div>
   );
 }
