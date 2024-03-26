@@ -6,7 +6,7 @@ import PrimaryButton from "../button/PrimaryButton";
 // 모달 스타일을 설정합니다.
 const customStyles = {
   overlay: {
-    backgroundColor: " rgba(0, 0, 0, 0.4)",
+    backgroundColor: " rgba(0, 0, 0, 0.6)",
     width: "100%",
     height: "100vh",
     zIndex: "10",

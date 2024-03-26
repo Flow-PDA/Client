@@ -4,7 +4,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import "./TransferDetailAccountNumPage.css";
 import PrimaryButton from "../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   fetchRecentAccountList,
   fetchTransferList,
@@ -18,10 +18,10 @@ export default function TransferDetailAccountNumPage() {
 
   const navigate = useNavigate();
 
-  const partyKey = 1; //TODO: 수정 필요
+  const partyKey = useParams().partyKey;
 
   const handleNextButtonClick = () => {
-    navigate("/transfer/transferDetailPricePage", {
+    navigate(`/transfer/${partyKey}/transferDetailPricePage`, {
       state: { name: name, accountNumber: accountNumber },
     });
   };
