@@ -102,7 +102,7 @@ export default function PartyPage() {
                     투자
                   </Button>
                 </Link>
-                <Link to={`/transfer?${party.partyKey}`}>
+                <Link to={`/transfer/${party.partyKey}`}>
                   <Button
                     variant="primary"
                     style={{ backgroundColor: "#375AFF" }}
