@@ -7,7 +7,8 @@ import { Row, Col, Container } from "react-bootstrap";
 import { interval } from "date-fns";
 import { SyncLoader } from "react-spinners";
 import { Sync } from "@mui/icons-material";
-import { fetchStockInfo } from "../../../lib/apis/stock";
+import { Link, useParams } from "react-router-dom";
+import Search from "../../../assets/search.png";
 export default function LiveStockPage() {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [kospiDatas, setKospiDatas] = useState([]);
@@ -15,6 +16,7 @@ export default function LiveStockPage() {
   const [nasdaqDatas, setNasdaqDatas] = useState([]);
   const [issueDatas, setIssueDatas] = useState([]);
   const [stockDatas, setStockDatas] = useState([]);
+  const partyKey = useParams().partyKey;
 
   const handleClick = (tag) => {
     console.log(tag);
@@ -112,8 +114,16 @@ export default function LiveStockPage() {
     fetchIssueData(1);
   }, []); // 빈 배열을 넘겨주어 한 번만 실행되도록 설정
   return (
-    <>
+    <div style={{ position: "relative" }}>
       <TopNavigationBar></TopNavigationBar>
+      <Link to={`/livestock/${partyKey}/search`}>
+        <img
+          src={Search}
+          alt="search"
+          style={{ position: "absolute", top: "1.3rem", right: "1rem" }}
+        />
+      </Link>
+
       <Container className="live-container">
         <Row className="live-banner-container">
           <Swipe></Swipe>
@@ -211,39 +221,42 @@ export default function LiveStockPage() {
           </div>
 
           {stockDatas &&
-            stockDatas.map((stock) => (
-              <Row key={stock[0].stock_code} className="myparty-stock">
-                <Col xs={2}>
-                  <img
-                    className="stock-img"
-                    src={`https://file.alphasquare.co.kr/media/images/stock_logo/kr/${stock[0].stock_code}.png`}
-                    alt="stock"
-                  />
-                </Col>
-                <Col xs={6}>
-                  <div>
-                    <div className="live-stock-name">{stock[0].stbd_nm}</div>
-                  </div>
-                </Col>
-                <Col className="myparty-stock-price-container" xs={4}>
-                  <div>{stock[0].stck_prpr}원</div>
-                  <div
-                    className={
-                      stock[0].prdy_vrss_sign === "1"
-                        ? "red-text"
-                        : stock[0].prdy_vrss_sign === "2"
-                        ? "red-text"
-                        : "blue-text"
-                    }
-                  >
-                    {stock[0].prdy_vrss}({stock[0].prdy_ctrt}%)
-                  </div>
-                </Col>
-              </Row>
-            ))}
+            stockDatas.map((elem) => {
+              const stock = elem[0];
+              return (
+                <Row key={stock.stock_code} className="myparty-stock">
+                  <Col xs={2}>
+                    <img
+                      className="stock-img"
+                      src={`https://file.alphasquare.co.kr/media/images/stock_logo/kr/${stock.stock_code}.png`}
+                      alt="stock"
+                    />
+                  </Col>
+                  <Col xs={6}>
+                    <div>
+                      <div className="live-stock-name">{stock.stbd_nm}</div>
+                    </div>
+                  </Col>
+                  <Col className="myparty-stock-price-container" xs={4}>
+                    <div>{Number(stock.stck_prpr).toLocaleString()}원</div>
+                    <div
+                      className={
+                        stock.prdy_vrss_sign === "1"
+                          ? "red-text"
+                          : stock.prdy_vrss_sign === "2"
+                          ? "red-text"
+                          : "blue-text"
+                      }
+                    >
+                      {Number(stock.prdy_vrss).toLocaleString()}(
+                      {stock.prdy_ctrt}%)
+                    </div>
+                  </Col>
+                </Row>
+              );
+            })}
         </Row>
       </Container>
-    </>
+    </div>
   );
 }
-
