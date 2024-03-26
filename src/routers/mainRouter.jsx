@@ -24,6 +24,8 @@ import StrategyStockPage from "../routes/invest/strategy/StrategyStockPage";
 import { ProtectedLayout } from "../routes/ProtectedLayout";
 import InterestStockDetailChartPage from "../routes/interest/intereststock/chart/InterestStockDetailChartPage";
 import SearchStockPage from "../routes/invest/SearchStockPage";
+import InterestStockDetailAskingPricePage from "../routes/interest/intereststock/askingPrice/InterestStockDetailAskingPricePage";
+
 export const mainRouter = [
   {
     path: "",
@@ -37,7 +39,7 @@ export const mainRouter = [
         path: "interests",
         children: [
           {
-            path: "",
+            path: ":partyKey",
             element: <InterestPage />,
             index: true,
           },
@@ -51,6 +53,10 @@ export const mainRouter = [
             element: <InterestStockDetailChartPage />,
           },
           // 호가, 뉴스 추가할 것
+          {
+            path: "askingPrice",
+            element: <InterestStockDetailAskingPricePage />,
+          },
         ],
       },
       {
@@ -72,7 +78,7 @@ export const mainRouter = [
             index: true,
           },
           {
-            path: "myPartyTransactionDetail",
+            path: ":partyKey/myPartyTransactionDetail",
             element: <MyPartyTransactionDetail />,
             index: true,
           },
@@ -109,25 +115,25 @@ export const mainRouter = [
         ],
       },
       {
-        path: "/transfer",
+        path: "transfer",
         children: [
           {
-            path: "",
+            path: ":partyKey/",
             element: <TransferPage />,
             index: true,
           },
           {
-            path: "transferDetailAccountNumPage",
+            path: ":partyKey/transferDetailAccountNumPage",
             element: <TransferDetailAccountNumPage />,
             index: true,
           },
           {
-            path: "transferDetailPricePage",
+            path: ":partyKey/transferDetailPricePage",
             element: <TransferDetailPricePage />,
             index: true,
           },
           {
-            path: "TransferDetailConfirmPage",
+            path: ":partyKey/TransferDetailConfirmPage",
             element: <TransferDetailConfirmPage />,
             index: true,
           },

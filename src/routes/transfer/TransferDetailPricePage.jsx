@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import "./TransferDetailPricePage.css";
 import PrimaryButton from "../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { fetchTransferList } from "../../lib/apis/transfer";
 
 export default function TransferDetailPricePage() {
@@ -12,7 +12,7 @@ export default function TransferDetailPricePage() {
   const accountNumber = location.state.accountNumber;
   const [price, setPrice] = useState("");
   const [transferData, setTransferData] = useState([]);
-  const partyKey = 1; //TODO: 수정 필요
+  const partyKey = useParams().partyKey;
 
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ export default function TransferDetailPricePage() {
 
   const handleNextButtonClick = () => {
     if (price < deposit) {
-      navigate("/transfer/transferDetailConfirmPage", {
+      navigate(`/transfer/${partyKey}/transferDetailConfirmPage`, {
         state: { name: name, accountNumber: accountNumber, price: price },
       });
     } else {
