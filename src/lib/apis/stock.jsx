@@ -14,6 +14,7 @@ export async function fetchStockInfo(stockKey) {
   }
 }
 
+// 뉴스 크롤링
 export async function fetchNewsData(stock_name) {
   try {
     const response = await authInstance.get(
@@ -27,7 +28,18 @@ export async function fetchNewsData(stock_name) {
   }
 }
 
+// DB에서 전 종목 불러오기
+export async function fetchStockData() {
+  try {
+    const response = await authInstance.get("stocks/all");
+    console.log(response);
+    return response.data
+  } catch (err) {
+    console.error(err);
+  }
+}
 export default {
   fetchStockInfo,
   fetchNewsData,
+  fetchStockData,
 };
