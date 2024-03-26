@@ -43,6 +43,16 @@ export default function PartyPage() {
     navigate(`/party/${partyKey}/myparty`);
   };
 
+  const addCommasToNumber = (number) => {
+    // 숫자가 아닌 값이 들어온 경우 빈 문자열 반환
+    if (typeof number !== "number") return "";
+
+    const numberString = number.toString();
+    const parts = numberString.split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -77,7 +87,9 @@ export default function PartyPage() {
                   <span style={{ fontWeight: "700" }}>{party.name}</span>의 모임
                   투자
                 </h3>
-                <h1 style={{ padding: "0" }}>{party.deposit}</h1>
+                <h1 style={{ padding: "0" }}>
+                  {addCommasToNumber(party.deposit)}원
+                </h1>
                 <h3>+170,000원(20%)</h3>
               </div>
 

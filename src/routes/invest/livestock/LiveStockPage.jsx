@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Suspense } from "react";
-
 import "./LiveStockPage.css";
 import axios from "axios";
 import Swipe from "../../../components/common/swiper/Swiper";
@@ -8,6 +7,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import { interval } from "date-fns";
 import { SyncLoader } from "react-spinners";
 import { Sync } from "@mui/icons-material";
+import { fetchStockInfo } from "../../../lib/apis/stock";
 export default function LiveStockPage() {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [kospiDatas, setKospiDatas] = useState([]);
@@ -76,7 +76,7 @@ export default function LiveStockPage() {
               let items = [];
               return await axios
                 .get(
-                  `http://localhost:3000/api/stocks/inquire?stock_code=${d.stock_code}`
+                  `http://localhost:3000/api/stocks/inquired?stock_code=${d.stock_code}`
                 )
                 .then((stock_res) => {
                   const tmp_data = {
@@ -246,3 +246,4 @@ export default function LiveStockPage() {
     </>
   );
 }
+
