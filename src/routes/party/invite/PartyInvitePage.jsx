@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
 import "./PartyInvitePage.css";
 import Logo from "../../../assets/logo.svg";
+import { useParams } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import KakaoBtn from "../../../assets/kakao.png";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 const { Kakao } = window;
 
 export default function PartyInvitePage() {
-  const realUrl = "http://localhost:5173/";
+  const partyKey = useParams().partyKey;
+  const realUrl = `http://localhost:5173?${partyKey}`;
   const resultUrl = window.location.href;
-
   useEffect(() => {
     Kakao.cleanup();
     // 자신의 js 키를 넣어준다.
@@ -27,7 +28,7 @@ export default function PartyInvitePage() {
           "https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg",
         link: {
           mobileWebUrl: realUrl,
-          webUrl: resultUrl,
+          webUrl: realUrl,
         },
       },
       buttons: [

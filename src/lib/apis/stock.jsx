@@ -33,7 +33,22 @@ export async function fetchStockData() {
   try {
     const response = await authInstance.get("stocks/all");
     console.log(response);
-    return response.data
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// party 페이지 예수금 계산, 비율 계산(실제 계좌 필요)
+export async function fetchDepositData(CANO, APPKEY, APPSECRET, TOKEN) {
+  try {
+    const response = await authInstance.post(`stocks/inquireDeposit`, {
+      CANO,
+      APPKEY,
+      APPSECRET,
+      TOKEN,
+    });
+    return response.data;
   } catch (err) {
     console.error(err);
   }
@@ -42,4 +57,5 @@ export default {
   fetchStockInfo,
   fetchNewsData,
   fetchStockData,
+  fetchDepositData,
 };
