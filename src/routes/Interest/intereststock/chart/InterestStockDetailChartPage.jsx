@@ -8,16 +8,11 @@ import {
   fetchHankookStockBalance,
   fetchHankookStockCurrent,
 } from "../../../../lib/apis/hankookApi.jsx";
-import { useParams } from "react-router-dom";
-import { fetchPartyInfo } from "../../../../lib/apis/party.jsx";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import party, { fetchPartyInfo } from "../../../../lib/apis/party.jsx";
 import { getApproval, regist } from "../../../../lib/apis/interest.jsx";
 import Modal from "../../../../components/common/modal/PrimaryModal.jsx";
-import {
-  DotLoader,
-  PacmanLoader,
-  RiseLoader,
-  SyncLoader,
-} from "react-spinners";
+import { SyncLoader } from "react-spinners";
 
 export default function InterestStockDetailChartPage() {
   const partyKey = useParams().partyKey;
@@ -25,6 +20,7 @@ export default function InterestStockDetailChartPage() {
   const [stockInfo, setStockInfo] = useState([]);
   const [stockBalance, setStockBalance] = useState([]);
   const [isInterestStock, setIsInterestStock] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -35,7 +31,6 @@ export default function InterestStockDetailChartPage() {
         const mystock = await getApproval(partyKey).then((data) => {
           return data.data.result;
         });
-        // console.log("client ", mystock);
 
         const isActive =
           mystock.find((data) => data.stockKey === stockKey) !== undefined;
@@ -71,6 +66,16 @@ export default function InterestStockDetailChartPage() {
     }
   };
 
+  const handleAskingPriceButtonClick = () => {
+    navigate(`/stockDetail/${partyKey}/${stockKey}/askingPrice`, {
+      state: { stockName: stockInfo.stockName },
+    });
+  };
+
+  const handleNewsButtonClick = () => {
+    navigate(`/stockDetail/${partyKey}/${stockKey}/news`);
+  };
+
   return (
     <>
       {console.log(stockBalance)}
@@ -83,7 +88,7 @@ export default function InterestStockDetailChartPage() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              height: "100vh",
+              height: "90vh",
             }}
           >
             <SyncLoader color="#375AFF" />
@@ -100,10 +105,19 @@ export default function InterestStockDetailChartPage() {
               <Col xs={2} className="stock-detail-menu-button chart-button">
                 차트
               </Col>
-              <Col xs={2} className="stock-detail-menu-button">
+              <Col
+                xs={2}
+                className="stock-detail-menu-button"
+                onClick={handleAskingPriceButtonClick}
+              >
+                {console.log(stockInfo)}
                 호가
               </Col>
-              <Col xs={2} className="stock-detail-menu-button">
+              <Col
+                xs={2}
+                className="stock-detail-menu-button"
+                onClick={handleNewsButtonClick}
+              >
                 뉴스
               </Col>
             </Row>
@@ -146,13 +160,15 @@ export default function InterestStockDetailChartPage() {
               </Row>
             ) : (
               <Row className="stock-detail-transaction-button">
-                <Button
-                  className="stock-detail-interest-button"
-                  onClick={() => handleAddToInterestStock(stockKey)}
-                  disabled={isInterestStock === true}
-                >
-                  <div className="stock-detail-interest-text">찜하기</div>
-                </Button>
+                <Col>
+                  <Button
+                    className="stock-detail-interest-button"
+                    onClick={() => handleAddToInterestStock(stockKey)}
+                    disabled={isInterestStock === true}
+                  >
+                    <div className="stock-detail-interest-text">찜하기</div>
+                  </Button>
+                </Col>
               </Row>
             )}
           </>

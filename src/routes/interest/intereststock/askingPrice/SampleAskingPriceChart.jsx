@@ -3,7 +3,7 @@ import _ from "lodash";
 import "./SampleAskingPriceChart.css";
 import Modal from "../../../../components/common/modal/StockAskingModal";
 
-export default function SampleAskingPriceChart() {
+export default function SampleAskingPriceChart({ name }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState(null);
   const [selectedPercent, setSelectedPercent] = useState(null);
@@ -195,6 +195,7 @@ export default function SampleAskingPriceChart() {
           stockPrice={selectedPrice}
           stockPercent={selectedPercent}
           type={selectedType}
+          name={name}
         />
 
         <tbody>

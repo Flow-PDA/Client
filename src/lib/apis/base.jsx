@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000/api",
 });
 
 instance.interceptors.response.use(
@@ -29,7 +29,7 @@ const token = persistedString?.includes("accessToken")
  * axios instance with Authorization header
  */
 const authInstance = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000/api",
   headers: {
     "Content-Type": "application/json",
     Authorization: token !== "" ? `Bearer ${token}` : "",
