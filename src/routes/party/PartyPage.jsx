@@ -35,18 +35,20 @@ export default function PartyPage() {
       console.log(temps);
       setParties(temps);
 
-      temps.map(async (party) => {
-        const CANO = party.accountNumber;
-        const TOKEN = party.token;
-        const APPSECRET = party.appSecret;
-        const APPKEY = party.appKey;
-        const res = await fetchDepositData(CANO, APPKEY, APPSECRET, TOKEN);
-        const temp = Object.assign({}, party, res);
-        tmp.push(temp);
-        const new_tmp = tmp.map((elem) => elem);
-        console.log(new_tmp);
-        setInfos(new_tmp);
-      });
+      const new_tmp = await Promise.all(
+        temps.map(async (party) => {
+          const {
+            accountNumber: CANO,
+            token: TOKEN,
+            appSecret: APPSECRET,
+            appKey: APPKEY,
+          } = party;
+          const res = await fetchDepositData(CANO, APPKEY, APPSECRET, TOKEN);
+          return { ...party, ...res };
+        })
+      );
+
+      setInfos(new_tmp);
     } catch (error) {
       if (error.response.status === 401) {
         console.log("throws");
@@ -117,7 +119,10 @@ export default function PartyPage() {
                   {Number(party.evlu_amt_smtl_amt) !== 0 &&
                   Number(party.pchs_amt_smtl_amt) !== 0 ? (
                     <>
-                      {party.evlu_amt_smtl_amt - party.pchs_amt_smtl_amt}원 (
+                      {(
+                        party.evlu_amt_smtl_amt - party.pchs_amt_smtl_amt
+                      ).toLocaleString()}
+                      원 (
                       {(
                         ((party.evlu_amt_smtl_amt - party.pchs_amt_smtl_amt) /
                           party.pchs_amt_smtl_amt) *
