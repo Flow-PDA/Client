@@ -31,7 +31,6 @@ export default function InterestStockDetailChartPage() {
         const mystock = await getApproval(partyKey).then((data) => {
           return data.data.result;
         });
-        // console.log("client ", mystock);
 
         const isActive =
           mystock.find((data) => data.stockKey === stockKey) !== undefined;
@@ -73,6 +72,10 @@ export default function InterestStockDetailChartPage() {
     });
   };
 
+  const handleNewsButtonClick = () => {
+    navigate(`/stockDetail/${partyKey}/${stockKey}/news`);
+  };
+
   return (
     <>
       {console.log(stockBalance)}
@@ -105,12 +108,16 @@ export default function InterestStockDetailChartPage() {
               <Col
                 xs={2}
                 className="stock-detail-menu-button"
-                onClick={() => handleAskingPriceButtonClick()}
+                onClick={handleAskingPriceButtonClick}
               >
                 {console.log(stockInfo)}
                 호가
               </Col>
-              <Col xs={2} className="stock-detail-menu-button">
+              <Col
+                xs={2}
+                className="stock-detail-menu-button"
+                onClick={handleNewsButtonClick}
+              >
                 뉴스
               </Col>
             </Row>

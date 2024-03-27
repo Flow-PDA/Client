@@ -3,13 +3,13 @@ import "./News.css";
 import { fetchNewsData } from "../../../lib/apis/stock";
 import { AuthContext } from "../../../lib/contexts/AuthContext";
 import { Container, Row, Col } from "react-bootstrap";
-export default function News({ news, setNews }) {
+export default function News({ news, setNews, stockName }) {
   const { throwAuthError } = useContext(AuthContext);
   const tmp = "삼성";
 
   const fetchData = async () => {
     try {
-      const response = await fetchNewsData(tmp);
+      const response = await fetchNewsData(stockName);
       setNews(response.data);
       console.log(response.data);
       return response.data;
