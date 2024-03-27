@@ -1,9 +1,9 @@
-import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import TopNavigationBar from "../../../../components/common/nav/TopNavigationBar";
 import "./InterestStockDetailChartPage.css";
 import SampleChart from "./SampleChart";
 import StockDataFetcher from "./StockDataFetcher.js";
-import { useEffect, useState } from "react";
 import {
   fetchHankookStockBalance,
   fetchHankookStockCurrent,
@@ -11,8 +11,8 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import party, { fetchPartyInfo } from "../../../../lib/apis/party.jsx";
 import { getApproval, regist } from "../../../../lib/apis/interest.jsx";
-import Modal from "../../../../components/common/modal/PrimaryModal.jsx";
 import { SyncLoader } from "react-spinners";
+import ApproveInterestModal from "../../../../components/common/modal/ApproveInterestModal.jsx";
 
 export default function InterestStockDetailChartPage() {
   const partyKey = useParams().partyKey;
@@ -20,6 +20,8 @@ export default function InterestStockDetailChartPage() {
   const [stockInfo, setStockInfo] = useState([]);
   const [stockBalance, setStockBalance] = useState([]);
   const [isInterestStock, setIsInterestStock] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열기 여부 상태 추가
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,11 +37,8 @@ export default function InterestStockDetailChartPage() {
         const isActive =
           mystock.find((data) => data.stockKey === stockKey) !== undefined;
 
-        // console.log(stockKey);
-
         setIsInterestStock(isActive);
         setStockInfo(stockInfo);
-        // console.log("interestStock ", isInterestStock);
         setStockBalance({
           data: fetchData,
           partyInfo: party,
@@ -52,14 +51,16 @@ export default function InterestStockDetailChartPage() {
     fetchData();
   }, []);
 
-  const handleAddToInterestStock = async (stockKey) => {
-    console.log("Stock added to interest stock!");
-    const reqBody = {
-      stockKey: stockKey,
-    };
+  const handleAddToInterestStock = async () => {
     try {
+      console.log("Stock added to interest stock!");
+      const reqBody = {
+        stockKey: stockKey,
+      };
+
       await regist(partyKey, reqBody);
-      alert("등록완료");
+      setIsModalOpen(true); // 모달 열기
+      setIsInterestStock(true);
     } catch (error) {
       console.error(error);
       throw Error(error);
@@ -81,7 +82,7 @@ export default function InterestStockDetailChartPage() {
       {console.log(stockBalance)}
       <TopNavigationBar text={"종목 상세정보"} />
       <Container>
-        {stockInfo.length === 0 ? ( // stockInfo가 null인 경우 로딩 스피너 표시
+        {stockInfo.length === 0 ? (
           <div
             className="text-center"
             style={{
@@ -152,7 +153,6 @@ export default function InterestStockDetailChartPage() {
                 <Button className="stock-detail-sell-button">
                   <div className="stock-detail-sell-text">판매하기</div>
                 </Button>
-                <Modal />
 
                 <Button className="stock-detail-buy-button">
                   <div className="stock-detail-buy-text">구매하기</div>
@@ -163,7 +163,7 @@ export default function InterestStockDetailChartPage() {
                 <Col>
                   <Button
                     className="stock-detail-interest-button"
-                    onClick={() => handleAddToInterestStock(stockKey)}
+                    onClick={handleAddToInterestStock} // 클릭 핸들러 변경
                     disabled={isInterestStock === true}
                   >
                     <div className="stock-detail-interest-text">찜하기</div>
@@ -171,6 +171,15 @@ export default function InterestStockDetailChartPage() {
                 </Col>
               </Row>
             )}
+
+            {/* 모달 추가 */}
+            <ApproveInterestModal
+              isOpen={isModalOpen}
+              closeModal={() => setIsModalOpen(false)}
+              stockName={stockInfo.stockName}
+              buttonText="찜하기"
+              color="#f46060"
+            />
           </>
         )}
       </Container>

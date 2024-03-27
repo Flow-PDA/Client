@@ -2,24 +2,57 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import TopNavigationBar from "../../../../components/common/nav/TopNavigationBar";
 import "./InterestStockDetailAskingPrice.css";
 import SampleAskingPriceChart from "./SampleAskingPriceChart";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { fetchHankookStockCurrent } from "../../../../lib/apis/hankookApi";
-import { SyncLoader } from "react-spinners";
-export default function InterestStockDetailAskingPricePage() {
-  const location = useLocation();
-  const navigate = useNavigate();
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../../lib/contexts/AuthContext";
 
+import {
+  fetchHankookStockBalance,
+  fetchHankookStockCurrent,
+} from "../../../../lib/apis/hankookApi";
+import { SyncLoader } from "react-spinners";
+import { fetchPartyInfo } from "../../../../lib/apis/party";
+import { getApproval } from "../../../../lib/apis/interest";
+
+export default function InterestStockDetailAskingPricePage() {
+  const navigate = useNavigate();
+  const { throwAuthError } = useContext(AuthContext);
   const { partyKey, stockKey } = useParams();
   const [price, setPrice] = useState(0);
 
   const [stockInfo, setStockInfo] = useState([]);
+  const [stockBalance, setStockBalance] = useState([]);
+  const [isInterestStock, setIsInterestStock] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
-      console.log(stockKey);
-      const fetchData = await fetchHankookStockCurrent(stockKey);
-      setStockInfo(fetchData);
+      try {
+        console.log(stockKey);
+        const stock_info = await fetchHankookStockCurrent(stockKey);
+        const stock_balance = await fetchHankookStockBalance(
+          partyKey,
+          stockKey
+        );
+        const party = await fetchPartyInfo(partyKey);
+        const mystock = await getApproval(partyKey).then((data) => {
+          return data.data.result;
+        });
+
+        const isActive =
+          mystock.find((data) => data.stockKey === stockKey) !== undefined;
+
+        setIsInterestStock(isActive);
+        setStockInfo(stock_info);
+        setStockBalance({
+          data: stock_balance,
+          partyInfo: party,
+        });
+      } catch (error) {
+        if (error.response.status === 401) {
+          console.log("throws");
+          throwAuthError();
+        }
+      }
     }
     fetchData();
   }, []);
@@ -33,7 +66,7 @@ export default function InterestStockDetailAskingPricePage() {
   };
 
   const handleBuyButtonClick = () => {
-    navigate(`/stockDetail/${partyKey}/${stockKey}/tradeStock`, {
+    navigate(`/stockDetail/${partyKey}/${stockKey}/askingPrice`, {
       state: {
         name: stockInfo.stockName,
         price: parseInt(stockInfo.stck_prpr).toLocaleString(),
@@ -103,20 +136,34 @@ export default function InterestStockDetailAskingPricePage() {
               <SampleAskingPriceChart name={stockInfo.stockName} />
             </div>
 
-            <Row className="stock-detail-transaction-button">
-              <Button
-                className="stock-detail-sell-button"
-                onClick={handleSellButtonClick}
-              >
-                <div className="stock-detail-sell-text">판매하기</div>
-              </Button>
-              <Button
-                className="stock-detail-buy-button"
-                onClick={handleBuyButtonClick}
-              >
-                <div className="stock-detail-buy-text">구매하기</div>
-              </Button>
-            </Row>
+            {stockBalance.data ? (
+              <Row className="stock-detail-transaction-button">
+                <Button
+                  className="stock-detail-sell-button"
+                  onClick={handleSellButtonClick}
+                >
+                  <div className="stock-detail-sell-text">판매하기</div>
+                </Button>
+                <Button
+                  className="stock-detail-buy-button"
+                  onClick={handleBuyButtonClick}
+                >
+                  <div className="stock-detail-buy-text">구매하기</div>
+                </Button>
+              </Row>
+            ) : (
+              <Row className="stock-detail-transaction-button">
+                <Col>
+                  <Button
+                    className="stock-detail-interest-button"
+                    onClick={() => handleAddToInterestStock(stockKey)}
+                    disabled={isInterestStock === true}
+                  >
+                    <div className="stock-detail-interest-text">찜하기</div>
+                  </Button>
+                </Col>
+              </Row>
+            )}
           </>
         )}
       </Container>
