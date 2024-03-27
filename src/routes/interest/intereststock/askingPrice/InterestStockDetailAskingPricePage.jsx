@@ -9,7 +9,6 @@ import { fetchHankookStockCurrent } from "../../../../lib/apis/hankookApi";
 export default function InterestStockDetailAskingPricePage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const stockName = location.state.stockName;
   const { partyKey, stockKey } = useParams();
 
   const [stockInfo, setStockInfo] = useState([]);
@@ -27,14 +26,16 @@ export default function InterestStockDetailAskingPricePage() {
     navigate(`/stockDetail/${partyKey}/${stockKey}/chart`);
   };
 
+  const handleNewsButtonClick = () => {
+    navigate(`/stockDetail/${partyKey}/${stockKey}/news`);
+  };
+
   return (
     <>
-      {console.log(stockInfo)}
       <TopNavigationBar text={"종목 상세정보"} />
       <Container>
         <Row className="stock-detail-row">
-          {console.log(stockName)}
-          <div className="stock-detail-name">{stockName}</div>
+          <div className="stock-detail-name">{stockInfo.stockName}</div>
           <div className="stock-detail-price">
             {parseInt(stockInfo.stck_prpr).toLocaleString()}원
           </div>
@@ -50,7 +51,11 @@ export default function InterestStockDetailAskingPricePage() {
           <Col xs={2} className="stock-detail-menu-button asking-price-button">
             호가
           </Col>
-          <Col xs={2} className="stock-detail-menu-button">
+          <Col
+            xs={2}
+            className="stock-detail-menu-button"
+            onClick={handleNewsButtonClick}
+          >
             뉴스
           </Col>
         </Row>

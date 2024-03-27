@@ -24,6 +24,7 @@ import StrategyStockPage from "../routes/invest/strategy/StrategyStockPage";
 import { ProtectedLayout } from "../routes/ProtectedLayout";
 import InterestStockDetailChartPage from "../routes/interest/intereststock/chart/InterestStockDetailChartPage";
 import InterestStockDetailAskingPricePage from "../routes/interest/intereststock/askingPrice/InterestStockDetailAskingPricePage";
+import InterestStockDetailNewsPage from "../routes/interest/intereststock/news/InterestStockDetailNewsPage";
 
 export const mainRouter = [
   {
@@ -55,6 +56,10 @@ export const mainRouter = [
           {
             path: "askingPrice",
             element: <InterestStockDetailAskingPricePage />,
+          },
+          {
+            path: "news",
+            element: <InterestStockDetailNewsPage />,
           },
         ],
       },
