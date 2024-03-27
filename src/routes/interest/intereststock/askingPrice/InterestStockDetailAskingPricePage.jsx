@@ -28,9 +28,9 @@ export default function InterestStockDetailAskingPricePage() {
     navigate(`/stockDetail/${partyKey}/${stockKey}/chart`);
   };
 
-
   const handleNewsButtonClick = () => {
     navigate(`/stockDetail/${partyKey}/${stockKey}/news`);
+  };
 
   const handleBuyButtonClick = () => {
     navigate(`/stockDetail/${partyKey}/${stockKey}/tradeStock`, {
@@ -56,7 +56,6 @@ export default function InterestStockDetailAskingPricePage() {
     <>
       <TopNavigationBar text={"종목 상세정보"} />
       <Container>
-
         {stockInfo.length === 0 ? ( // stockInfo가 null인 경우 로딩 스피너 표시
           <div
             className="text-center"
@@ -91,8 +90,11 @@ export default function InterestStockDetailAskingPricePage() {
               >
                 호가
               </Col>
-              <Col xs={2} className="stock-detail-menu-button"
-                   onClick={handleNewsButtonClick}>
+              <Col
+                xs={2}
+                className="stock-detail-menu-button"
+                onClick={handleNewsButtonClick}
+              >
                 뉴스
               </Col>
             </Row>
