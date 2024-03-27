@@ -85,7 +85,7 @@ export default function InterestStockDetailChartPage() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              height: "100vh",
+              height: "90vh",
             }}
           >
             <SyncLoader color="#375AFF" />
