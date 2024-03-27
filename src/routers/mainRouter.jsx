@@ -25,6 +25,7 @@ import { ProtectedLayout } from "../routes/ProtectedLayout";
 import InterestStockDetailChartPage from "../routes/interest/intereststock/chart/InterestStockDetailChartPage";
 import SearchStockPage from "../routes/invest/SearchStockPage";
 import InterestStockDetailAskingPricePage from "../routes/interest/intereststock/askingPrice/InterestStockDetailAskingPricePage";
+import TradeStockPage from "../routes/interest/intereststock/TradeStockPage";
 
 export const mainRouter = [
   {
@@ -56,6 +57,10 @@ export const mainRouter = [
           {
             path: "askingPrice",
             element: <InterestStockDetailAskingPricePage />,
+          },
+          {
+            path: "tradeStock",
+            element: <TradeStockPage />,
           },
         ],
       },
