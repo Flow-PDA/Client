@@ -90,6 +90,7 @@
   background-color: #f46060 !important;
   border: 0 !important;
   height: 6vh;
+  width: 100% !important;
 }
 
 .stock-detail-buy-text,
