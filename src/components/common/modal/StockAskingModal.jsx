@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
+import { useNavigate, useParams } from "react-router-dom";
 
 // 모달 스타일을 설정합니다.
 const customStyles = {
@@ -35,11 +36,39 @@ const StockAskingModal = ({
   stockPercent,
   type,
   color = "#375AFF",
+  name,
 }) => {
+  const navigate = useNavigate();
+  const { partyKey, stockKey } = useParams();
+
+  const handleBuyButtonClick = () => {
+    navigate(`/stockDetail/${partyKey}/${stockKey}/tradeStock`, {
+      state: {
+        name: name,
+        price: stockPrice.toLocaleString(),
+        type: "구매",
+      },
+    });
+  };
+
+  const handleSellButtonClick = () => {
+    navigate(`/stockDetail/${partyKey}/${stockKey}/tradeStock`, {
+      state: {
+        name: name,
+        price: stockPrice.toLocaleString(),
+        type: "판매",
+      },
+    });
+  };
+
   return (
     <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
       <div className="stock-modal-container" style={{ display: "flex" }}>
-        <Button className="stock-detail-sell-button" style={{ margin: "0" }}>
+        <Button
+          className="stock-detail-sell-button"
+          style={{ margin: "0" }}
+          onClick={handleSellButtonClick}
+        >
           <div className="stock-detail-sell-text">판매</div>
         </Button>
         <div style={{ margin: "0 5vw", width: "80%", textAlign: "center" }}>
@@ -56,7 +85,11 @@ const StockAskingModal = ({
             )}
           </div>
         </div>
-        <Button className="stock-detail-buy-button" style={{ margin: "0" }}>
+        <Button
+          className="stock-detail-buy-button"
+          style={{ margin: "0" }}
+          onClick={handleBuyButtonClick}
+        >
           <div className="stock-detail-buy-text">구매</div>
         </Button>
       </div>

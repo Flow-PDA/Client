@@ -19,7 +19,7 @@ export default function PartyPage() {
     e.preventDefault();
     try {
       const res = await modifyTest(2);
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       if (error.response.status === 401) {
         console.log("throws");
@@ -31,7 +31,7 @@ export default function PartyPage() {
     try {
       const res = await fetchPartyInquire();
       setParties(res);
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       if (error.response.status === 401) {
         console.log("throws");
@@ -102,7 +102,7 @@ export default function PartyPage() {
                     투자
                   </Button>
                 </Link>
-                <Link to={`/transfer?${party.partyKey}`}>
+                <Link to={`/transfer/${party.partyKey}`}>
                   <Button
                     variant="primary"
                     style={{ backgroundColor: "#375AFF" }}

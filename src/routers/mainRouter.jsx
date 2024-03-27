@@ -23,8 +23,10 @@ import RisingStockPage from "../routes/invest/rising/RisingStockPage";
 import StrategyStockPage from "../routes/invest/strategy/StrategyStockPage";
 import { ProtectedLayout } from "../routes/ProtectedLayout";
 import InterestStockDetailChartPage from "../routes/interest/intereststock/chart/InterestStockDetailChartPage";
+import SearchStockPage from "../routes/invest/SearchStockPage";
 import InterestStockDetailAskingPricePage from "../routes/interest/intereststock/askingPrice/InterestStockDetailAskingPricePage";
 import InterestStockDetailNewsPage from "../routes/interest/intereststock/news/InterestStockDetailNewsPage";
+import TradeStockPage from "../routes/interest/intereststock/TradeStockPage";
 
 export const mainRouter = [
   {
@@ -60,6 +62,10 @@ export const mainRouter = [
           {
             path: "news",
             element: <InterestStockDetailNewsPage />,
+          },
+          {
+            path: "tradeStock",
+            element: <TradeStockPage />,
           },
         ],
       },
@@ -154,6 +160,10 @@ export const mainRouter = [
       {
         path: "livestock/:partyKey",
         element: <LiveStockPage />,
+      },
+      {
+        path: "livestock/:partyKey/search",
+        element: <SearchStockPage />,
       },
       {
         path: "risingstock",
