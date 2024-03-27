@@ -41,6 +41,7 @@ export default function InterestStockDetailNewsPage() {
 
   return (
     <>
+      {console.log("sss")}
       <TopNavigationBar text={"종목 상세정보"} />
       <Container>
         {stockInfo.length === 0 ? (

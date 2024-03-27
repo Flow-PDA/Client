@@ -88,7 +88,7 @@ export default function InterestPending({ partyKey }) {
                 <Modal
                   isOpen={approveModalIsOpen}
                   closeModal={(e) =>
-                    closeApproveModal(1, data.interestStockKey)
+                    closeApproveModal(partyKey, data.interestStockKey)
                   } //1은 임시로 넣어놓은 partyKey
                   stockName={data.stockName}
                   buttonText="수락"
@@ -103,7 +103,9 @@ export default function InterestPending({ partyKey }) {
                 </Button>
                 <Modal
                   isOpen={rejectModalIsOpen}
-                  closeModal={(e) => closeRejectModal(1, data.interestStockKey)} //1은 임시로 넣어놓은 partyKey
+                  closeModal={(e) =>
+                    closeRejectModal(partyKey, data.interestStockKey)
+                  } //1은 임시로 넣어놓은 partyKey
                   stockName={data.stockName}
                   buttonText="거절"
                   color="#f46060"
