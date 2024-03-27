@@ -7,11 +7,12 @@ import "./PartyPage.css";
 import { modifyTest } from "../../lib/apis/userApi";
 import { AuthContext } from "../../lib/contexts/AuthContext";
 import { fetchPartyInquire } from "../../lib/apis/party";
+import { fetchDepositData } from "../../lib/apis/stock";
 // 특정 모임 정보 api
 // 잔고 api
 
 export default function PartyPage() {
-  const [deposit, setDeposit] = useState([]);
+  const [infos, setInfos] = useState([]);
   const [parties, setParties] = useState([]);
   const { throwAuthError } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -29,9 +30,23 @@ export default function PartyPage() {
   }, []);
   const fetchData = async () => {
     try {
-      const res = await fetchPartyInquire();
-      setParties(res);
-      console.log(res);
+      const temps = await fetchPartyInquire();
+      const tmp = [];
+      console.log(temps);
+      setParties(temps);
+
+      temps.map(async (party) => {
+        const CANO = party.accountNumber;
+        const TOKEN = party.token;
+        const APPSECRET = party.appSecret;
+        const APPKEY = party.appKey;
+        const res = await fetchDepositData(CANO, APPKEY, APPSECRET, TOKEN);
+        const temp = Object.assign({}, party, res);
+        tmp.push(temp);
+        const new_tmp = tmp.map((elem) => elem);
+        console.log(new_tmp);
+        setInfos(new_tmp);
+      });
     } catch (error) {
       if (error.response.status === 401) {
         console.log("throws");
@@ -39,6 +54,7 @@ export default function PartyPage() {
       }
     }
   };
+
   const PartyClick = (partyKey) => {
     navigate(`/party/${partyKey}/myparty`);
   };
@@ -55,6 +71,7 @@ export default function PartyPage() {
 
   useEffect(() => {
     fetchData();
+    // fetchDeposit();
   }, []);
   return (
     <>
@@ -75,7 +92,7 @@ export default function PartyPage() {
               <Button variant="danger">N</Button>
             </div>
           </div>
-          {parties.map((party) => (
+          {infos.map((party) => (
             <div className="deposit-container" key={party.partyKey}>
               <div
                 onClick={() => {
@@ -90,7 +107,28 @@ export default function PartyPage() {
                 <h1 style={{ padding: "0" }}>
                   {addCommasToNumber(party.deposit)}원
                 </h1>
-                <h3>+170,000원(20%)</h3>
+                <h3
+                  className={
+                    party.evlu_amt_smtl_amt - party.pchs_amt_smtl_amt >= 0
+                      ? "red-txt"
+                      : "blue-txt"
+                  }
+                >
+                  {Number(party.evlu_amt_smtl_amt) !== 0 &&
+                  Number(party.pchs_amt_smtl_amt) !== 0 ? (
+                    <>
+                      {party.evlu_amt_smtl_amt - party.pchs_amt_smtl_amt}원 (
+                      {(
+                        ((party.evlu_amt_smtl_amt - party.pchs_amt_smtl_amt) /
+                          party.pchs_amt_smtl_amt) *
+                        100
+                      ).toFixed(2)}
+                      %)
+                    </>
+                  ) : (
+                    <>0(0%)</>
+                  )}
+                </h3>
               </div>
 
               <div className="deposit-button-container">
@@ -102,7 +140,7 @@ export default function PartyPage() {
                     투자
                   </Button>
                 </Link>
-                <Link to={`/transfer?${party.partyKey}`}>
+                <Link to={`/transfer/${party.partyKey}`}>
                   <Button
                     variant="primary"
                     style={{ backgroundColor: "#375AFF" }}
