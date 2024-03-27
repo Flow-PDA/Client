@@ -1,0 +1,19 @@
+.strategy-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  /* height: 80vh; */
+}
+.strategy-data-container {
+  display: flex;
+  width: 90vw;
+  height: 18vh;
+  gap: 1rem;
+}
+.strategy-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 75vw;
+}

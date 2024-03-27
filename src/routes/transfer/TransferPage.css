@@ -1,0 +1,49 @@
+.transfer-possible-price-sentence {
+  text-align: center;
+  margin-top: 4vh;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.transfer-possible-price {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 3vh;
+}
+
+.full-transfer-sentence {
+  font-weight: bold;
+  margin-bottom: 2.5vh;
+  font-size: 1.2rem;
+}
+
+.transfer-first-line {
+}
+
+.transfer-date {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.transfer-name {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+.transfer-price {
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-align: right;
+}
+.transfer-second-line {
+  font-weight: 500;
+  margin-bottom: 1.8vh;
+}
+
+.transfer-deposit {
+  font-size: 1rem;
+}
+
+.transfer-deposit {
+  text-align: right;
+}

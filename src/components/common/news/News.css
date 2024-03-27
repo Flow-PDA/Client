@@ -1,0 +1,21 @@
+.news-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  /* gap: 1rem; */
+  /* height: 80vh; */
+}
+.news-data-container {
+  display: flex;
+  width: 90vw;
+  height: 13vh;
+  /* border: 1px solid #000; */
+}
+.news-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 75vw;
+}

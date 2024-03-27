@@ -1,0 +1,157 @@
+.navbar {
+  position: sticky !important;
+  background-color: white;
+  top: 0;
+  z-index: 999;
+}
+
+.nav-item-text {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.navbar-container {
+  position: relative; /* 부모 요소를 relative로 설정 */
+}
+
+.nav-item-text {
+  position: absolute; /* 절대 위치 설정 */
+  left: 50%; /* 왼쪽 여백을 50%로 설정 */
+  transform: translateX(
+    -50%
+  ); /* 왼쪽 여백의 50%만큼 왼쪽으로 이동하여 가운데 정렬 */
+}
+
+.icon-right {
+  margin-right: 0 !important;
+  margin-left: var(--bs-navbar-brand-margin-end) !important;
+}
+
+.slide-menu-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+.slide-menu-background.active {
+  display: block;
+}
+
+.slide-menu {
+  position: absolute;
+  top: 0px;
+  right: 0;
+  background-color: #fff;
+  width: 100%;
+  height: 100vh;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  transform: translateX(20%);
+}
+
+.slide-menu.show {
+  transform: translateX(0);
+}
+
+.slide-menu-top {
+  background-color: #375aff;
+}
+
+.slide-menu-x {
+  text-align: right;
+  margin-right: 20%;
+}
+
+.x-btn {
+  margin-top: 2vh;
+}
+
+.slide-menu-top-info {
+  display: flex;
+  color: white;
+  justify-content: space-between;
+  margin-right: 20%;
+  padding: 4vw 8vw;
+  padding-bottom: 5vw;
+  font-size: 1.1rem;
+}
+
+.home-name {
+  display: flex;
+}
+
+.userName {
+  margin-left: 1vw;
+  margin-top: 2px;
+}
+
+.logout {
+  margin-top: 2px;
+}
+
+.current-party {
+  margin-left: 7vw;
+  margin-top: 2.5vh;
+  font-size: 1.1rem;
+}
+
+.current-party-info {
+  margin-top: 1vh;
+  margin-left: 7vw;
+  background-color: #f8f6f6;
+  padding: 5vw;
+  border-radius: 11px;
+}
+
+.party-account-number {
+  font-size: 0.9rem;
+}
+
+.slide-menu-buttons {
+  margin-top: 1.5vh;
+  display: flex;
+  margin-right: 18%;
+
+  justify-content: space-between;
+}
+
+.menu-btn {
+  position: relative;
+  background-color: #fff;
+  padding: 1vh;
+  border-radius: 8px;
+}
+
+.menu-btn,
+.menu-btn span {
+  display: block;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.interest-btn {
+  margin-right: 5vw;
+}
+
+.move-another-account {
+  margin-left: 7vw;
+  margin-top: 2vh;
+}
+
+.right-arrow-btn {
+  padding-bottom: 0.5vh;
+  margin-left: 2vw;
+}
+
+.another-party-info {
+  margin-top: 1.2vh;
+  background-color: #f8f6f6;
+  padding: 5vw;
+  border-radius: 11px;
+}

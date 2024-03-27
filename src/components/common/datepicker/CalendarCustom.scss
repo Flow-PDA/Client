@@ -1,0 +1,126 @@
+.custom-wrap4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center !important;
+  .date-picker-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+    margin-bottom: 2rem;
+  }
+
+  //✨ 시작~종료 달력일자 구간 선택 hover안되었을경우(원래 회색이었는데 안나타게함)
+  .react-datepicker__day {
+    &--in-range:not(&--in-selecting-range) {
+      background-color: transparent;
+      color: #000;
+    } //:not() => :not() 선택자는 괄호 안의 선택자를 포함하지 않는 요소를 선택합니다.
+    //&--in-range => .react-datepicker__day--in-range
+    //:not(&--in-selecting-range) => react-datepicker__day--in-selecting-range 클래스를 갖지 않은 것
+  }
+
+  //시작~종료 달력일자 구간 선택 컬러
+  .react-datepicker__day--in-selecting-range,
+  .react-datepicker__day--in-range {
+    background-color: #5974fd;
+  }
+  //시작, 종료 달력일자 선택 컬러
+  .react-datepicker__day--selecting-range-start,
+  .react-datepicker__day--selecting-range-end {
+    background-color: #375aff;
+  }
+
+  //my 추가
+  .wave {
+    line-height: 1.5;
+  }
+  .input-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 70vw;
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+  .input-start-date {
+    background-color: #f5f5f5;
+    text-align: center;
+    line-height: 4vh;
+    font-weight: 600;
+    width: 20vw;
+    height: 4vh;
+    color: #000;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+  .input-start-date.selected {
+    background-color: #375aff;
+    text-align: center;
+    line-height: 4vh;
+    width: 20vw;
+    height: 4vh;
+    color: #fff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+
+  //위 커스텀 CSS와 동일
+  .react-datepicker__day--outside-month {
+    color: #a8a8a8 !important;
+    pointer-events: none;
+  } //보여지는달력 해당월아닌 다른월 날짜는 회색컬러로 글자처리
+  .react-datepicker__day-name {
+    // width: 28px; //달력 요일
+    width: 90vw;
+    color: #fff;
+  }
+  .react-datepicker {
+    font-size: 1rem; //달력 글씨
+  }
+
+  .custom-day {
+    width: 10vw;
+    height: 5vh;
+    line-height: 2.8;
+  } //달력일
+
+  .react-datepicker__header {
+    background-color: #fff;
+    color: #fff;
+  }
+
+  /* .react-datepicker__day--selected {
+    background-color: rgb(77, 182, 191);
+  }  */ //달력 선택 일
+  .react-datepicker__triangle {
+    display: none;
+  } //세모 말꼬리
+  .react-datepicker-popper {
+    padding-top: 0;
+  }
+  .selectbox {
+    padding: 4px 6px;
+    border: none;
+    margin: 0 4px;
+  }
+
+  .calendar-input-wrap {
+    border: 1px solid #999;
+    height: 24px;
+    text-indent: 4px;
+    font-size: 1rem;
+    width: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
+  }
+  .react-datepicker__input-container input {
+    font-size: 1rem;
+    border: none;
+    padding: 0;
+    width: 100px;
+  }
+}
