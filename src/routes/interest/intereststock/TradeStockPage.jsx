@@ -4,17 +4,29 @@ import "./TradeStockPage.css";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 import { useState } from "react";
 import PrimaryButton from "../../../components/common/button/PrimaryButton";
+import { useLocation } from "react-router-dom";
 
 export default function TradeStockPage() {
-  const [price, setPrice] = useState(null);
-  const [type, setType] = useState("구매하기");
+  const [price, setPrice] = useState("");
+
+  const location = useLocation();
+  const stockName = location.state.name;
+  const stockPrice = location.state.price;
+  const type = location.state.type;
 
   return (
     <>
-      <TopNavigationBar text="주식 거래하기" />
+      <TopNavigationBar text={stockName} />
       <Container className="trade-stock-container">
         <div className="trade-stock">
-          <div className="trade-price-sentence">구매할 가격</div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <div className="trade-price-sentence">{type}할 가격</div>
+          </div>
           <div
             style={{
               display: "flex",
@@ -22,7 +34,7 @@ export default function TradeStockPage() {
               marginBottom: "2vh",
             }}
           >
-            <div className="trade-price">121,896원</div>
+            <div className="trade-price">{stockPrice.toLocaleString()}원</div>
             <div className="trade-current-price">
               {" "}
               <Image src={LightningIcon} className="lightning-icon" />
@@ -33,7 +45,17 @@ export default function TradeStockPage() {
 
           <div style={{ display: "flex", alignItems: "center" }}>
             <div className="trade-volume-ask-sentence">
-              몇 주 <span className="red-text">구매</span>할까요?
+              몇 주{" "}
+              {type === "구매" ? (
+                <>
+                  <span className="red-text">구매</span>할까요?
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <span className="blue-text">판매</span>할까요?
+                </>
+              )}
             </div>
             <Form.Check type={"checkbox"} className="trade-market-price-btn" />
 
@@ -45,7 +67,7 @@ export default function TradeStockPage() {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           />
-          <div className="trade-possible">구매가능 871원</div>
+          <div className="trade-possible">{type}가능 871원</div>
         </div>
         <div className="trade-volume-btns">
           <div className="trade-volume-btn">10%</div>
@@ -57,7 +79,7 @@ export default function TradeStockPage() {
         <PrimaryButton
           text={type}
           minWidth="100%"
-          backgroundColor="#F46060"
+          backgroundColor={type === "구매" ? "#F46060" : "#375AFF"}
           className="trade-btn"
         ></PrimaryButton>
       </Container>
