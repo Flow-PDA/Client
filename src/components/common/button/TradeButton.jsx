@@ -2,6 +2,7 @@ import { Button, Col, Row } from "react-bootstrap";
 import { getApproval, regist } from "../../../lib/apis/interest";
 import { useState, useEffect } from "react";
 import ApproveInterestModal from "../../../components/common/modal/ApproveInterestModal"; // ApproveInterestModal 임포트
+import { useNavigate } from "react-router-dom";
 
 export default function TradeButton({
   stockInfo,
@@ -11,10 +12,11 @@ export default function TradeButton({
 }) {
   const [isInterestStock, setIsInterestStock] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchIsApproved();
-    console.log(stockBalance);
+    console.log(stockInfo);
   }, []);
 
   async function fetchIsApproved() {
@@ -46,11 +48,24 @@ export default function TradeButton({
     }
   }
 
+  async function handleSellButton() {
+    navigate(`/stockDetail/${partyKey}/${stockKey}/tradeStock`, {
+      state: {
+        stockName: stockInfo.stockName,
+        stockPrice: stockInfo.stck_prpr,
+        type: "판매",
+      },
+    });
+  }
+
   return (
     <>
       {stockBalance.data ? (
         <Row className="stock-detail-transaction-button">
-          <Button className="stock-detail-sell-button">
+          <Button
+            className="stock-detail-sell-button"
+            onClick={handleSellButton}
+          >
             <div className="stock-detail-sell-text">판매하기</div>
           </Button>
 
