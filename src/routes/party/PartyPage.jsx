@@ -13,7 +13,6 @@ import { fetchDepositData } from "../../lib/apis/stock";
 
 export default function PartyPage() {
   const [infos, setInfos] = useState([]);
-  const [parties, setParties] = useState([]);
   const { throwAuthError } = useContext(AuthContext);
   const navigate = useNavigate();
   const test = useCallback(async (e) => {
@@ -31,9 +30,7 @@ export default function PartyPage() {
   const fetchData = async () => {
     try {
       const temps = await fetchPartyInquire();
-      const tmp = [];
       console.log(temps);
-      setParties(temps);
 
       const new_tmp = await Promise.all(
         temps.map(async (party) => {
@@ -108,7 +105,10 @@ export default function PartyPage() {
                   투자
                 </h3>
                 <h1 style={{ padding: "0" }}>
-                  {addCommasToNumber(party.deposit)}원
+                  {(
+                    Number(party.evlu_amt_smtl_amt) + Number(party.deposit)
+                  ).toLocaleString()}
+                  원
                 </h1>
                 <h3
                   className={

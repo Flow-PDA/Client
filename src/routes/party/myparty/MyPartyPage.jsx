@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MyPartyPage.css";
 import Back from "../../../assets/arrow.png";
 import Bottom from "../../../assets/bottom_arrow.png";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 import { Link, useParams } from "react-router-dom";
-import { fetchNewsData } from "../../../lib/apis/stock";
+import { fetchPartyInfo } from "../../../lib/apis/party";
+import { fetchDepositData } from "../../../lib/apis/stock";
 import { Button, Col, Row, Container } from "react-bootstrap";
-import News from "../../../components/common/news/News";
 export default function MyPartyPage() {
   const partyKey = useParams().partyKey;
-  const [news, setNews] = useState([]);
+  const [infos, setInfos] = useState([]);
+  const [parties, setParties] = useState([]);
   const [stocks, setStocks] = useState([
     {
       id: 1,
@@ -84,19 +85,70 @@ export default function MyPartyPage() {
       },
     ]);
   };
+
+  const fetchData = async () => {
+    try {
+      const temps = await fetchPartyInfo(partyKey);
+      console.log(temps);
+      setParties(temps);
+      const CANO = temps.accountNumber;
+      const APPKEY = temps.appKey;
+      const APPSECRET = temps.appSecret;
+      const TOKEN = temps.token;
+      const new_tmp = await fetchDepositData(CANO, APPKEY, APPSECRET, TOKEN);
+      console.log(new_tmp);
+      setInfos(new_tmp);
+      // console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
       <TopNavigationBar
-        text="177의 모임투자"
+        text={`${parties.name}의 모임투자`}
         type={2}
         partyKey={partyKey}
       ></TopNavigationBar>
       <Container className="myparty-container">
         <Row className="myparty-deposit-container">
           <div className="myparty-deposit-detail-container">
-            <p style={{ margin: "0" }}>973-021-038-01-014</p>
-            <h2 style={{ padding: "0" }}>5,982,553원</h2>
-            <p>+670,000원(9%)</p>
+            <p style={{ margin: "0" }}>{parties.accountNumber}</p>
+            <h2 style={{ padding: "0" }}>
+              {(
+                parties.deposit + Number(infos.evlu_amt_smtl_amt)
+              ).toLocaleString()}
+              원
+            </h2>
+            <h3
+              className={
+                infos.evlu_amt_smtl_amt - infos.pchs_amt_smtl_amt >= 0
+                  ? "red-txt"
+                  : "blue-txt"
+              }
+            >
+              {Number(infos.evlu_amt_smtl_amt) !== 0 &&
+              Number(infos.pchs_amt_smtl_amt) !== 0 ? (
+                <>
+                  {(
+                    infos.evlu_amt_smtl_amt - infos.pchs_amt_smtl_amt
+                  ).toLocaleString()}
+                  원 (
+                  {(
+                    ((infos.evlu_amt_smtl_amt - infos.pchs_amt_smtl_amt) /
+                      infos.pchs_amt_smtl_amt) *
+                    100
+                  ).toFixed(2)}
+                  %)
+                </>
+              ) : (
+                <>0(0%)</>
+              )}
+            </h3>
           </div>
           <div className="myparty-deposit-btn-container">
             <Link to={`/livestock/${partyKey}`}>
@@ -160,7 +212,6 @@ export default function MyPartyPage() {
             style={{ width: "2rem", height: "1rem" }}
           />
         </Row>
-        <News news={news} setNews={setNews}></News>
       </Container>
     </>
   );
