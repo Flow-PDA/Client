@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./MyPartyPage.css";
 import Back from "../../../assets/arrow.png";
-import Bottom from "../../../assets/bottom_arrow.png";
+import Bottom from "../../../assets/down_arrow.png";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { fetchPartyInfo } from "../../../lib/apis/party";
@@ -98,25 +98,33 @@ export default function MyPartyPage() {
           <div className="myparty-deposit-btn-container">
             <Link to={`/livestock/${partyKey}`}>
               <Button
-                variant="primary"
-                style={{ width: "25vw", height: "10vw" }}
+                style={{
+                  width: "24vw",
+                  height: "10vw",
+                  backgroundColor: "#375AFF",
+                  borderColor: "#375AFF",
+                }}
               >
                 투자하기
               </Button>
             </Link>
             <Link to={`/transfer/${partyKey}`}>
               <Button
-                variant="primary"
-                style={{ width: "25vw", height: "10vw" }}
+                style={{
+                  width: "24vw",
+                  height: "10vw",
+                  backgroundColor: "#375AFF",
+                  borderColor: "#375AFF",
+                }}
               >
                 이체하기
               </Button>
             </Link>
           </div>
-          <hr style={{ marginTop: "1.5rem", width: "90vw" }} />
         </Row>
+        <hr style={{ marginTop: "1.5rem", width: "90vw" }} />
         <Row className="myparty-stock-container">
-          {havings.slice(0, showAllStocks ? havings.length : 3).map((stock) => (
+          {havings.slice(0, showAllStocks ? havings.length : 5).map((stock) => (
             <Row
               key={stock.pdno}
               className="myparty-stock"
@@ -124,27 +132,34 @@ export default function MyPartyPage() {
                 navigate(`/stockDetail/${partyKey}/${stock.pdno}/chart`)
               }
             >
-              <Col xs={2}>
+              <Col xs={2} style={{ padding: "0.75vw" }}>
                 <img
                   className="stock-img"
                   src={`https://file.alphasquare.co.kr/media/images/stock_logo/kr/${stock.pdno}.png`}
                   alt="stock"
                 />
               </Col>
-              <Col xs={4}>
+              <Col xs={4} style={{ padding: "0.5vw" }}>
                 <div>
-                  <div style={{ fontSize: "0.9rem" }}>{stock.prdt_name}</div>
+                  <div style={{ fontWeight: "600" }}>{stock.prdt_name}</div>
                   <div>{stock.hldg_qty}주</div>
                 </div>
               </Col>
-              <Col className="myparty-stock-price-container" xs={6}>
-                <div>{Number(stock.evlu_amt).toLocaleString()}원</div>
+              <Col
+                className="myparty-stock-price-container"
+                xs={6}
+                style={{ padding: "0.75vw" }}
+              >
+                <div style={{ fontWeight: "500" }}>
+                  {Number(stock.evlu_amt).toLocaleString()}원
+                </div>
                 <div
                   className={
                     stock.evlu_erng_rt[0] === "-" ? "blue-text" : "red-text"
                   }
                 >
-                  {Number(stock.evlu_pfls_amt).toLocaleString()}원(
+                  {stock.evlu_erng_rt[0] === "-" ? <></> : <>+</>}
+                  {Number(stock.evlu_pfls_amt).toLocaleString()} (
                   {stock.evlu_pfls_rt}%)
                 </div>
               </Col>
@@ -152,24 +167,26 @@ export default function MyPartyPage() {
           ))}
         </Row>
         {/* 더보기 버튼 */}
-        {havings.length > 3 && !showAllStocks && (
+        {havings.length > 5 && !showAllStocks && (
           <button
             onClick={handleShowAllStocks}
             style={{ border: "none", backgroundColor: "#fff" }}
           >
-            <img src={Bottom} alt="arrow" />
+            <span>더보기</span>
+            <img
+              src={Bottom}
+              alt="arrow"
+              style={{ marginLeft: "2vw", width: "3.5vw" }}
+            />
           </button>
         )}
-        <hr style={{ marginTop: "1.5rem", width: "90vw" }} />
-        <Row className="myparty-transfer-container">
-          <div>거래내역</div>
-          <img
-            src={Back}
-            alt="back"
-            onClick={() => navigate(`/transfer/${partyKey}?1`)}
-            style={{ width: "2rem", height: "1rem" }}
-          />
-        </Row>
+        <hr style={{ marginTop: "1rem", width: "90vw" }} />
+        <div
+          className="myparty-transfer-container"
+          onClick={() => navigate(`/transfer/${partyKey}`)}
+        >
+          거래내역
+        </div>
       </Container>
     </>
   );

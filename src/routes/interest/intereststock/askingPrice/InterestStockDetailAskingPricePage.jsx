@@ -65,28 +65,6 @@ export default function InterestStockDetailAskingPricePage() {
     navigate(`/stockDetail/${partyKey}/${stockKey}/news`);
   };
 
-
-  const handleBuyButtonClick = () => {
-    navigate(`/stockDetail/${partyKey}/${stockKey}/tradeStock`, {
-      state: {
-        name: stockInfo.stockName,
-        price: parseInt(stockInfo.stck_prpr).toLocaleString(),
-        type: "구매",
-      },
-    });
-  };
-
-  const handleSellButtonClick = () => {
-    navigate(`/stockDetail/${partyKey}/${stockKey}/tradeStock`, {
-      state: {
-        name: stockInfo.stockName,
-        price: parseInt(stockInfo.stck_prpr).toLocaleString(),
-        type: "판매",
-      },
-    });
-  };
-
-
   return (
     <>
       <TopNavigationBar text={"종목 상세정보"} />
