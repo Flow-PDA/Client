@@ -59,14 +59,17 @@ export default function MyPartyPage() {
       <Container className="myparty-container">
         <Row className="myparty-deposit-container">
           <div className="myparty-deposit-detail-container">
-            <p style={{ margin: "0" }}>{parties.accountNumber}</p>
-            <h2 style={{ padding: "0" }}>
+            <p style={{ margin: "0", fontWeight: 400 }}>
+              [계좌] {parties.accountNumber}
+            </p>
+            <h1 style={{ padding: "0", fontWeight: 600 }}>
               {(
                 parties.deposit + Number(infos.evlu_amt_smtl_amt)
               ).toLocaleString()}
               원
-            </h2>
-            <h3
+            </h1>
+            <h5
+              style={{ fontWeight: "500" }}
               className={
                 infos.evlu_amt_smtl_amt - infos.pchs_amt_smtl_amt >= 0
                   ? "red-txt"
@@ -90,7 +93,7 @@ export default function MyPartyPage() {
               ) : (
                 <>0(0%)</>
               )}
-            </h3>
+            </h5>
           </div>
           <div className="myparty-deposit-btn-container">
             <Link to={`/livestock/${partyKey}`}>

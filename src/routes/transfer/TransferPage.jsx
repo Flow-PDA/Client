@@ -6,9 +6,11 @@ import PrimaryButton from "../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
 import { Link, useParams } from "react-router-dom";
 import { fetchTransferList } from "../../lib/apis/transfer";
+import { fetchPartyInfo } from "../../lib/apis/party";
 
 export default function TransferPage() {
   const [transferData, setTransferData] = useState([]);
+  const [partyInfo, setPartyInfo] = useState();
 
   const partyKey = useParams().partyKey;
   const callTransferData = async () => {
@@ -20,14 +22,26 @@ export default function TransferPage() {
     }
   };
 
+  const callPartyInfo = async () => {
+    try {
+      const response = await fetchPartyInfo(partyKey);
+      setPartyInfo(response);
+    } catch (error) {
+      console.error("모임 정보 데이터 호출 중 에러:", error);
+    }
+  };
+
   useEffect(() => {
     callTransferData();
+    callPartyInfo();
   }, []);
 
   let deposit = 0;
+  console.log(transferData);
+  console.log(partyInfo);
 
-  if (transferData[0]) {
-    deposit = transferData[0].deposit;
+  if (partyInfo) {
+    deposit = partyInfo.deposit;
   }
 
   return (

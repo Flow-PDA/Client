@@ -110,7 +110,7 @@
 }
 
 .party-account-number {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .slide-menu-buttons {
@@ -154,4 +154,9 @@
   background-color: #f8f6f6;
   padding: 5vw;
   border-radius: 11px;
+}
+
+.link {
+  text-decoration: none; /* 링크의 밑줄 제거 */
+  color: inherit; /* 링크의 색상 제거 */
 }
