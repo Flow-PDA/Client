@@ -133,7 +133,10 @@ export default function InterestStockDetailAskingPricePage() {
             </Row>
             <hr />
             <div className="sample-asking-price-chart-wrapper">
-              <SampleAskingPriceChart name={stockInfo.stockName} />
+              <SampleAskingPriceChart
+                name={stockInfo.stockName}
+                stockCode={stockKey}
+              />
             </div>
 
             {stockBalance.data ? (
