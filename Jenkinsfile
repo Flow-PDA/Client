@@ -33,7 +33,7 @@ pipeline {
         sh 'cp /var/jenkins_home/workspace/config/nginx.conf ./nginx.conf'
       }
     }
-    stage('build-react') {
+    stage('build') {
       steps {
         echo 'build react'
         sh 'docker compose --profile nginx build'
