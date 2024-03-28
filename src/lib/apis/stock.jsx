@@ -53,9 +53,20 @@ export async function fetchDepositData(CANO, APPKEY, APPSECRET, TOKEN) {
     console.error(err);
   }
 }
+
+// 가지고 있는 주식 정보
+export async function fetchHavingStock(partyKey) {
+  try {
+    const response = await authInstance.get(`stocks/${partyKey}/balance`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
 export default {
   fetchStockInfo,
   fetchNewsData,
   fetchStockData,
   fetchDepositData,
+  fetchHavingStock,
 };

@@ -6,7 +6,11 @@ import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
 import "./PartyPage.css";
 import { modifyTest } from "../../lib/apis/userApi";
 import { AuthContext } from "../../lib/contexts/AuthContext";
-import { fetchPartyInquire } from "../../lib/apis/party";
+import {
+  fetchPartyInquire,
+  fetchUser,
+  fetchPartyInfo,
+} from "../../lib/apis/party";
 import { fetchDepositData } from "../../lib/apis/stock";
 // 특정 모임 정보 api
 // 잔고 api
@@ -30,10 +34,19 @@ export default function PartyPage() {
   const fetchData = async () => {
     try {
       const temps = await fetchPartyInquire();
+      const resp = await fetchUser();
       console.log(temps);
-
+      console.log(resp.data.groups);
+      const party = resp.data.groups;
+      const resBody = await Promise.all(
+        party.map(async (elem) => {
+          const alpha = await fetchPartyInfo(elem.partyKey);
+          return alpha;
+        })
+      );
+      console.log(resBody);
       const new_tmp = await Promise.all(
-        temps.map(async (party) => {
+        resBody.map(async (party) => {
           const {
             accountNumber: CANO,
             token: TOKEN,
@@ -44,14 +57,11 @@ export default function PartyPage() {
           return { ...party, ...res };
         })
       );
-
+      console.log(new_tmp);
       setInfos(new_tmp);
       // console.log(res);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
+      console.error(error);
     }
   };
 
