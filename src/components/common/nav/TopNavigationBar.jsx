@@ -10,14 +10,22 @@ import InterestButton from "../../../assets/interest.png";
 import StockButton from "../../../assets/stock.png";
 import TransferButton from "../../../assets/cash.png";
 import "./TopNavigationBar.css";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { fetchPartyInfo } from "../../../lib/apis/party";
 
-const TopNavigationBar = ({ text, type = 0, partyKey }) => {
+const TopNavigationBar = ({ text, type = 0 }) => {
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const userGroup = useSelector((state) => state.user.groupInfo);
+  console.log(userGroup);
+
+  const userName = userInfo.name;
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [toggleOpen, setToggleOpen] = useState(false);
-
+  const [partyInfo, setPartyInfo] = useState([]);
+  const { partyKey } = useParams();
   const handleBackButtonClick = () => {
     navigate(-1);
   };
@@ -36,6 +44,19 @@ const TopNavigationBar = ({ text, type = 0, partyKey }) => {
     setToggleOpen(!toggleOpen);
   };
 
+  const callPartyInfo = async () => {
+    try {
+      const response = await fetchPartyInfo(partyKey);
+      setPartyInfo(response);
+    } catch (error) {
+      console.error("모임 정보 데이터 호출 중 에러:", error);
+    }
+  };
+
+  useEffect(() => {
+    callPartyInfo();
+  }, []);
+
   if (type === 0) {
     //기본, 뒤로가기와 가운데 텍스트 있음
     return (
@@ -53,6 +74,9 @@ const TopNavigationBar = ({ text, type = 0, partyKey }) => {
     );
   } else if (type === 1) {
     //햄버거 버튼 있는 버전
+    const partyName = partyInfo.name;
+    const partyAccountNumber = partyInfo.accountNumber;
+
     return (
       <Navbar className="navbar">
         <Container className="navbar-container">
@@ -88,7 +112,7 @@ const TopNavigationBar = ({ text, type = 0, partyKey }) => {
                     <div className="go-to-home" onClick={handleHomeButtonClick}>
                       <Image src={HomeButton} alt="Home" />
                     </div>
-                    <div className="userName">이신한님</div>
+                    <div className="userName">{userName}님</div>
                   </div>
                   <div className="logout">로그아웃</div>
                 </div>
@@ -96,20 +120,29 @@ const TopNavigationBar = ({ text, type = 0, partyKey }) => {
               <div className="party-stock">
                 <div className="current-party">현재 모임투자</div>
                 <div className="current-party-info">
-                  <div className="party-name">177의 모임투자</div>
-                  <div className="party-account-number">123-456-789</div>
+                  <div className="party-name">{partyName}의 모임투자</div>
+                  <div className="party-account-number">
+                    [계좌] {partyAccountNumber}
+                  </div>
+
                   <div className="slide-menu-buttons">
                     <div className="menu-btn">
-                      <Image src={TransferButton} />
-                      <span> 이체하기</span>
+                      <Link className="link" to={`/transfer/${partyKey}`}>
+                        <Image src={TransferButton} />
+                        <span> 이체하기</span>
+                      </Link>
                     </div>
                     <div className="menu-btn">
-                      <Image src={StockButton} />
-                      <span> 투자하기</span>
+                      <Link className="link" to={`/livestock/${partyKey}`}>
+                        <Image src={StockButton} />
+                        <span> 투자하기</span>
+                      </Link>
                     </div>
                     <div className="menu-btn interest-btn">
-                      <Image src={InterestButton} />
-                      <span> 관심목록</span>
+                      <Link className="link" to={`/interests/${partyKey}`}>
+                        <Image src={InterestButton} />
+                        <span> 관심목록</span>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -120,6 +153,7 @@ const TopNavigationBar = ({ text, type = 0, partyKey }) => {
                   다른 모임투자로 이동하기
                   {toggleOpen ? (
                     <>
+                      {/* TODO: 리덕스에 userGroup 들어오면 userGroup map으로 수정!!!! */}
                       <Image
                         src={DownArrowButton}
                         className="right-arrow-btn"
