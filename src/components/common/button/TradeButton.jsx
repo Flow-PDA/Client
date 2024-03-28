@@ -48,12 +48,12 @@ export default function TradeButton({
     }
   }
 
-  async function handleSellButton() {
+  async function handleSellButton(type) {
     navigate(`/stockDetail/${partyKey}/${stockKey}/tradeStock`, {
       state: {
         stockName: stockInfo.stockName,
         stockPrice: stockInfo.stck_prpr,
-        type: "판매",
+        type: type,
       },
     });
   }
@@ -64,12 +64,15 @@ export default function TradeButton({
         <Row className="stock-detail-transaction-button">
           <Button
             className="stock-detail-sell-button"
-            onClick={handleSellButton}
+            onClick={() => handleSellButton("판매")}
           >
             <div className="stock-detail-sell-text">판매하기</div>
           </Button>
 
-          <Button className="stock-detail-buy-button">
+          <Button
+            className="stock-detail-buy-button"
+            onClick={() => handleSellButton("구매")}
+          >
             <div className="stock-detail-buy-text">구매하기</div>
           </Button>
         </Row>

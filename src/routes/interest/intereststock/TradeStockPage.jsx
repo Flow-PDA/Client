@@ -14,6 +14,10 @@ export default function TradeStockPage() {
   const stockPrice = location.state.stockPrice;
   const type = location.state.type;
 
+  const getPossibleMaxPrice = async() => {};
+
+  const 
+
   return (
     <>
       <TopNavigationBar text={stockName} />
@@ -59,9 +63,18 @@ export default function TradeStockPage() {
                 </>
               )}
             </div>
-            <Form.Check type={"checkbox"} className="trade-market-price-btn" />
 
-            <div className="trade-market-price-sentence">시장가</div>
+            {type === "구매" ? (
+              <>
+                <Form.Check
+                  type={"checkbox"}
+                  className="trade-market-price-btn"
+                />
+                <div className="trade-market-price-sentence">시장가</div>
+              </>
+            ) : (
+              <></>
+            )}
           </div>
           <input
             className="trade-stock-input"
@@ -69,7 +82,10 @@ export default function TradeStockPage() {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           />
-          <div className="trade-possible">{type}가능 871원</div>
+
+          <div className="trade-possible">
+            {type}가능 {type === "구매" ? <>구매가능 {}</> : <></>}
+          </div>
         </div>
         <div className="trade-volume-btns">
           <div className="trade-volume-btn">10%</div>
