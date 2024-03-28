@@ -4,11 +4,11 @@ import axios from "axios";
 import Swipe from "../../../components/common/swiper/Swiper";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 import { Row, Col, Container } from "react-bootstrap";
-import { interval } from "date-fns";
 import { SyncLoader } from "react-spinners";
-import { Sync } from "@mui/icons-material";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Search from "../../../assets/search.png";
+import logo from "../../../assets/logo_white.png";
+
 export default function LiveStockPage() {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [kospiDatas, setKospiDatas] = useState([]);
@@ -115,7 +115,8 @@ export default function LiveStockPage() {
   }, []); // 빈 배열을 넘겨주어 한 번만 실행되도록 설정
   return (
     <div style={{ position: "relative" }}>
-      <TopNavigationBar></TopNavigationBar>
+      <TopNavigationBar text={"주식 정보"}></TopNavigationBar>
+
       <img
         src={Search}
         alt="search"
@@ -133,7 +134,7 @@ export default function LiveStockPage() {
         <Row className="live-banner-container">
           <Swipe></Swipe>
         </Row>
-        <hr />
+
         <Row className="live-point-banner">
           <h3>주요지수</h3>
           <div className="live-all-point-container">
@@ -239,6 +240,9 @@ export default function LiveStockPage() {
                         className="stock-img"
                         src={`https://file.alphasquare.co.kr/media/images/stock_logo/kr/${stock.stock_code}.png`}
                         alt="stock"
+                        onError={(e) => {
+                          e.target.src = logo; // 대체할 기본 이미지의 URL로 설정합니다.
+                        }}
                       />
                     </Col>
                     <Col xs={6}>

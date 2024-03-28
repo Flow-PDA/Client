@@ -4,7 +4,6 @@ import HorizontalLine from "../../components/line/HorizontalLine.jsx";
 import { useEffect, useState } from "react";
 import { delApproved, getApproved } from "../../lib/apis/interest.jsx";
 import Modal from "../../components/common/modal/ApproveInterestModal.jsx";
-import { fetchHankookStockBalance } from "../../lib/apis/hankookApi.jsx";
 import { useParams } from "react-router-dom";
 
 export default function InterestApproval() {
