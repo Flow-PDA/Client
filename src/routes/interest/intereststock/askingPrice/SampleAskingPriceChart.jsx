@@ -43,16 +43,21 @@ export default function SampleAskingPriceChart({ name, stockCode }) {
   // when mounted
   useEffect(() => {
     // socketIo init.
-    const _socketIo = io.connect(import.meta.env.VITE_WS_URL);
-    _socketIo.on("connect", () => {
-      console.log("socket connected");
-    });
-    _socketIo.on("update", (data) => {
-      // console.log(data);
-      updatePrice(data);
-    });
+    const WS_URL = import.meta.env.VITE_WS_URL;
+    if (WS_URL !== undefined) {
+      const _socketIo = io.connect(WS_URL);
+      _socketIo.on("connect", () => {
+        console.log("socket connected");
+      });
+      _socketIo.on("update", (data) => {
+        // console.log(data);
+        updatePrice(data);
+      });
 
-    setSocketIo(_socketIo);
+      setSocketIo(_socketIo);
+    } else {
+      console.log("WS URL not defined");
+    }
   }, []);
 
   // when socketIo modified
