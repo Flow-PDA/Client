@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./News.css";
+import { useNavigate } from "react-router-dom";
 import { fetchNewsData } from "../../../lib/apis/stock";
 import { AuthContext } from "../../../lib/contexts/AuthContext";
 import { Container, Row, Col } from "react-bootstrap";
 export default function News({ news, setNews, stockName }) {
   const { throwAuthError } = useContext(AuthContext);
-  const tmp = "삼성";
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -28,7 +29,11 @@ export default function News({ news, setNews, stockName }) {
     <>
       <div className="news-container">
         {news.map((elem, index) => (
-          <div className="news-data-container" key={index}>
+          <div
+            className="news-data-container"
+            key={index}
+            onClick={() => (window.location.href = `${elem.news_link}`)}
+          >
             <div className="news-content">
               <div style={{ fontSize: "1.2rem", fontWeight: "600" }}>
                 {elem.news_title.slice(0, 15)}..
