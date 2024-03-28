@@ -14,9 +14,7 @@ export default function TradeStockPage() {
   const stockPrice = location.state.stockPrice;
   const type = location.state.type;
 
-  const getPossibleMaxPrice = async() => {};
-
-  const 
+  const getPossibleMaxPrice = async () => {};
 
   return (
     <>
@@ -84,7 +82,7 @@ export default function TradeStockPage() {
           />
 
           <div className="trade-possible">
-            {type}가능 {type === "구매" ? <>구매가능 {}</> : <></>}
+            {type === "구매" ? <> 구매 가능 -원 {}</> : <>판매 가능 최대 -주</>}
           </div>
         </div>
         <div className="trade-volume-btns">
