@@ -16,8 +16,6 @@ export default function TradeStockPage() {
 
   const getPossibleMaxPrice = async() => {};
 
-  const 
-
   return (
     <>
       <TopNavigationBar text={stockName} />
