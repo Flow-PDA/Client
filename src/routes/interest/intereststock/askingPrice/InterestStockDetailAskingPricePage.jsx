@@ -66,7 +66,7 @@ export default function InterestStockDetailAskingPricePage() {
   };
 
   const handleBuyButtonClick = () => {
-    navigate(`/stockDetail/${partyKey}/${stockKey}/askingPrice`, {
+    navigate(`/stockDetail/${partyKey}/${stockKey}/tradeStock`, {
       state: {
         name: stockInfo.stockName,
         price: parseInt(stockInfo.stck_prpr).toLocaleString(),
