@@ -2,10 +2,33 @@ import logo from "../assets/logo.svg";
 import "./MainPage.css";
 import PrimaryButton from "../components/common/button/PrimaryButton";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
+import { useEffect } from "react";
 
 const MainPage = () => {
   const navigate = useNavigate();
+  // const searchParams = new URLSearchParams(window.location.search);
+  // const partyKey = searchParams.get(partyKey);
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  console.log(location);
+  // console.log(params.getAll("partyKey"));
+  // console.log(location);
+  // console.log();
+  // useEffect(() => {
+  //   console.log(searchParams.get("partyKey"));
+  //   if (searchParams.get("partyKey") === "1") {
+  //     setSearchParams("?partyKey=2");
+  //   }
+  // }, [searchParams]);
+
+  // console.log(partyKey);
+
   return (
     <Container className="main-container">
       <Row>
