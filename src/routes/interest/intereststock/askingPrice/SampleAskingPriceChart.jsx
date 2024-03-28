@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import "./SampleAskingPriceChart.css";
 import Modal from "../../../../components/common/modal/StockAskingModal";
+import io from "socket.io-client";
 
-export default function SampleAskingPriceChart({ name }) {
+export default function SampleAskingPriceChart({ name, stockCode }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState(null);
   const [selectedPercent, setSelectedPercent] = useState(null);
@@ -14,6 +15,61 @@ export default function SampleAskingPriceChart({ name }) {
     setModalOpen(true);
     setSelectedType(type);
   };
+
+  // state for socketIo
+  const [socketIo, setSocketIo] = useState(null);
+
+  // update price
+  const updatePrice = (data) => {
+    // bids
+    const bids = data.buyList.map((elem) => {
+      // TODO: calc. percent
+      return { price: elem[0], quantity: elem[1], percent: 1.23 };
+    });
+
+    // asks
+    const asks = data.sellList.map((elem) => {
+      // TODO: calc. percent
+      return { price: elem[0], quantity: elem[1], percent: -1.23 };
+    });
+
+    setOrderBook({
+      timestamp: Date.now(),
+      asks: asks,
+      bids: bids,
+    });
+  };
+
+  // when mounted
+  useEffect(() => {
+    // socketIo init.
+    const WS_URL = import.meta.env.VITE_WS_URL;
+    if (WS_URL !== undefined) {
+      const _socketIo = io.connect(WS_URL);
+      _socketIo.on("connect", () => {
+        console.log("socket connected");
+      });
+      _socketIo.on("update", (data) => {
+        // console.log(data);
+        updatePrice(data);
+      });
+
+      setSocketIo(_socketIo);
+    } else {
+      console.log("WS URL not defined");
+    }
+  }, []);
+
+  // when socketIo modified
+  useEffect(() => {
+    if (socketIo !== null) {
+      // socketIo initiated
+      // 2|005930 - 삼성전자 호가, 1|005930 - 삼성전자 체결가
+      const temp = `2|${stockCode}`;
+      // REGISTER_SUB : 등록, RELEASE_SUB : 해제
+      socketIo.emit("REGISTER_SUB", temp);
+    }
+  }, [socketIo]);
 
   // 승인 모달 열기 함수
   function openModal() {
@@ -26,61 +82,10 @@ export default function SampleAskingPriceChart({ name }) {
   }
 
   const [orderBook, setOrderBook] = useState({
-    asks: [
-      { price: 74200, quantity: 105, percent: 1.2 },
-      { price: 74100, quantity: 150, percent: 1.18 },
-      { price: 74000, quantity: 200, percent: 1.16 },
-      { price: 73900, quantity: 250, percent: 1.14 },
-      { price: 73800, quantity: 300, percent: 1.12 },
-      { price: 73700, quantity: 100, percent: 1.1 },
-      { price: 73600, quantity: 150, percent: 1.08 },
-      { price: 73500, quantity: 200, percent: 1.05 },
-      { price: 73400, quantity: 250, percent: 1.03 },
-      { price: 73300, quantity: 600, percent: 1.01 },
-    ],
-    bids: [
-      { price: 73200, quantity: 350, percent: 1.03 },
-      { price: 73100, quantity: 400, percent: 1.05 },
-      { price: 73000, quantity: 450, percent: 1.07 },
-      { price: 72900, quantity: 500, percent: 1.08 },
-      { price: 72800, quantity: 55, percent: 1.09 },
-      { price: 72700, quantity: 35, percent: 1.1 },
-      { price: 72600, quantity: 40, percent: 1.12 },
-      { price: 72500, quantity: 45, percent: 1.15 },
-      { price: 72400, quantity: 50, percent: 1.17 },
-      { price: 72300, quantity: 55, percent: 1.19 },
-    ],
+    asks: [],
+    bids: [],
     timestamp: Date.now(),
   });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      updateOrderBook();
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const updateOrderBook = () => {
-    setOrderBook((prevOrderBook) => ({
-      ...prevOrderBook,
-      timestamp: Date.now(),
-      asks: prevOrderBook.asks.map((ask, index) => ({
-        ...ask,
-        quantity:
-          index % 2 === 0
-            ? Math.floor(Math.random() * (200 - 0 + 1)) + 10
-            : Math.floor(Math.random() * (1500 - 100 + 1)) + 100,
-      })),
-      bids: prevOrderBook.bids.map((bid, index) => ({
-        ...bid,
-        quantity:
-          index % 2 === 1
-            ? Math.floor(Math.random() * (200 - 0 + 1)) + 10
-            : Math.floor(Math.random() * (1500 - 100 + 1)) + 100,
-      })),
-    }));
-  };
 
   const sumQuantity = (asks, bids) => {
     var sum = 0;
