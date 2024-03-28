@@ -26,3 +26,5 @@ export async function fetchHankookStockCurrent(stockKey) {
     throw error;
   }
 }
+
+export async function fetchHankookStockTrade() {}
