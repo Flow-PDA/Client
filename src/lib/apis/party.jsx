@@ -73,6 +73,10 @@ export async function fetchDeleteUser(partyKey, userKey) {
   console.log(response);
   return response;
 }
+export async function fetchUser() {
+  const response = await authInstance.get(`/parties/user`);
+  return response;
+}
 export default {
   fetchPartyInfo,
   fetchPartyCreate,
@@ -83,4 +87,5 @@ export default {
   fetchPartyMemberInquire,
   fetchSearchUser,
   fetchDeleteUser,
+  fetchUser,
 };
