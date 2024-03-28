@@ -10,8 +10,8 @@ export default function TradeStockPage() {
   const [price, setPrice] = useState("");
 
   const location = useLocation();
-  const stockName = location.state.name;
-  const stockPrice = location.state.price;
+  const stockName = location.state.stockName;
+  const stockPrice = location.state.stockPrice;
   const type = location.state.type;
 
   return (
@@ -34,7 +34,9 @@ export default function TradeStockPage() {
               marginBottom: "2vh",
             }}
           >
-            <div className="trade-price">{stockPrice.toLocaleString()}원</div>
+            <div className="trade-price">
+              {parseInt(stockPrice).toLocaleString()}원
+            </div>
             <div className="trade-current-price">
               {" "}
               <Image src={LightningIcon} className="lightning-icon" />
