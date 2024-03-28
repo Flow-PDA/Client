@@ -36,19 +36,19 @@ pipeline {
     stage('build') {
       steps {
         echo 'build react'
-        sh 'docker compose --profile nginx build'
+        sh 'docker-compose --profile nginx build'
       }
     }
     stage('down') {
       steps {
         echo 'stop container'
-        sh 'docker compose --profile nginx down'
+        sh 'docker-compose --profile nginx down'
       }
     }
     stage('deploy') {
       steps {
         echo 'run docker container'
-        sh 'docker compose --profile nginx up'
+        sh 'docker-compose --profile nginx up'
       }
     }
   }
