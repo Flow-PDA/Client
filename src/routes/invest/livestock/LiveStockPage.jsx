@@ -11,6 +11,7 @@ import Search from "../../../assets/search.png";
 import logo from "../../../assets/logo_white.png";
 
 const WS_URL = import.meta.env.VITE_WS_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:3000/api";
 
 export default function LiveStockPage() {
   const [selectedIndex, setSelectedIndex] = useState(1);
@@ -32,9 +33,7 @@ export default function LiveStockPage() {
 
   const fetchKospiData = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3000/api/points/kospi"
-      );
+      const response = await axios.get(`${BASE_URL}/points/kospi`);
       setKospiDatas(response.data[0]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -43,9 +42,7 @@ export default function LiveStockPage() {
 
   const fetchKosdaqData = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3000/api/points/kosdaq"
-      );
+      const response = await axios.get(`${BASE_URL}/points/kosdaq`);
       setKosdaqDatas(response.data[0]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -54,9 +51,7 @@ export default function LiveStockPage() {
 
   const fetchNasdaqData = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3000/api/points/nasdaq"
-      );
+      const response = await axios.get(`${BASE_URL}/points/nasdaq`);
       // console.log(response.data[0]);
       setNasdaqDatas(response.data[0]);
     } catch (error) {
@@ -68,7 +63,7 @@ export default function LiveStockPage() {
     try {
       console.log(tag);
       const response = await axios
-        .get(`http://localhost:3000/api/stocks/hotIssue?tag=${tag}`, {
+        .get(`${BASE_URL}/stocks/hotIssue?tag=${tag}`, {
           tag: tag,
         })
         .then((response) => {
@@ -79,9 +74,7 @@ export default function LiveStockPage() {
             data.map(async (d) => {
               let items = [];
               return await axios
-                .get(
-                  `http://localhost:3000/api/stocks/inquired?stock_code=${d.stock_code}`
-                )
+                .get(`${BASE_URL}/stocks/inquired?stock_code=${d.stock_code}`)
                 .then((stock_res) => {
                   const tmp_data = {
                     rank: d.rank,
