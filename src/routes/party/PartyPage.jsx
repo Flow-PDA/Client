@@ -64,7 +64,7 @@ export default function PartyPage() {
       );
       console.log(resBody);
       const new_tmp = await Promise.all(
-        temps.map(async (party) => {
+        resBody.map(async (party) => {
           const {
             accountNumber: CANO,
             token: TOKEN,
@@ -75,14 +75,11 @@ export default function PartyPage() {
           return { ...party, ...res };
         })
       );
-
+      console.log(new_tmp);
       setInfos(new_tmp);
       // console.log(res);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
+      console.error(error);
     }
   };
 
