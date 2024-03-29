@@ -2,21 +2,41 @@ import { Button, Col, Container, Row, Form, Image } from "react-bootstrap";
 import LightningIcon from "../../../assets/lightning-bolt.png";
 import "./TradeStockPage.css";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PrimaryButton from "../../../components/common/button/PrimaryButton";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import { tradeStock } from "../../../lib/apis/hankookApi";
 
 export default function TradeStockPage() {
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(81100);
+  const [amount, setAmount] = useState(1);
+  const { partyKey, stockKey } = useParams();
 
   const location = useLocation();
   const stockName = location.state.stockName;
   const stockPrice = location.state.stockPrice;
   const type = location.state.type;
 
-  const getPossibleMaxPrice = async() => {};
+  const maxBuyQuantity = async () => {};
 
-  const 
+  useEffect(() => {}, []);
+
+  const trade = async (transactionType) => {
+    try {
+      // transactionType, partyKey, stockKey, orderQuantity, orderPrice;
+      console.log("price", price);
+      console.log("amount", amount);
+      const res = await tradeStock(
+        transactionType,
+        partyKey,
+        stockKey,
+        amount,
+        price
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -79,8 +99,8 @@ export default function TradeStockPage() {
           <input
             className="trade-stock-input"
             type="text"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            // value={price}
+            // onChange={(e) => setPrice(e.target.value)}
           />
 
           <div className="trade-possible">
@@ -99,6 +119,7 @@ export default function TradeStockPage() {
           minWidth="100%"
           backgroundColor={type === "구매" ? "#F46060" : "#375AFF"}
           className="trade-btn"
+          onClick={() => trade(type === "구매" ? 0 : 1)}
         ></PrimaryButton>
       </Container>
     </>
