@@ -51,7 +51,7 @@ export async function fetchPartyAdmin(partyKey) {
 // 특정 모임의 모임원 조회
 export async function fetchPartyMemberInquire(partyKey) {
   const response = await authInstance.get(`/parties/${partyKey}/members`);
-  return response.data.result;
+  return response;
 }
 
 // 유저의 정보 조회
