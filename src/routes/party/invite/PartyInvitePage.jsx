@@ -9,7 +9,7 @@ const { Kakao } = window;
 
 export default function PartyInvitePage() {
   const partyKey = useParams().partyKey;
-  const realUrl = `http://localhost:5173?$partyKey={partyKey}`;
+  const realUrl = `http://www.pda-flow.site?$partyKey=${partyKey}`;
   const resultUrl = window.location.href;
   useEffect(() => {
     Kakao.cleanup();
