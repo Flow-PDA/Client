@@ -33,18 +33,18 @@ export default function PartyPage() {
   const userKey = useSelector((state) => state.user.userInfo.userKey);
   console.log(typeof partyKey);
   console.log(userKey);
-  // const test = useCallback(async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await modifyTest(2);
-  //     // console.log(res);
-  //   } catch (error) {
-  //     if (error.response.status === 401) {
-  //       console.log("throws");
-  //       throwAuthError();
-  //     }
-  //   }
-  // }, []);
+  const test = useCallback(async (e) => {
+    e.preventDefault();
+    try {
+      const res = await modifyTest(2);
+      // console.log(res);
+    } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
+    }
+  }, []);
   const fetchData = async () => {
     try {
       // const temps = await fetchPartyInquire();
@@ -143,7 +143,7 @@ export default function PartyPage() {
   console.log(partyKey);
   return (
     <>
-      {/* <button onClick={test}>test</button> */}
+      <button onClick={test}>test</button>
       <TopNavigationBar text="모임 생성"></TopNavigationBar>
       <Container className="page-container">
         <div className="party-container">
