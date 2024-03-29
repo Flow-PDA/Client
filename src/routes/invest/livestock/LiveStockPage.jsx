@@ -167,13 +167,13 @@ export default function LiveStockPage() {
 
     stockCodeList.forEach((elem) => {
       const temp = `1|${elem}`;
-      socketIo.emit("REGISTER_SUB", temp);
+      socketIo?.emit("REGISTER_SUB", temp);
     });
     return () => {
       console.log(`RELEASE ${stockCodeList}`);
       stockCodeList.forEach((elem) => {
         const temp = `1|${elem}`;
-        socketIo.emit("RELEASE_SUB", temp);
+        socketIo?.emit("RELEASE_SUB", temp);
       });
     };
   }, [stockCodeList]);
