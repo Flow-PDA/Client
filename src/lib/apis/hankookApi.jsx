@@ -14,6 +14,18 @@ export async function fetchHankookStockBalance(partyKey, stockKey) {
   }
 }
 
+// 보유하고 있는 모든 주식 찾기
+export async function fetchHankookStockBalanceAll(partyKey) {
+  try {
+    const response = await authInstance.get(`/stocks/${partyKey}/balance`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching all stock balance:", error);
+    throw error;
+  }
+}
+
 // 한투에서 주식 현재가 불러오는  API
 export async function fetchHankookStockCurrent(stockKey) {
   try {

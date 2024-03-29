@@ -183,7 +183,9 @@ export default function MyPartyPage() {
         <hr style={{ marginTop: "1rem", width: "90vw" }} />
         <div
           className="myparty-transfer-container"
-          onClick={() => navigate(`/transfer/${partyKey}`)}
+          onClick={() =>
+            navigate(`/party/${partyKey}/myPartyTransactionDetail`)
+          }
         >
           거래내역
         </div>

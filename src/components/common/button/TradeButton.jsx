@@ -54,6 +54,7 @@ export default function TradeButton({
         stockName: stockInfo.stockName,
         stockPrice: stockInfo.stck_prpr,
         type: type,
+        stockBalance: stockBalance,
       },
     });
   }
@@ -89,7 +90,7 @@ export default function TradeButton({
           </Col>
         </Row>
       )}
-      {console.log(stockInfo)}
+      {console.log(stockBalance)}
       {/* 모달 추가 */}
       <ApproveInterestModal
         isOpen={isModalOpen}
