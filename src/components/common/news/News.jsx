@@ -29,26 +29,29 @@ export default function News({ news, setNews, stockName }) {
     <>
       <div className="news-container">
         {news.map((elem, index) => (
-          <div
-            className="news-data-container"
-            key={index}
-            onClick={() => (window.location.href = `${elem.news_link}`)}
-          >
-            <div className="news-content">
-              <div style={{ fontSize: "1.2rem", fontWeight: "600" }}>
-                {elem.news_title.slice(0, 15)}..
-              </div>
-              <div>{elem.news_content.slice(0, 45)}..</div>
-            </div>
+          <>
             <div
-              style={{
-                width: "25vw",
-                height: "10vh",
-                backgroundSize: "cover",
-                backgroundImage: `url(${elem.news_img})`,
-              }}
-            ></div>
-          </div>
+              className="news-data-container"
+              key={index}
+              onClick={() => (window.location.href = `${elem.news_link}`)}
+            >
+              <div className="news-content">
+                <div style={{ fontSize: "1.2rem", fontWeight: "600" }}>
+                  {elem.news_title.slice(0, 15)}..
+                </div>
+                <div>{elem.news_content.slice(0, 45)}..</div>
+              </div>
+              <div
+                style={{
+                  width: "25vw",
+                  height: "10vh",
+                  backgroundSize: "cover",
+                  backgroundImage: `url(${elem.news_img})`,
+                  borderRadius: "5px",
+                }}
+              ></div>
+            </div>
+          </>
         ))}
       </div>
     </>

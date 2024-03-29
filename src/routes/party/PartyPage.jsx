@@ -6,7 +6,11 @@ import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
 import "./PartyPage.css";
 import { modifyTest } from "../../lib/apis/userApi";
 import { AuthContext } from "../../lib/contexts/AuthContext";
-import { fetchPartyInquire } from "../../lib/apis/party";
+import {
+  fetchPartyInquire,
+  fetchUser,
+  fetchPartyInfo,
+} from "../../lib/apis/party";
 import { fetchDepositData } from "../../lib/apis/stock";
 // 특정 모임 정보 api
 // 잔고 api
@@ -30,10 +34,19 @@ export default function PartyPage() {
   const fetchData = async () => {
     try {
       const temps = await fetchPartyInquire();
+      const resp = await fetchUser();
       console.log(temps);
-
+      console.log(resp.data.groups);
+      const party = resp.data.groups;
+      const resBody = await Promise.all(
+        party.map(async (elem) => {
+          const alpha = await fetchPartyInfo(elem.partyKey);
+          return alpha;
+        })
+      );
+      console.log(resBody);
       const new_tmp = await Promise.all(
-        temps.map(async (party) => {
+        resBody.map(async (party) => {
           const {
             accountNumber: CANO,
             token: TOKEN,
@@ -44,14 +57,11 @@ export default function PartyPage() {
           return { ...party, ...res };
         })
       );
-
+      console.log(new_tmp);
       setInfos(new_tmp);
       // console.log(res);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
+      console.error(error);
     }
   };
 
@@ -75,12 +85,16 @@ export default function PartyPage() {
   }, []);
   return (
     <>
-      <button onClick={test}>test</button>
-      <TopNavigationBar text="모임 생성"></TopNavigationBar>
+      {/* <button onClick={test}>test</button> */}
+      <TopNavigationBar text="모임 목록"></TopNavigationBar>
       <Container className="page-container">
         <div className="party-container">
           <div className="alert-container">
-            <img src="../../../public/alert.png" alt="alert" />
+            <img
+              src="../../../public/alert.png"
+              alt="alert"
+              style={{ height: "7.5vh" }}
+            />
             <div className="message-container">
               <p className="alert-message main-font">177의 초대</p>
               <p className="alert-message sub-font">정찬진님이 초대했습니다.</p>
@@ -100,17 +114,18 @@ export default function PartyPage() {
                 }}
                 className="deposit-info-container"
               >
-                <h3>
-                  <span style={{ fontWeight: "700" }}>{party.name}</span>의 모임
+                <h4>
+                  <span style={{ fontWeight: "600" }}>{party.name}</span>의 모임
                   투자
-                </h3>
-                <h1 style={{ padding: "0" }}>
+                </h4>
+                <h1 style={{ padding: "0", fontWeight: "600" }}>
                   {(
                     Number(party.evlu_amt_smtl_amt) + Number(party.deposit)
                   ).toLocaleString()}
                   원
                 </h1>
-                <h3
+                <h5
+                  style={{ fontWeight: "500" }}
                   className={
                     party.evlu_amt_smtl_amt - party.pchs_amt_smtl_amt >= 0
                       ? "red-txt"
@@ -134,7 +149,7 @@ export default function PartyPage() {
                   ) : (
                     <>0(0%)</>
                   )}
-                </h3>
+                </h5>
               </div>
 
               <div className="deposit-button-container">

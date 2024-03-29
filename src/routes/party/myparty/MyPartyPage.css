@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   width: 90vw;
-  height: 90vh;
+  height: 100vh;
 }
 .myparty-deposit-container {
   display: flex;
@@ -11,13 +11,14 @@
   justify-content: center;
   align-items: center;
   width: 90vw;
-  height: 30vh;
+  padding-top: 2vh;
 }
 .myparty-deposit-detail-container {
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
+  margin-bottom: 2vh;
 }
 .myparty-deposit-btn-container {
   display: flex;
@@ -52,10 +53,25 @@
   align-items: flex-end;
 }
 .myparty-transfer-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: nowrap !important;
-  width: 85vw;
-  height: 35vh;
-  flex-direction: row;
+  padding-bottom: 3vh;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-right: auto;
+  margin-left: 1vh;
+  width: 100%;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0 !important;
 }

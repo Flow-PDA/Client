@@ -51,10 +51,10 @@ export default function MyPartyTransactionDetail() {
                 <Col xs={2} className="transaction-date"></Col>
               )}
 
-              <Col xs={4} className="transaction-stock-name">
+              <Col xs={6} className="transaction-stock-name">
                 {data.stockName}
               </Col>
-              <Col xs={6} className="transaction-name">
+              <Col xs={4} className="transaction-name">
                 {data.name}
               </Col>
             </Row>
