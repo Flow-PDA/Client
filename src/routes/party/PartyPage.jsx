@@ -159,6 +159,7 @@ export default function PartyPage() {
             }
           >
             <img src={Alert} alt="alert" />
+
             <div className="message-container">
               <p className="alert-message main-font">{partyName}의 초대</p>
               <p className="alert-message sub-font">
@@ -188,17 +189,18 @@ export default function PartyPage() {
                 }}
                 className="deposit-info-container"
               >
-                <h3>
-                  <span style={{ fontWeight: "700" }}>{party.name}</span>의 모임
+                <h4>
+                  <span style={{ fontWeight: "600" }}>{party.name}</span>의 모임
                   투자
-                </h3>
-                <h1 style={{ padding: "0" }}>
+                </h4>
+                <h1 style={{ padding: "0", fontWeight: "600" }}>
                   {(
                     Number(party.evlu_amt_smtl_amt) + Number(party.deposit)
                   ).toLocaleString()}
                   원
                 </h1>
-                <h3
+                <h5
+                  style={{ fontWeight: "500" }}
                   className={
                     party.evlu_amt_smtl_amt - party.pchs_amt_smtl_amt >= 0
                       ? "red-txt"
@@ -222,7 +224,7 @@ export default function PartyPage() {
                   ) : (
                     <>0(0%)</>
                   )}
-                </h3>
+                </h5>
               </div>
 
               <div className="deposit-button-container">

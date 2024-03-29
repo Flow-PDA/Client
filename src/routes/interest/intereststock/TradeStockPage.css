@@ -13,6 +13,7 @@
   font-weight: 600;
   font-size: 1.1rem;
   color: #8b95a1;
+  margin-left: 0.5vw;
 }
 
 .trade-stock-name {
@@ -22,9 +23,26 @@
   margin-left: auto;
 }
 
+.trade-market-price-info {
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
 .trade-price {
   font-weight: 600;
   font-size: 1.5rem;
+}
+
+.trade-stock-price-input {
+  width: 60vw;
+  margin-bottom: 0.5rem;
+  border: none;
+  color: black;
+}
+
+.trade-stock-price-input::placeholder {
+  color: black;
+  font-weight: 600;
 }
 
 .trade-current-price {

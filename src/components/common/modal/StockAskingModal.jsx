@@ -44,8 +44,8 @@ const StockAskingModal = ({
   const handleBuyButtonClick = () => {
     navigate(`/stockDetail/${partyKey}/${stockKey}/tradeStock`, {
       state: {
-        name: name,
-        price: stockPrice.toLocaleString(),
+        stockName: name,
+        stockPrice: stockPrice,
         type: "구매",
       },
     });
@@ -54,8 +54,8 @@ const StockAskingModal = ({
   const handleSellButtonClick = () => {
     navigate(`/stockDetail/${partyKey}/${stockKey}/tradeStock`, {
       state: {
-        name: name,
-        price: stockPrice.toLocaleString(),
+        stockName: name,
+        stockPrice: stockPrice,
         type: "판매",
       },
     });
