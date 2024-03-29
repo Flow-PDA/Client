@@ -27,14 +27,6 @@
   padding: 0.5vh !important;
 }
 
-.asks-price {
-  color: #f13b3b !important;
-}
-
-.asks-percent {
-  color: #f13b3b !important;
-}
-
 .td-percent {
   font-size: 0.8rem;
   text-align: center;
@@ -51,12 +43,16 @@
   border-radius: 3px;
 }
 
-.bids-price {
+.blue-text {
   color: #375aff !important;
 }
 
-.bids-percent {
-  color: #375aff !important;
+.red-text {
+  color: #f13b3b !important;
+}
+
+.black-text {
+  color: #000000 !important;
 }
 
 .quantity-asks {

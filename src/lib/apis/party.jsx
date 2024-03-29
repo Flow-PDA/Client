@@ -19,7 +19,7 @@ export async function fetchPartyCreate(name, accountNumber) {
 // 모든 모임 조회
 export async function fetchPartyInquire() {
   const response = await authInstance.get(`/parties`);
-  return response.data.result;
+  return response;
 }
 
 //모임 주식 거래 내역 조회

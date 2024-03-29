@@ -4,6 +4,7 @@ import TopNavigationBar from "../../../../components/common/nav/TopNavigationBar
 import "./InterestStockDetailChartPage.css";
 import SampleChart from "./SampleChart";
 import StockDataFetcher from "./StockDataFetcher.js";
+import io from "socket.io-client";
 import {
   fetchHankookStockBalance,
   fetchHankookStockCurrent,
@@ -21,6 +22,43 @@ export default function InterestStockDetailChartPage() {
   const [stockBalance, setStockBalance] = useState([]);
 
   const navigate = useNavigate();
+
+  // state for socketIo
+  const [socketIo, setSocketIo] = useState(null);
+
+  let [stockExecutionPrice, setStockExecutionPrice] = useState(0);
+  // when mounted
+  useEffect(() => {
+    // socketIo init.
+    const WS_URL = import.meta.env.VITE_WS_URL;
+    if (WS_URL !== undefined) {
+      const _socketIo = io.connect(WS_URL);
+      _socketIo.on("connect", () => {
+        console.log("socket connected");
+      });
+      _socketIo.on("update", (data) => {
+        //console.log(data);
+
+        setStockExecutionPrice(data[1]);
+        // console.log(stockExecutionPrice);
+      });
+
+      setSocketIo(_socketIo);
+    } else {
+      console.log("WS URL not defined");
+    }
+  }, []);
+
+  // when socketIo modified
+  useEffect(() => {
+    if (socketIo !== null) {
+      // socketIo initiated
+      // 2|005930 - 삼성전자 호가, 1|005930 - 삼성전자 체결가
+      const temp = `1|${stockKey}`;
+      // REGISTER_SUB : 등록, RELEASE_SUB : 해제
+      socketIo.emit("REGISTER_SUB", temp);
+    }
+  }, [socketIo]);
 
   useEffect(() => {
     async function fetchData() {
@@ -80,7 +118,7 @@ export default function InterestStockDetailChartPage() {
             <Row className="stock-detail-row">
               <div className="stock-detail-name">{stockInfo.stockName}</div>
               <div className="stock-detail-price">
-                {parseInt(stockInfo.stck_prpr).toLocaleString()}원
+                {parseInt(stockExecutionPrice).toLocaleString()}원
               </div>
             </Row>
             <Row className="stock-detail-menu-row">
@@ -92,7 +130,7 @@ export default function InterestStockDetailChartPage() {
                 className="stock-detail-menu-button"
                 onClick={handleAskingPriceButtonClick}
               >
-                {console.log(stockInfo)}
+                {/* {console.log(stockInfo)} */}
                 호가
               </Col>
               <Col
@@ -104,9 +142,7 @@ export default function InterestStockDetailChartPage() {
               </Col>
             </Row>
             <Row>
-              <Col>
-                <SampleChart />
-              </Col>
+              <Col>{/* <SampleChart /> */}</Col>
             </Row>
             <Row className="stock-detail-date-row">
               <Col>

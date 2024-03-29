@@ -89,7 +89,7 @@ export default function TradeButton({
           </Col>
         </Row>
       )}
-      {console.log(stockInfo)}
+      {/* {console.log(stockInfo)} */}
       {/* 모달 추가 */}
       <ApproveInterestModal
         isOpen={isModalOpen}
