@@ -2,19 +2,44 @@ import { Button, Col, Container, Row, Form, Image } from "react-bootstrap";
 import LightningIcon from "../../../assets/lightning-bolt.png";
 import "./TradeStockPage.css";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PrimaryButton from "../../../components/common/button/PrimaryButton";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import { tradeStock } from "../../../lib/apis/hankookApi";
 
 export default function TradeStockPage() {
+
+  const { partyKey, stockKey } = useParams();
   const [price, setPrice] = useState("");
   const [amount, setAmount] = useState("");
   const [isMarketPrice, setIsMarketPrice] = useState(false);
+
 
   const location = useLocation();
   const stockName = location.state.stockName;
   const stockPrice = location.state.stockPrice;
   const type = location.state.type;
+
+  const maxBuyQuantity = async () => {};
+
+  useEffect(() => {}, []);
+
+  const trade = async (transactionType) => {
+    try {
+      // transactionType, partyKey, stockKey, orderQuantity, orderPrice;
+      console.log("price", price);
+      console.log("amount", amount);
+      const res = await tradeStock(
+        transactionType,
+        partyKey,
+        stockKey,
+        amount,
+        price
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const toggleMarketPrice = () => {
     setIsMarketPrice(!isMarketPrice);
@@ -55,6 +80,7 @@ export default function TradeStockPage() {
                 />
               </div>
             )}
+            
             <div className="trade-current-price">
               {" "}
               <Image src={LightningIcon} className="lightning-icon" />
@@ -97,6 +123,7 @@ export default function TradeStockPage() {
             type="text"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
+
           />
 
           <div className="trade-possible">
@@ -115,6 +142,7 @@ export default function TradeStockPage() {
           minWidth="100%"
           backgroundColor={type === "구매" ? "#F46060" : "#375AFF"}
           className="trade-btn"
+          onClick={() => trade(type === "구매" ? 0 : 1)}
         ></PrimaryButton>
       </Container>
     </>

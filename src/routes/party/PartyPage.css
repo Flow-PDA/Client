@@ -23,6 +23,9 @@
   justify-content: center;
   gap: 0.7rem;
 }
+.alert-none {
+  display: none;
+}
 .alert-message {
   text-align: left;
   margin: 0;

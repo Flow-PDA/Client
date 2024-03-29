@@ -1,5 +1,6 @@
 import logo from "../assets/logo.svg";
 import "./MainPage.css";
+import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../components/common/button/PrimaryButton";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import {
@@ -8,15 +9,19 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import { changePartyKey } from "../store/reducers/partyReducer";
 import { useEffect } from "react";
 
 const MainPage = () => {
   const navigate = useNavigate();
-  // const searchParams = new URLSearchParams(window.location.search);
-  // const partyKey = searchParams.get(partyKey);
+  const dispatch = useDispatch();
   const location = useLocation();
+  const party = useSelector((state) => state.party.partyKey);
+  console.log("party:", party);
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log(location);
+  const key = searchParams.get("partyKey");
+  console.log(key);
+  console.log(party);
   // console.log(params.getAll("partyKey"));
   // console.log(location);
   // console.log();
@@ -28,7 +33,15 @@ const MainPage = () => {
   // }, [searchParams]);
 
   // console.log(partyKey);
+  const fetchParty = () => {
+    dispatch(changePartyKey({ partyKey: `${key}` }));
+  };
 
+  useEffect(() => {
+    if (!party.partyKey) {
+      fetchParty();
+    }
+  }, []);
   return (
     <Container className="main-container">
       <Row>
