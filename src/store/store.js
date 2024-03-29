@@ -11,18 +11,37 @@ import {
 import storage from "redux-persist/lib/storage";
 import userReducer from "./reducers/userReducer";
 import persistStore from "redux-persist/es/persistStore";
+import partyReducer from "./reducers/partyReducer";
 
 const userPersistConfig = {
   key: "user",
   storage,
   blacklist: ["loginReqState"],
 };
-
+const partyPersistConfig = {
+  key: "party",
+  storage,
+  blacklist: ["loginReqState"],
+};
 const rootReducer = combineReducers({
   user: persistReducer(userPersistConfig, userReducer),
   // users: userReducer
+  party: persistReducer(partyPersistConfig, partyReducer),
 });
-
+// const rootReducer = persistReducer(
+//   userPersistConfig,
+//   combineReducers({
+//     user: userReducer,
+//     party: partyReducer,
+//   })
+// );
+// const rootReducer = persistReducer(
+//   rootPersistConfig,
+//   combineReducers({
+//     user: UserReducer,
+//     search: SearchReducer,
+//   })
+// );
 const store = configureStore({
   // reducer: persistedReducer,
   reducer: rootReducer,

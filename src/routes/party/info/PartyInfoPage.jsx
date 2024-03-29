@@ -141,7 +141,7 @@ export default function PartyInfoPage() {
             </div>
           </Col>
           <Col className="info-member-container">
-            {users.length > 1 &&
+            {users.length >= 1 &&
               members.map((mem) => (
                 <div key={mem.userKey} className="info-member">
                   <div>{mem.userName}</div>
