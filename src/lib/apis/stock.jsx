@@ -51,6 +51,7 @@ export async function fetchDepositData(CANO, APPKEY, APPSECRET, TOKEN) {
     return response.data;
   } catch (err) {
     console.error(err);
+    return {};
   }
 }
 
