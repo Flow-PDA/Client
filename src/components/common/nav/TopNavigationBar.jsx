@@ -13,12 +13,16 @@ import "./TopNavigationBar.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { fetchPartyInfo } from "../../../lib/apis/party";
+
+import {
+  fetchPartyInquire,
+  fetchUser,
+  fetchPartyInfo,
+} from "../../../lib/apis/party";
+import { fetchDepositData } from "../../../lib/apis/stock";
 
 const TopNavigationBar = ({ text, type = 0 }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
-  const userGroup = useSelector((state) => state.user.groupInfo);
-  console.log(userGroup);
 
   const userName = userInfo.name;
   const navigate = useNavigate();
@@ -52,6 +56,50 @@ const TopNavigationBar = ({ text, type = 0 }) => {
       console.error("모임 정보 데이터 호출 중 에러:", error);
     }
   };
+
+  const [infos, setInfos] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const temps = await fetchPartyInquire();
+      const resp = await fetchUser();
+      //console.log(temps);
+      //console.log(resp.data.groups);
+      const party = resp.data.groups;
+      const resBody = await Promise.all(
+        party.map(async (elem) => {
+          const alpha = await fetchPartyInfo(elem.partyKey);
+          return alpha;
+        })
+      );
+
+      const new_tmp = await Promise.all(
+        resBody.map(async (party) => {
+          const {
+            accountNumber: CANO,
+            token: TOKEN,
+            appSecret: APPSECRET,
+            appKey: APPKEY,
+          } = party;
+          const res = await fetchDepositData(CANO, APPKEY, APPSECRET, TOKEN);
+          return { ...party, ...res };
+        })
+      );
+      // console.log(new_tmp);
+      setInfos(new_tmp);
+      // console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //TODO 햄버거버튼 연결
+
+  // console.log(infos);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     callPartyInfo();

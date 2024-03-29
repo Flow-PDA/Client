@@ -6,7 +6,8 @@ import { AuthContext } from "../../../../lib/contexts/AuthContext";
 import { fetchHankookStockCurrent } from "../../../../lib/apis/hankookApi";
 import { SyncLoader } from "react-spinners";
 import "./InterestStockDetailNewsPage.css";
-import News from "../../../../components/common/news/News";
+import News from "../news/News";
+import io from "socket.io-client";
 
 export default function InterestStockDetailNewsPage() {
   const { partyKey, stockKey } = useParams();
@@ -14,6 +15,43 @@ export default function InterestStockDetailNewsPage() {
   const [stockInfo, setStockInfo] = useState([]);
   const [news, setNews] = useState([]);
   const navigate = useNavigate();
+
+  // state for socketIo
+  const [socketIo, setSocketIo] = useState(null);
+
+  let [stockExecutionPrice, setStockExecutionPrice] = useState(0);
+  // when mounted
+  useEffect(() => {
+    // socketIo init.
+    const WS_URL = import.meta.env.VITE_WS_URL;
+    if (WS_URL !== undefined) {
+      const _socketIo = io.connect(WS_URL);
+      _socketIo.on("connect", () => {
+        console.log("socket connected");
+      });
+      _socketIo.on("update", (data) => {
+        //console.log(data);
+
+        setStockExecutionPrice(data[1]);
+        // console.log(stockExecutionPrice);
+      });
+
+      setSocketIo(_socketIo);
+    } else {
+      console.log("WS URL not defined");
+    }
+  }, []);
+
+  // when socketIo modified
+  useEffect(() => {
+    if (socketIo !== null) {
+      // socketIo initiated
+      // 2|005930 - 삼성전자 호가, 1|005930 - 삼성전자 체결가
+      const temp = `1|${stockKey}`;
+      // REGISTER_SUB : 등록, RELEASE_SUB : 해제
+      socketIo.emit("REGISTER_SUB", temp);
+    }
+  }, [socketIo]);
 
   useEffect(() => {
     async function fetchData() {
@@ -41,7 +79,6 @@ export default function InterestStockDetailNewsPage() {
 
   return (
     <>
-      {console.log("sss")}
       <TopNavigationBar text={"종목 상세정보"} />
       <Container>
         {stockInfo.length === 0 ? (
@@ -61,7 +98,7 @@ export default function InterestStockDetailNewsPage() {
             <Row className="stock-detail-row">
               <div className="stock-detail-name">{stockInfo.stockName}</div>
               <div className="stock-detail-price">
-                {parseInt(stockInfo.stck_prpr).toLocaleString()}원
+                {parseInt(stockExecutionPrice).toLocaleString()}원
               </div>
             </Row>
             <Row className="stock-detail-menu-row">
@@ -77,7 +114,6 @@ export default function InterestStockDetailNewsPage() {
                 className="stock-detail-menu-button"
                 onClick={handleAskingPriceButtonClick}
               >
-                {console.log(stockInfo)}
                 호가
               </Col>
               <Col xs={2} className="stock-detail-menu-button news-button">
