@@ -32,6 +32,9 @@ const userSlice = createSlice({
       state.loginReqState = "";
       state.groupInfo = [];
     },
+    updateGroupInfo(state, action) {
+      state.groupInfo = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUserLogin.fulfilled, (state, action) => {
@@ -53,5 +56,5 @@ const userSlice = createSlice({
 });
 
 export { fetchUserLogin };
-export const { clearUserStore } = userSlice.actions;
+export const { clearUserStore, updateGroupInfo } = userSlice.actions;
 export default userSlice.reducer;

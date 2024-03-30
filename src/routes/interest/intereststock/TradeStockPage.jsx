@@ -77,22 +77,36 @@ export default function TradeStockPage() {
       console.log("amount", amount);
 
       if (transactionType === 0) {
+        if (isMarketPrice) {
+          //시장가 체크되어있으면
+          setPrice(parseInt(stockExecutionPrice));
+        }
+
         console.log(typeof price);
-        alert(
-          `${stockName}, ${parseInt(
-            price
-          ).toLocaleString()}원에 ${amount}주 구매 성공`
-        );
-      } else {
-        console.log(amount, stockBalance.hldg_qty);
-        if (parseInt(amount) > parseInt(stockBalance.hldg_qty)) {
-          alert(`${stockBalance.hldg_qty}주 만큼 주문 가능합니다!`);
+
+        if (parseInt(price * amount) > parseInt(deposit)) {
+          const calculatedAmount = Math.floor(deposit / price);
+          alert(
+            `주문 가능한 금액을 초과했습니다! 최대 ${calculatedAmount}주 만큼 구매 가능합니다!`
+          );
           return;
         } else {
           alert(
-            `${stockName}, ${parseInt(
+            `${stockName} ${parseInt(
               price
-            ).toLocaleString()}원에 ${amount}주 판매 성공`
+            ).toLocaleString()}원에 ${amount}주 구매 주문 성공`
+          );
+        }
+      } else {
+        console.log(amount, stockBalance.hldg_qty);
+        if (parseInt(amount) > parseInt(stockBalance.hldg_qty)) {
+          alert(`최대 ${stockBalance.hldg_qty}주 만큼 판매 가능합니다!`);
+          return;
+        } else {
+          alert(
+            `${stockName} ${parseInt(
+              price
+            ).toLocaleString()}원에 ${amount}주 판매 주문 성공`
           );
         }
       }
@@ -127,7 +141,7 @@ export default function TradeStockPage() {
     deposit = partyInfo.deposit;
   }
 
-  const setVolumePercentage = (percentage) => {
+  const setSellVolumePercentage = (percentage) => {
     if (percentage === "최대") {
       setAmount(stockBalance.hldg_qty.toString());
     } else {
@@ -136,6 +150,15 @@ export default function TradeStockPage() {
       );
       setAmount(calculatedAmount.toString());
     }
+  };
+
+  const setBuyVolumePercentage = (percentage) => {
+    if (isMarketPrice) {
+      //시장가 체크되어있으면
+      setPrice(parseInt(stockExecutionPrice));
+    }
+    const calculatedAmount = Math.floor(((percentage / 100) * deposit) / price);
+    setAmount(calculatedAmount.toString());
   };
 
   // 숫자에 천 단위 구분 기호 추가하는 함수
@@ -248,25 +271,41 @@ export default function TradeStockPage() {
         <div className="trade-volume-btns">
           <div
             className="trade-volume-btn"
-            onClick={() => setVolumePercentage(10)}
+            onClick={() => {
+              type === "구매"
+                ? setBuyVolumePercentage(10)
+                : setSellVolumePercentage(10);
+            }}
           >
             10%
           </div>
           <div
             className="trade-volume-btn"
-            onClick={() => setVolumePercentage(25)}
+            onClick={() => {
+              type === "구매"
+                ? setBuyVolumePercentage(25)
+                : setSellVolumePercentage(25);
+            }}
           >
             25%
           </div>
           <div
             className="trade-volume-btn"
-            onClick={() => setVolumePercentage(50)}
+            onClick={() => {
+              type === "구매"
+                ? setBuyVolumePercentage(50)
+                : setSellVolumePercentage(50);
+            }}
           >
             50%
           </div>
           <div
             className="trade-volume-btn"
-            onClick={() => setVolumePercentage("최대")}
+            onClick={() => {
+              type === "구매"
+                ? setBuyVolumePercentage(100)
+                : setSellVolumePercentage("최대");
+            }}
           >
             최대
           </div>

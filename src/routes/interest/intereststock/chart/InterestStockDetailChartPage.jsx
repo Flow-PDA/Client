@@ -99,7 +99,7 @@ export default function InterestStockDetailChartPage() {
   return (
     <>
       {console.log(stockBalance)}
-      <TopNavigationBar text={"종목 상세정보"} />
+      <TopNavigationBar text={"종목 상세정보"} type={1} />
       <Container>
         {stockInfo.length === 0 ? (
           <div
