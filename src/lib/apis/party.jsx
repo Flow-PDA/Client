@@ -19,7 +19,7 @@ export async function fetchPartyCreate(name, accountNumber) {
 // 모든 모임 조회
 export async function fetchPartyInquire() {
   const response = await authInstance.get(`/parties`);
-  return response.data.result;
+  return response;
 }
 
 //모임 주식 거래 내역 조회
@@ -51,8 +51,7 @@ export async function fetchPartyAdmin(partyKey) {
 // 특정 모임의 모임원 조회
 export async function fetchPartyMemberInquire(partyKey) {
   const response = await authInstance.get(`/parties/${partyKey}/members`);
-  console.log(response);
-  return response;
+  return response.data.result;
 }
 
 // 유저의 정보 조회
@@ -63,7 +62,14 @@ export async function fetchSearchUser(partyKey, userKey) {
   console.log(response);
   return response;
 }
-
+// 일반 유저 등록하기
+export async function fetchNormalUser(partyKey) {
+  const response = await authInstance.post(`/parties/${partyKey}/members`, {
+    partyKey,
+  });
+  console.log(response);
+  return response;
+}
 // 유저 삭제하기
 export async function fetchDeleteUser(partyKey, userKey) {
   console.log("11", userKey);
@@ -73,9 +79,9 @@ export async function fetchDeleteUser(partyKey, userKey) {
   console.log(response);
   return response;
 }
-export async function fetchUser() {
-  const response = await authInstance.get(`/parties/user`);
-  return response;
+export async function fetchUser(userKey) {
+  const response = await authInstance.get(`/parties/${userKey}/user`);
+  return response.data.result;
 }
 export default {
   fetchPartyInfo,
@@ -88,4 +94,5 @@ export default {
   fetchSearchUser,
   fetchDeleteUser,
   fetchUser,
+  fetchNormalUser,
 };

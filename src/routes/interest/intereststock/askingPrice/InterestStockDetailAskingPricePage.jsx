@@ -5,57 +5,92 @@ import SampleAskingPriceChart from "./SampleAskingPriceChart";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../../lib/contexts/AuthContext";
-
-import {
-  fetchHankookStockBalance,
-  fetchHankookStockCurrent,
-} from "../../../../lib/apis/hankookApi";
+import io from "socket.io-client";
 import { SyncLoader } from "react-spinners";
 import { fetchPartyInfo } from "../../../../lib/apis/party";
 import { getApproval } from "../../../../lib/apis/interest";
 import TradeButton from "../../../../components/common/button/TradeButton";
+import {
+  fetchHankookStockBalance,
+  fetchHankookStockCurrent,
+} from "../../../../lib/apis/hankookApi";
+import { fetchStockEndPrice } from "../../../../lib/apis/stock";
 
 export default function InterestStockDetailAskingPricePage() {
   const navigate = useNavigate();
   const { throwAuthError } = useContext(AuthContext);
   const { partyKey, stockKey } = useParams();
   const [price, setPrice] = useState(0);
+  const [yesterDayEndPrice, setYesterDayEndPrice] = useState(0);
 
   const [stockInfo, setStockInfo] = useState([]);
   const [stockBalance, setStockBalance] = useState([]);
 
+  // state for socketIo
+  const [socketIo, setSocketIo] = useState(null);
+
+  let [stockExecutionPrice, setStockExecutionPrice] = useState(0);
+  // when mounted
+  useEffect(() => {
+    // socketIo init.
+    const WS_URL = import.meta.env.VITE_WS_URL;
+    if (WS_URL !== undefined) {
+      const _socketIo = io.connect(WS_URL);
+      _socketIo.on("connect", () => {
+        console.log("socket connected");
+      });
+      _socketIo.on("update", (data) => {
+        //console.log(data);
+
+        setStockExecutionPrice(data[1]);
+        // console.log(stockExecutionPrice);
+      });
+
+      setSocketIo(_socketIo);
+    } else {
+      console.log("WS URL not defined");
+    }
+  }, []);
+
+  // when socketIo modified
+  useEffect(() => {
+    if (socketIo !== null) {
+      // socketIo initiated
+      // 2|005930 - 삼성전자 호가, 1|005930 - 삼성전자 체결가
+      const temp = `1|${stockKey}`;
+      // REGISTER_SUB : 등록, RELEASE_SUB : 해제
+      socketIo.emit("REGISTER_SUB", temp);
+    }
+  }, [socketIo]);
+
   useEffect(() => {
     async function fetchData() {
       try {
-        console.log(stockKey);
-        const stock_info = await fetchHankookStockCurrent(stockKey);
-        const stock_balance = await fetchHankookStockBalance(
-          partyKey,
-          stockKey
-        );
+        const stockInfo = await fetchHankookStockCurrent(stockKey);
+        const fetchData = await fetchHankookStockBalance(partyKey, stockKey);
         const party = await fetchPartyInfo(partyKey);
         const mystock = await getApproval(partyKey).then((data) => {
           return data.data.result;
         });
+        const stockEndPrice = await fetchStockEndPrice(stockKey);
+        // console.log(stockEndPrice.data[0].closePrice);
+        setYesterDayEndPrice(stockEndPrice.data[0].closePrice);
 
         const isActive =
           mystock.find((data) => data.stockKey === stockKey) !== undefined;
 
-        setStockInfo(stock_info);
+        setStockInfo(stockInfo);
         setStockBalance({
-          data: stock_balance,
+          data: fetchData,
           partyInfo: party,
         });
       } catch (error) {
-        console.log(error);
-        if (error.response.status === 401) {
-          console.log("throws");
-          throwAuthError();
-        }
+        console.error(error);
+        throw Error(error);
       }
     }
     fetchData();
-  }, []);
+  }, [stockKey]);
 
   const handleChartButtonClick = () => {
     navigate(`/stockDetail/${partyKey}/${stockKey}/chart`);
@@ -86,7 +121,7 @@ export default function InterestStockDetailAskingPricePage() {
             <Row className="stock-detail-row">
               <div className="stock-detail-name">{stockInfo.stockName}</div>
               <div className="stock-detail-price">
-                {parseInt(stockInfo.stck_prpr).toLocaleString()}원
+                {Number(stockExecutionPrice).toLocaleString()}원
               </div>
             </Row>
             <Row className="stock-detail-menu-row">
@@ -114,8 +149,9 @@ export default function InterestStockDetailAskingPricePage() {
             <hr />
             <div className="sample-asking-price-chart-wrapper">
               <SampleAskingPriceChart
-                name={stockInfo.stockName}
                 stockCode={stockKey}
+                endPrice={yesterDayEndPrice}
+                currentPrice={stockExecutionPrice}
               />
             </div>
 

@@ -8,6 +8,10 @@ const initialState = {
   groupInfo: [],
 };
 
+// const updateGroupInfo = (state, action) => {
+//   state.groupInfo = action.payload;
+// };
+
 const fetchUserLogin = createAsyncThunk(
   "user/fetchUserSignup",
   async (data, thunkAPI) => {
@@ -44,6 +48,7 @@ const userSlice = createSlice({
     builder.addCase(fetchUserLogin.pending, (state, action) => {
       state.loginReqState = "pending";
     });
+    // builder.addCase(updateGroupInfo, updateGroupInfo);
   },
 });
 
