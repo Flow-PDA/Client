@@ -143,8 +143,8 @@ export default function PartyPage() {
   console.log(partyKey);
   return (
     <>
-      <button onClick={test}>test</button>
-      <TopNavigationBar text="모임 생성"></TopNavigationBar>
+      {/* <button onClick={test}>test</button> */}
+      <TopNavigationBar type={3} />
       <Container className="page-container">
         <div className="party-container">
           <div
