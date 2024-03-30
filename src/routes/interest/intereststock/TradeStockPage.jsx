@@ -1,27 +1,35 @@
-import { Button, Col, Container, Row, Form, Image } from "react-bootstrap";
+import { Container, Form, Image } from "react-bootstrap";
 import LightningIcon from "../../../assets/lightning-bolt.png";
 import "./TradeStockPage.css";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 import { useEffect, useState } from "react";
 import PrimaryButton from "../../../components/common/button/PrimaryButton";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { tradeStock } from "../../../lib/apis/hankookApi";
 import io from "socket.io-client";
 import { fetchPartyInfo } from "../../../lib/apis/party";
 
 export default function TradeStockPage() {
+
+  const navigate = useNavigate();
+
   const { partyKey, stockKey } = useParams();
   const [price, setPrice] = useState("");
   const [amount, setAmount] = useState("");
   const [isMarketPrice, setIsMarketPrice] = useState(false);
+
   const [partyInfo, setPartyInfo] = useState();
+
 
   const location = useLocation();
   const stockName = location.state.stockName;
   const stockPrice = location.state.stockPrice;
+  const stockBalance = location.state.stockBalance.data;
   const type = location.state.type;
 
   const maxBuyQuantity = async () => {};
+  const maxSellQuantity = async () => {};
+
 
   // state for socketIo
   const [socketIo, setSocketIo] = useState(null);
@@ -60,18 +68,40 @@ export default function TradeStockPage() {
     }
   }, [socketIo]);
 
+  useEffect(() => {
+    console.log("stockBalance", stockBalance);
+    setPrice(stockPrice);
+  }, []);
+
+
   const trade = async (transactionType) => {
     try {
       // transactionType, partyKey, stockKey, orderQuantity, orderPrice;
       console.log("price", price);
       console.log("amount", amount);
-      const res = await tradeStock(
-        transactionType,
-        partyKey,
-        stockKey,
-        amount,
-        price
-      );
+
+      if (transactionType === 0) {
+        console.log(typeof price);
+        alert(
+          `${stockName}, ${parseInt(
+            price
+          ).toLocaleString()}원에 ${amount}주 구매 성공`
+        );
+      } else {
+        console.log(amount, stockBalance.hldg_qty);
+        if (parseInt(amount) > parseInt(stockBalance.hldg_qty)) {
+          alert(`${stockBalance.hldg_qty}주 만큼 주문 가능합니다!`);
+          return;
+        } else {
+          alert(
+            `${stockName}, ${parseInt(
+              price
+            ).toLocaleString()}원에 ${amount}주 판매 성공`
+          );
+        }
+      }
+      await tradeStock(transactionType, partyKey, stockKey, amount, price);
+      navigate(`/party/${partyKey}/myPartyTransactionDetail`);
     } catch (error) {
       console.error(error);
     }
@@ -80,6 +110,7 @@ export default function TradeStockPage() {
   const toggleMarketPrice = () => {
     setIsMarketPrice(!isMarketPrice);
   };
+
 
   const callPartyInfo = async () => {
     try {
@@ -100,6 +131,32 @@ export default function TradeStockPage() {
   if (partyInfo) {
     deposit = partyInfo.deposit;
   }
+
+  const setVolumePercentage = (percentage) => {
+    if (percentage === "최대") {
+      setAmount(stockBalance.hldg_qty.toString());
+    } else {
+      const calculatedAmount = Math.floor(
+        (percentage / 100) * stockBalance.hldg_qty
+      );
+      setAmount(calculatedAmount.toString());
+    }
+  };
+
+  // 숫자에 천 단위 구분 기호 추가하는 함수
+  const addThousandSeparator = (value) => {
+    // 숫자만 추출
+    const number = value.replace(/\D/g, "");
+    // 천 단위 구분 기호 추가
+    return Number(number).toLocaleString();
+  };
+
+  // 천 단위 구분 기호를 제거하는 함수
+  const removeThousandSeparator = (value) => {
+    // 쉼표를 제거하여 반환
+    return value.replace(/,/g, "");
+  };
+
 
   return (
     <>
@@ -130,9 +187,11 @@ export default function TradeStockPage() {
                 <input
                   className="trade-price trade-stock-price-input"
                   type="text"
-                  value={price}
-                  placeholder={`${parseInt(stockPrice).toLocaleString()}`}
-                  onChange={(e) => setPrice(e.target.value)}
+                  value={addThousandSeparator(price)}
+                  // placeholder={`${parseInt(stockPrice).toLocaleString()}`}
+                  onChange={(e) =>
+                    setPrice(removeThousandSeparator(e.target.value))
+                  }
                 />
               </div>
             )}
@@ -183,20 +242,39 @@ export default function TradeStockPage() {
 
           <div className="trade-possible">
             {type === "구매" ? (
-              <>
-                {" "}
-                구매 가능 {deposit.toLocaleString()}원 {}
-              </>
+
+              <> 구매 가능 {deposit.toLocaleString()}원 {}
             ) : (
-              <>판매 가능 최대 -주</>
+              <>판매 가능 최대 {stockBalance.hldg_qty}주</>
+
             )}
           </div>
         </div>
         <div className="trade-volume-btns">
-          <div className="trade-volume-btn">10%</div>
-          <div className="trade-volume-btn">25%</div>
-          <div className="trade-volume-btn">50%</div>
-          <div className="trade-volume-btn">최대</div>
+          <div
+            className="trade-volume-btn"
+            onClick={() => setVolumePercentage(10)}
+          >
+            10%
+          </div>
+          <div
+            className="trade-volume-btn"
+            onClick={() => setVolumePercentage(25)}
+          >
+            25%
+          </div>
+          <div
+            className="trade-volume-btn"
+            onClick={() => setVolumePercentage(50)}
+          >
+            50%
+          </div>
+          <div
+            className="trade-volume-btn"
+            onClick={() => setVolumePercentage("최대")}
+          >
+            최대
+          </div>
         </div>
 
         <PrimaryButton
