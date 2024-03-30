@@ -94,6 +94,8 @@ const TopNavigationBar = ({ text, type = 0 }) => {
     //햄버거 버튼 있는 버전
     const partyName = partyInfo.name;
     const partyAccountNumber = partyInfo.accountNumber;
+    const groupInfo = useSelector((state) => state.user.groupInfo);
+    console.log("ㅁㅁ", groupInfo);
 
     return (
       <Navbar className="navbar">
@@ -171,25 +173,35 @@ const TopNavigationBar = ({ text, type = 0 }) => {
                   다른 모임투자로 이동하기
                   {toggleOpen ? (
                     <>
-                      {/* TODO: 리덕스에 userGroup 들어오면 userGroup map으로 수정!!!! */}
                       <Image
                         src={DownArrowButton}
                         className="right-arrow-btn"
                       />
-                      <div className="another-party">
-                        <div className="another-party-info">
-                          <div className="party-name">178의 모임투자</div>
-                          <div className="party-account-number">
-                            012-456-789
+                      {groupInfo.map((data) => (
+                        <>
+                          <div className="another-party">
+                            {partyAccountNumber !== data.accountNumber ? (
+                              <>
+                                <Link
+                                  className="link"
+                                  to={`/party/${data.partyKey}/myparty`}
+                                >
+                                  <div className="another-party-info">
+                                    <div className="party-name">
+                                      {data.name}의 모임투자
+                                    </div>
+                                    <div className="party-account-number">
+                                      [계좌] {data.accountNumber}
+                                    </div>
+                                  </div>
+                                </Link>
+                              </>
+                            ) : (
+                              <></>
+                            )}
                           </div>
-                        </div>
-                        <div className="another-party-info">
-                          <div className="party-name">179의 모임투자</div>
-                          <div className="party-account-number">
-                            012-422-789
-                          </div>
-                        </div>
-                      </div>
+                        </>
+                      ))}
                     </>
                   ) : (
                     <Image src={RightArrowButton} className="right-arrow-btn" />
