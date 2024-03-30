@@ -10,7 +10,6 @@ import io from "socket.io-client";
 import { fetchPartyInfo } from "../../../lib/apis/party";
 
 export default function TradeStockPage() {
-
   const navigate = useNavigate();
 
   const { partyKey, stockKey } = useParams();
@@ -20,7 +19,6 @@ export default function TradeStockPage() {
 
   const [partyInfo, setPartyInfo] = useState();
 
-
   const location = useLocation();
   const stockName = location.state.stockName;
   const stockPrice = location.state.stockPrice;
@@ -29,7 +27,6 @@ export default function TradeStockPage() {
 
   const maxBuyQuantity = async () => {};
   const maxSellQuantity = async () => {};
-
 
   // state for socketIo
   const [socketIo, setSocketIo] = useState(null);
@@ -73,7 +70,6 @@ export default function TradeStockPage() {
     setPrice(stockPrice);
   }, []);
 
-
   const trade = async (transactionType) => {
     try {
       // transactionType, partyKey, stockKey, orderQuantity, orderPrice;
@@ -110,7 +106,6 @@ export default function TradeStockPage() {
   const toggleMarketPrice = () => {
     setIsMarketPrice(!isMarketPrice);
   };
-
 
   const callPartyInfo = async () => {
     try {
@@ -156,7 +151,6 @@ export default function TradeStockPage() {
     // 쉼표를 제거하여 반환
     return value.replace(/,/g, "");
   };
-
 
   return (
     <>
@@ -242,11 +236,12 @@ export default function TradeStockPage() {
 
           <div className="trade-possible">
             {type === "구매" ? (
-
-              <> 구매 가능 {deposit.toLocaleString()}원 {}
+              <>
+                {" "}
+                구매 가능 {deposit.toLocaleString()}원 {}
+              </>
             ) : (
               <>판매 가능 최대 {stockBalance.hldg_qty}주</>
-
             )}
           </div>
         </div>
