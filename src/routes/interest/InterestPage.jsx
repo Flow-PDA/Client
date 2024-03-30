@@ -19,7 +19,7 @@ export default function InterestPage() {
 
   return (
     <>
-      <TopNavigationBar text={"종목 찜 목록"} />
+      <TopNavigationBar text={"종목 찜 목록"} type={1} />
       <Container>
         <InterestButton
           className="interest-state-button"

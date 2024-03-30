@@ -104,7 +104,7 @@ export default function InterestStockDetailAskingPricePage() {
 
   return (
     <>
-      <TopNavigationBar text={"종목 상세정보"} />
+      <TopNavigationBar text={"종목 상세정보"} type={1} />
       <Container>
         {stockInfo.length === 0 ? ( // stockInfo가 null인 경우 로딩 스피너 표시
           <div
