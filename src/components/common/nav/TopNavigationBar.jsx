@@ -9,6 +9,8 @@ import DownArrowButton from "../../../assets/down_arrow.png";
 import InterestButton from "../../../assets/interest.png";
 import StockButton from "../../../assets/stock.png";
 import TransferButton from "../../../assets/cash.png";
+import FlowButton from "../../../assets/Flow.png";
+import AlarmButton from "../../../assets/alarm.png";
 import "./TopNavigationBar.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -34,6 +36,10 @@ const TopNavigationBar = ({ text, type = 0 }) => {
     navigate(-1);
   };
 
+  const handleFlowButtonClick = () => {
+    navigate("/party");
+  };
+
   const handleHamburgerButtonClick = () => {
     setMenuOpen(!menuOpen);
     setToggleOpen(false);
@@ -42,10 +48,12 @@ const TopNavigationBar = ({ text, type = 0 }) => {
   const handleSettingButtonClick = (partyKey) => {
     navigate(`/party/${partyKey}/info`);
   };
-  const handleHomeButtonClick = () => {};
 
   const handletoggleButtonClick = () => {
     setToggleOpen(!toggleOpen);
+  };
+  const handleHomeButtonClick = () => {
+    navigate("/party");
   };
 
   const callPartyInfo = async () => {
@@ -59,47 +67,9 @@ const TopNavigationBar = ({ text, type = 0 }) => {
 
   const [infos, setInfos] = useState([]);
 
-  const fetchData = async () => {
-    try {
-      const temps = await fetchPartyInquire();
-      const resp = await fetchUser();
-      //console.log(temps);
-      //console.log(resp.data.groups);
-      const party = resp.data.groups;
-      const resBody = await Promise.all(
-        party.map(async (elem) => {
-          const alpha = await fetchPartyInfo(elem.partyKey);
-          return alpha;
-        })
-      );
-
-      const new_tmp = await Promise.all(
-        resBody.map(async (party) => {
-          const {
-            accountNumber: CANO,
-            token: TOKEN,
-            appSecret: APPSECRET,
-            appKey: APPKEY,
-          } = party;
-          const res = await fetchDepositData(CANO, APPKEY, APPSECRET, TOKEN);
-          return { ...party, ...res };
-        })
-      );
-      // console.log(new_tmp);
-      setInfos(new_tmp);
-      // console.log(res);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   //TODO 햄버거버튼 연결
 
   // console.log(infos);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   useEffect(() => {
     callPartyInfo();
@@ -250,6 +220,27 @@ const TopNavigationBar = ({ text, type = 0 }) => {
             className="navbar-brand icon-right"
           >
             <Image src={SettingButton} alt="Setting" />
+          </Navbar.Brand>
+        </Container>
+      </Navbar>
+    );
+  } else if (type === 3) {
+    return (
+      <Navbar className="navbar">
+        <Container className="navbar-container">
+          <Navbar.Brand
+            onClick={handleFlowButtonClick}
+            className="navbar-brand"
+            style={{ marginLeft: "2vw", marginTop: "3vw" }}
+          >
+            <Image src={FlowButton} alt="Home" style={{ width: "25vw" }} />
+          </Navbar.Brand>
+          <Nav.Item className="nav-item-text">{text}</Nav.Item>
+          <Navbar.Brand
+            className="navbar-brand icon-right"
+            style={{ marginRight: "3vw", marginTop: "1vw" }}
+          >
+            <Image src={AlarmButton} alt="alarm" />
           </Navbar.Brand>
         </Container>
       </Navbar>

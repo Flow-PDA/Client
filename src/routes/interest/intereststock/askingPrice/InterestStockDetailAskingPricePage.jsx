@@ -74,7 +74,9 @@ export default function InterestStockDetailAskingPricePage() {
         });
         const stockEndPrice = await fetchStockEndPrice(stockKey);
         // console.log(stockEndPrice.data[0].closePrice);
-        setYesterDayEndPrice(stockEndPrice.data[0].closePrice);
+        if (stockEndPrice.length > 0) {
+          setYesterDayEndPrice(stockEndPrice.data[0].closePrice);
+        }
 
         const isActive =
           mystock.find((data) => data.stockKey === stockKey) !== undefined;
