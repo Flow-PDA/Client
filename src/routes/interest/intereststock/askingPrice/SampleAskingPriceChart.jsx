@@ -13,6 +13,7 @@ export default function SampleAskingPriceChart({
   const [selectedPrice, setSelectedPrice] = useState(null);
   const [selectedPercent, setSelectedPercent] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
+  const [currentTime, setCurrentTime] = useState(new Date()); // 현재 시간 상태 추가
 
   const handlePriceClick = (price, percent, type) => {
     setSelectedPrice(price);
@@ -82,6 +83,15 @@ export default function SampleAskingPriceChart({
       socketIo.emit("REGISTER_SUB", temp);
     }
   }, [socketIo]);
+
+  //시간 업데이트
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date()); // 매 초마다 현재 시간 업데이트
+    }, 1000);
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 해제
+  }, []);
 
   // 모달 열기 함수
   function openModal() {
@@ -227,10 +237,6 @@ export default function SampleAskingPriceChart({
     });
   };
 
-  //   if (isLoading) {
-  //     return <MDSpinner className="mb-5" size={30} />;
-  //   }
-
   const { asks, bids } = orderBook;
   const sumAsk = sumQuantityAsk(asks);
   const sumBid = sumQuantityBid(bids);
@@ -238,13 +244,17 @@ export default function SampleAskingPriceChart({
   return (
     <div className="box_orderbook bg-white rounded shadow-sm">
       <table className="orderbook table">
-        <Modal
-          isOpen={modalOpen}
-          closeModal={(e) => closeModal()}
-          stockPrice={selectedPrice}
-          stockPercent={selectedPercent}
-          type={selectedType}
-        />
+        {currentTime.getHours() >= 9 &&
+          currentTime.getHours() < 15 &&
+          (currentTime.getHours() !== 15 || currentTime.getMinutes() < 30) && (
+            <Modal
+              isOpen={modalOpen}
+              closeModal={(e) => closeModal()}
+              stockPrice={selectedPrice}
+              stockPercent={selectedPercent}
+              type={selectedType}
+            />
+          )}
 
         <tbody>
           {renderAsks(asks, sumAsk, orderBook.timestamp)}

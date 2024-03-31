@@ -25,6 +25,7 @@ export default function InterestStockDetailAskingPricePage() {
 
   const [stockInfo, setStockInfo] = useState([]);
   const [stockBalance, setStockBalance] = useState([]);
+  const [currentTime, setCurrentTime] = useState(new Date()); // 현재 시간 상태 추가
 
   // state for socketIo
   const [socketIo, setSocketIo] = useState(null);
@@ -157,12 +158,17 @@ export default function InterestStockDetailAskingPricePage() {
               />
             </div>
 
-            <TradeButton
-              stockBalance={stockBalance}
-              partyKey={partyKey}
-              stockKey={stockKey}
-              stockInfo={stockInfo}
-            />
+            {currentTime.getHours() >= 9 &&
+              currentTime.getHours() < 15 &&
+              (currentTime.getHours() !== 15 ||
+                currentTime.getMinutes() < 30) && (
+                <TradeButton
+                  stockBalance={stockBalance}
+                  partyKey={partyKey}
+                  stockKey={stockKey}
+                  stockInfo={stockInfo}
+                />
+              )}
           </>
         )}
       </Container>

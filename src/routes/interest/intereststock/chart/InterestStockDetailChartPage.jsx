@@ -20,6 +20,8 @@ export default function InterestStockDetailChartPage() {
   const stockKey = useParams().stockKey;
   const [stockInfo, setStockInfo] = useState([]);
   const [stockBalance, setStockBalance] = useState([]);
+
+  const [currentTime, setCurrentTime] = useState(new Date()); // 현재 시간 상태 추가
   const [chartMode, setChartMode] = useState("day");
 
   const navigate = useNavigate();
@@ -62,6 +64,14 @@ export default function InterestStockDetailChartPage() {
   }, [socketIo]);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date()); // 매 초마다 현재 시간 업데이트
+    }, 1000);
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 해제
+  }, []);
+
+  useEffect(() => {
     async function fetchData() {
       try {
         const stockInfo = await fetchHankookStockCurrent(stockKey);
@@ -99,7 +109,6 @@ export default function InterestStockDetailChartPage() {
 
   return (
     <>
-      {console.log(stockBalance)}
       <TopNavigationBar text={"종목 상세정보"} type={1} />
       <Container>
         {stockInfo.length === 0 ? (
@@ -168,12 +177,17 @@ export default function InterestStockDetailChartPage() {
             </Row>
             <StockDataFetcher stockBalance={stockBalance} />
 
-            <TradeButton
-              stockBalance={stockBalance}
-              partyKey={partyKey}
-              stockKey={stockKey}
-              stockInfo={stockInfo}
-            />
+            {currentTime.getHours() >= 9 &&
+              currentTime.getHours() < 15 &&
+              (currentTime.getHours() !== 15 ||
+                currentTime.getMinutes() < 30) && (
+                <TradeButton
+                  stockBalance={stockBalance}
+                  partyKey={partyKey}
+                  stockKey={stockKey}
+                  stockInfo={stockInfo}
+                />
+              )}
           </>
         )}
       </Container>
