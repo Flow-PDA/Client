@@ -27,7 +27,7 @@ import SearchStockPage from "../routes/invest/SearchStockPage";
 import InterestStockDetailAskingPricePage from "../routes/interest/intereststock/askingPrice/InterestStockDetailAskingPricePage";
 import InterestStockDetailNewsPage from "../routes/interest/intereststock/news/InterestStockDetailNewsPage";
 import TradeStockPage from "../routes/interest/intereststock/TradeStockPage";
-
+import Notification from "../routes/notification/Notification";
 export const mainRouter = [
   {
     path: "",
@@ -36,6 +36,10 @@ export const mainRouter = [
       {
         path: "",
         element: <MainPage />,
+      },
+      {
+        path: ":userKey/notification",
+        element: <Notification />,
       },
       {
         path: "interests",
