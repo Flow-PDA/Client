@@ -18,6 +18,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Alert from "../../assets/alert.png";
 import Bell from "../../assets/bell.png";
 import { deletePartyKey } from "../../store/reducers/partyReducer";
+import { updateGroupInfo } from "../../store/reducers/userReducer";
 // 특정 모임 정보 api
 // 잔고 api
 
@@ -33,6 +34,7 @@ export default function PartyPage() {
   const navigate = useNavigate();
   const partyKey = useSelector((state) => state.party.partyKey.partyKey);
   const userKey = useSelector((state) => state.user.userInfo.userKey);
+
   console.log(typeof partyKey);
   console.log(userKey);
   const test = useCallback(async (e) => {
@@ -153,6 +155,12 @@ export default function PartyPage() {
     // FindUser();
     // fetchDeposit();
   }, [partyKey]);
+
+  useEffect(() => {
+    // infos가 변경될 때마다 groupInfo를 업데이트
+    dispatch(updateGroupInfo(infos)); // updateGroupInfo 액션 호출
+  }, [infos, dispatch]);
+
   console.log(partyKey);
 
   return (

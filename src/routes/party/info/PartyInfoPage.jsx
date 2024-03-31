@@ -92,7 +92,7 @@ export default function PartyInfoPage() {
 
   return (
     <>
-      <TopNavigationBar></TopNavigationBar>
+      <TopNavigationBar type={1} />
       <Container className="info-container">
         <Row className="info-top-container">
           <div className="info-title">{info.name}의 모임투자</div>

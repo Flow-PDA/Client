@@ -25,6 +25,7 @@ export default function InterestStockDetailAskingPricePage() {
 
   const [stockInfo, setStockInfo] = useState([]);
   const [stockBalance, setStockBalance] = useState([]);
+  const [currentTime, setCurrentTime] = useState(new Date()); // 현재 시간 상태 추가
 
   // state for socketIo
   const [socketIo, setSocketIo] = useState(null);
@@ -73,8 +74,10 @@ export default function InterestStockDetailAskingPricePage() {
           return data.data.result;
         });
         const stockEndPrice = await fetchStockEndPrice(stockKey);
-        // console.log(stockEndPrice.data[0].closePrice);
-        setYesterDayEndPrice(stockEndPrice.data[0].closePrice);
+        // console.log("aaa", stockEndPrice.data[0].closePrice);
+        if (stockEndPrice) {
+          setYesterDayEndPrice(stockEndPrice.data[0].closePrice);
+        }
 
         const isActive =
           mystock.find((data) => data.stockKey === stockKey) !== undefined;
@@ -99,10 +102,10 @@ export default function InterestStockDetailAskingPricePage() {
   const handleNewsButtonClick = () => {
     navigate(`/stockDetail/${partyKey}/${stockKey}/news`);
   };
-
+  console.log("전 영업일 종가", yesterDayEndPrice);
   return (
     <>
-      <TopNavigationBar text={"종목 상세정보"} />
+      <TopNavigationBar text={"종목 상세정보"} type={1} />
       <Container>
         {stockInfo.length === 0 ? ( // stockInfo가 null인 경우 로딩 스피너 표시
           <div
@@ -155,12 +158,17 @@ export default function InterestStockDetailAskingPricePage() {
               />
             </div>
 
-            <TradeButton
-              stockBalance={stockBalance}
-              partyKey={partyKey}
-              stockKey={stockKey}
-              stockInfo={stockInfo}
-            />
+            {currentTime.getHours() >= 9 &&
+              currentTime.getHours() < 15 &&
+              (currentTime.getHours() !== 15 ||
+                currentTime.getMinutes() < 30) && (
+                <TradeButton
+                  stockBalance={stockBalance}
+                  partyKey={partyKey}
+                  stockKey={stockKey}
+                  stockInfo={stockInfo}
+                />
+              )}
           </>
         )}
       </Container>

@@ -15,7 +15,7 @@ export default function InterestPending({ partyKey }) {
     console.log("PendingPage", partyKey);
     async function fetchData() {
       try {
-        const res = await getApproval(partyKey); // 임시로 partyKey 1로 세팅
+        const res = await getApproval(partyKey);
         setStock(res.data.result);
       } catch (error) {
         console.error(error);
@@ -37,7 +37,7 @@ export default function InterestPending({ partyKey }) {
       isApproved: true,
     };
     await vote(partyKey, interestStockKey, reqBody);
-    setApproveModalIsOpen(false); // 승인 후 승인 대기 상태 해제
+    setApproveModalIsOpen(0); // 승인 후 승인 대기 상태 해제
     updateStockData(); // 상태를 업데이트하여 리렌더링
   }
 

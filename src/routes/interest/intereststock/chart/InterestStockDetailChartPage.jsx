@@ -21,6 +21,9 @@ export default function InterestStockDetailChartPage() {
   const [stockInfo, setStockInfo] = useState([]);
   const [stockBalance, setStockBalance] = useState([]);
 
+  const [currentTime, setCurrentTime] = useState(new Date()); // 현재 시간 상태 추가
+  const [chartMode, setChartMode] = useState("day");
+
   const navigate = useNavigate();
 
   // state for socketIo
@@ -61,6 +64,14 @@ export default function InterestStockDetailChartPage() {
   }, [socketIo]);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date()); // 매 초마다 현재 시간 업데이트
+    }, 1000);
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 해제
+  }, []);
+
+  useEffect(() => {
     async function fetchData() {
       try {
         const stockInfo = await fetchHankookStockCurrent(stockKey);
@@ -98,8 +109,7 @@ export default function InterestStockDetailChartPage() {
 
   return (
     <>
-      {console.log(stockBalance)}
-      <TopNavigationBar text={"종목 상세정보"} />
+      <TopNavigationBar text={"종목 상세정보"} type={1} />
       <Container>
         {stockInfo.length === 0 ? (
           <div
@@ -142,35 +152,42 @@ export default function InterestStockDetailChartPage() {
               </Col>
             </Row>
             <Row>
-              <Col>{/* <SampleChart /> */}</Col>
+                <Col>
+                  <SampleChart mode={chartMode} stockKey={stockKey} />
+                </Col>
             </Row>
             <Row className="stock-detail-date-row">
               <Col>
-                <Button className="stock-detail-date-button day">1일</Button>
+                <Button className="stock-detail-date-button day" onClick={()=> setChartMode("day")}>1일</Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button week">1주</Button>
+                <Button className="stock-detail-date-button week" onClick={()=> setChartMode("week")}>1주</Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button month">1달</Button>
+                <Button className="stock-detail-date-button month" onClick={() => setChartMode("month")}>1달</Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button three-month">
+                <Button className="stock-detail-date-button three-month" onClick={() => setChartMode("3month")}>
                   3달
                 </Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button year">1년</Button>
+                <Button className="stock-detail-date-button year" onClick={() => setChartMode("year")}>1년</Button>
               </Col>
             </Row>
             <StockDataFetcher stockBalance={stockBalance} />
 
-            <TradeButton
-              stockBalance={stockBalance}
-              partyKey={partyKey}
-              stockKey={stockKey}
-              stockInfo={stockInfo}
-            />
+            {currentTime.getHours() >= 9 &&
+              currentTime.getHours() < 15 &&
+              (currentTime.getHours() !== 15 ||
+                currentTime.getMinutes() < 30) && (
+                <TradeButton
+                  stockBalance={stockBalance}
+                  partyKey={partyKey}
+                  stockKey={stockKey}
+                  stockInfo={stockInfo}
+                />
+              )}
           </>
         )}
       </Container>

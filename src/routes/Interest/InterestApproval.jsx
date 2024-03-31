@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import { delApproved, getApproved } from "../../lib/apis/interest.jsx";
 import Modal from "../../components/common/modal/ApproveInterestModal.jsx";
 import { useParams } from "react-router-dom";
+import { fetchHankookStockBalanceAll } from "../../lib/apis/hankookApi.jsx";
+import party from "../../lib/apis/party.jsx";
 
 export default function InterestApproval() {
   const partyKey = useParams().partyKey;
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(0);
   const [stock, setStock] = useState([]);
-  const [isInterestStock, setIsInterestStock] = useState(false);
+  const [containedStock, setContainedStock] = useState(new Set());
 
   useEffect(() => {
     console.log("ApprovalPage", partyKey);
@@ -19,7 +21,13 @@ export default function InterestApproval() {
         const res = await getApproved(partyKey); // 임시로 1로 세팅
         setStock(res.data.result);
 
-        console.log(stock);
+        const newContainedStock = new Set();
+        const mystock = await fetchHankookStockBalanceAll(partyKey);
+        console.log(mystock);
+
+        await mystock.forEach((data) => newContainedStock.add(data.pdno));
+
+        setContainedStock(newContainedStock);
       } catch (error) {
         console.error(error);
       }
@@ -49,10 +57,11 @@ export default function InterestApproval() {
 
   return (
     <Container>
+      {console.log(containedStock)}
       {stock.length > 0 &&
         stock.map((data, index) => (
           <Row className="interest-list" key={index}>
-            {console.log(data)}
+            {console.log(containedStock.has(data.stockkey))}
             <Col xs={2} className="interest-date">
               {`${new Date(data.createdAt).getMonth() + 1}.${new Date(
                 data.createdAt
@@ -63,9 +72,11 @@ export default function InterestApproval() {
               <Row className="interest-name">{data.name}</Row>
             </Col>
             <Col xs={4} className="interest-remove-button-col">
+              {console.log(data.stockKey)}
               <Button
                 className="interest-remove-button"
                 onClick={() => openRemoveModal(data.interestStockKey)}
+                disabled={containedStock.has(data.stockKey) === true}
               >
                 종목빼기
               </Button>
