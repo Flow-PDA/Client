@@ -20,6 +20,7 @@ export default function InterestStockDetailChartPage() {
   const stockKey = useParams().stockKey;
   const [stockInfo, setStockInfo] = useState([]);
   const [stockBalance, setStockBalance] = useState([]);
+  const [chartMode, setChartMode] = useState("day");
 
   const navigate = useNavigate();
 
@@ -142,25 +143,27 @@ export default function InterestStockDetailChartPage() {
               </Col>
             </Row>
             <Row>
-              <Col>{/* <SampleChart /> */}</Col>
+                <Col>
+                  <SampleChart mode={chartMode} stockKey={stockKey} />
+                </Col>
             </Row>
             <Row className="stock-detail-date-row">
               <Col>
-                <Button className="stock-detail-date-button day">1일</Button>
+                <Button className="stock-detail-date-button day" onClick={()=> setChartMode("day")}>1일</Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button week">1주</Button>
+                <Button className="stock-detail-date-button week" onClick={()=> setChartMode("week")}>1주</Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button month">1달</Button>
+                <Button className="stock-detail-date-button month" onClick={() => setChartMode("month")}>1달</Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button three-month">
+                <Button className="stock-detail-date-button three-month" onClick={() => setChartMode("3month")}>
                   3달
                 </Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button year">1년</Button>
+                <Button className="stock-detail-date-button year" onClick={() => setChartMode("year")}>1년</Button>
               </Col>
             </Row>
             <StockDataFetcher stockBalance={stockBalance} />
