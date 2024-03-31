@@ -8,6 +8,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { tradeStock } from "../../../lib/apis/hankookApi";
 import io from "socket.io-client";
 import { fetchPartyInfo } from "../../../lib/apis/party";
+import { fetchStockEndPrice } from "../../../lib/apis/stock";
 
 export default function TradeStockPage() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function TradeStockPage() {
   const [price, setPrice] = useState("");
   const [amount, setAmount] = useState("");
   const [isMarketPrice, setIsMarketPrice] = useState(false);
-
+  const [yesterDayEndPrice, setYesterDayEndPrice] = useState(0);
   const [partyInfo, setPartyInfo] = useState();
 
   const location = useLocation();
@@ -24,9 +25,6 @@ export default function TradeStockPage() {
   const stockPrice = location.state.stockPrice;
   const stockBalance = location.state.stockBalance.data;
   const type = location.state.type;
-
-  const maxBuyQuantity = async () => {};
-  const maxSellQuantity = async () => {};
 
   // state for socketIo
   const [socketIo, setSocketIo] = useState(null);
@@ -65,24 +63,62 @@ export default function TradeStockPage() {
     }
   }, [socketIo]);
 
+  function adjustPrice(price) {
+    if (stockExecutionPrice < 2000) {
+      return Math.floor(price); // 1원 단위
+    } else if (stockExecutionPrice < 5000) {
+      return Math.floor(price / 5) * 5; // 5원 단위
+    } else if (stockExecutionPrice < 20000) {
+      return Math.floor(price / 10) * 10; // 10원 단위
+    } else if (stockExecutionPrice < 50000) {
+      return Math.floor(price / 50) * 50; // 50원 단위
+    } else if (stockExecutionPrice < 200000) {
+      return Math.floor(price / 100) * 100; // 100원 단위
+    } else if (stockExecutionPrice < 500000) {
+      return Math.floor(price / 500) * 500; // 500원 단위
+    } else {
+      return Math.floor(price / 1000) * 1000; // 1000원 단위
+    }
+  }
+
   useEffect(() => {
-    console.log("stockBalance", stockBalance);
+    async function fetchData() {
+      try {
+        const stockEndPrice = await fetchStockEndPrice(stockKey);
+        // console.log("aaa", stockEndPrice.data[0].closePrice);
+        if (stockEndPrice) {
+          setYesterDayEndPrice(stockEndPrice.data[0].closePrice);
+        }
+      } catch (error) {
+        console.error(error);
+        throw Error(error);
+      }
+    }
+    fetchData();
+  }, [stockKey]);
+
+  useEffect(() => {
     setPrice(stockPrice);
   }, []);
+
+  const maxTradePrice = adjustPrice(
+    Math.floor(parseInt(yesterDayEndPrice) * 1.3)
+  );
+  const minTradePrice = adjustPrice(
+    Math.floor(parseInt(yesterDayEndPrice) * 0.7)
+  );
 
   const trade = async (transactionType) => {
     try {
       // transactionType, partyKey, stockKey, orderQuantity, orderPrice;
-      console.log("price", price);
-      console.log("amount", amount);
+      // console.log("price", price);
+      // console.log("amount", amount);
 
       if (transactionType === 0) {
         if (isMarketPrice) {
           //시장가 체크되어있으면
           setPrice(parseInt(stockExecutionPrice));
         }
-
-        console.log(typeof price);
 
         if (parseInt(price * amount) > parseInt(deposit)) {
           const calculatedAmount = Math.floor(deposit / price);
@@ -96,9 +132,11 @@ export default function TradeStockPage() {
               price
             ).toLocaleString()}원에 ${amount}주 구매 주문 성공`
           );
+          await tradeStock(transactionType, partyKey, stockKey, amount, price);
+          navigate(`/party/${partyKey}/myPartyTransactionDetail`);
         }
       } else {
-        console.log(amount, stockBalance.hldg_qty);
+        // console.log(amount, stockBalance.hldg_qty);
         if (parseInt(amount) > parseInt(stockBalance.hldg_qty)) {
           alert(`최대 ${stockBalance.hldg_qty}주 만큼 판매 가능합니다!`);
           return;
@@ -108,10 +146,10 @@ export default function TradeStockPage() {
               price
             ).toLocaleString()}원에 ${amount}주 판매 주문 성공`
           );
+          await tradeStock(transactionType, partyKey, stockKey, amount, price);
+          navigate(`/party/${partyKey}/myPartyTransactionDetail`);
         }
       }
-      await tradeStock(transactionType, partyKey, stockKey, amount, price);
-      navigate(`/party/${partyKey}/myPartyTransactionDetail`);
     } catch (error) {
       console.error(error);
     }
@@ -135,7 +173,7 @@ export default function TradeStockPage() {
   }, []);
 
   let deposit = 0;
-  console.log(partyInfo);
+  // console.log(partyInfo);
 
   if (partyInfo) {
     deposit = partyInfo.deposit;
@@ -155,10 +193,12 @@ export default function TradeStockPage() {
   const setBuyVolumePercentage = (percentage) => {
     if (isMarketPrice) {
       //시장가 체크되어있으면
-      setPrice(parseInt(stockExecutionPrice));
+      setPrice(Number(stockExecutionPrice));
     }
     const calculatedAmount = Math.floor(((percentage / 100) * deposit) / price);
     setAmount(calculatedAmount.toString());
+    // console.log(typeof price);
+    // console.log("calcu", calculatedAmount);
   };
 
   // 숫자에 천 단위 구분 기호 추가하는 함수
@@ -173,6 +213,53 @@ export default function TradeStockPage() {
   const removeThousandSeparator = (value) => {
     // 쉼표를 제거하여 반환
     return value.replace(/,/g, "");
+  };
+
+  const onBlurHandler = () => {
+    const adjustedPrice = adjustPrice(price);
+
+    if (adjustedPrice < minTradePrice) {
+      alert(`최소 구매 가능한 가격은 ${minTradePrice.toLocaleString()}입니다!`);
+      setPrice(minTradePrice);
+    } else if (adjustedPrice > maxTradePrice) {
+      alert(`최대 구매 가능한 가격은 ${maxTradePrice.toLocaleString()}입니다!`);
+      setPrice(maxTradePrice);
+    } else if (stockExecutionPrice < 2000) {
+      if (price % 1 !== 0) {
+        alert("1원 단위로 구매 가능합니다!");
+        setPrice(adjustedPrice);
+      }
+    } else if (stockExecutionPrice < 5000) {
+      if (price % 5 !== 0) {
+        alert("5원 단위로 구매 가능합니다!");
+        setPrice(adjustedPrice);
+      }
+    } else if (stockExecutionPrice < 20000) {
+      if (price % 10 !== 0) {
+        alert("10원 단위로 구매 가능합니다!");
+        setPrice(adjustedPrice);
+      }
+    } else if (stockExecutionPrice < 50000) {
+      if (price % 50 !== 0) {
+        alert("50원 단위로 구매 가능합니다!");
+        setPrice(adjustedPrice);
+      }
+    } else if (stockExecutionPrice < 200000) {
+      if (price % 100 !== 0) {
+        alert("100원 단위로 구매 가능합니다!");
+        setPrice(adjustedPrice);
+      }
+    } else if (stockExecutionPrice < 500000) {
+      if (price % 500 !== 0) {
+        alert("500원 단위로 구매 가능합니다!");
+        setPrice(adjustedPrice);
+      }
+    } else {
+      if (price % 1000 !== 0) {
+        alert("1000원 단위로 구매 가능합니다!");
+        setPrice(adjustedPrice);
+      }
+    }
   };
 
   return (
@@ -204,11 +291,12 @@ export default function TradeStockPage() {
                 <input
                   className="trade-price trade-stock-price-input"
                   type="text"
-                  value={addThousandSeparator(price)}
+                  value={addThousandSeparator(price.toString())}
                   // placeholder={`${parseInt(stockPrice).toLocaleString()}`}
                   onChange={(e) =>
                     setPrice(removeThousandSeparator(e.target.value))
                   }
+                  onBlur={onBlurHandler}
                 />
               </div>
             )}
@@ -316,7 +404,9 @@ export default function TradeStockPage() {
           minWidth="100%"
           backgroundColor={type === "구매" ? "#F46060" : "#375AFF"}
           className="trade-btn"
-          onClick={() => trade(type === "구매" ? 0 : 1)}
+          onClick={() => {
+            trade(type === "구매" ? 0 : 1);
+          }}
         ></PrimaryButton>
       </Container>
     </>
