@@ -201,15 +201,6 @@ export default function MyPartyPage() {
                 />
               </button>
             )}
-            <hr style={{ marginTop: "1rem", width: "90vw" }} />
-            <div
-              className="myparty-transfer-container"
-              onClick={() =>
-                navigate(`/party/${partyKey}/myPartyTransactionDetail`)
-              }
-            >
-              거래내역
-            </div>
           </>
         )}
 
@@ -222,7 +213,6 @@ export default function MyPartyPage() {
         >
           거래내역
         </div>
-
       </Container>
     </>
   );
