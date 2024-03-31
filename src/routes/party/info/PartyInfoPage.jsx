@@ -56,14 +56,18 @@ export default function PartyInfoPage() {
   const fetchMember = async () => {
     try {
       const response = await fetchPartyMemberInquire(partyKey);
-      console.log(response.data.result[0]);
-      setMember(response.data.result);
-      const temps = response.data.result;
-      temps.map(async (temp) => {
-        const resp = await fetchSearchUser(partyKey, temp.userKey);
-        members.push(resp.data);
-        console.log(members);
-      });
+      setMember(response);
+      const temps = response;
+      const resBody = await Promise.all(
+        temps.map(async (temp) => {
+          const resp = await fetchSearchUser(partyKey, temp.userKey);
+          // members.push(resp.data);
+          // console.log(members);
+          return resp;
+        })
+      );
+      console.log(resBody);
+      setMembers(resBody);
     } catch (err) {
       console.error(err);
     }
@@ -143,15 +147,15 @@ export default function PartyInfoPage() {
           <Col className="info-member-container">
             {users.length >= 1 &&
               members.map((mem) => (
-                <div key={mem.userKey} className="info-member">
-                  <div>{mem.userName}</div>
+                <div key={mem.data.userKey} className="info-member">
+                  <div>{mem.data.userName}</div>
                   {admin.role === 1 ? (
                     <Button
                       className="text-center"
                       variant="danger"
                       onClick={() => {
-                        console.log(mem.userKey);
-                        deleteUser(mem.userKey);
+                        console.log(mem.data.userKey);
+                        deleteUser(mem.data.userKey);
                       }}
                       style={{
                         height: "2.4rem",
@@ -169,24 +173,24 @@ export default function PartyInfoPage() {
               ))}
           </Col>
           <Col>
-            <div className="info-btn-container">
-              <div className="info-link">친구 초대</div>
-              <Link to={`/party/${partyKey}/info/invite`}>
-                <button
-                  style={{ border: "none", backgroundColor: "#fff" }}
-                ></button>
-              </Link>
-            </div>
+            <Link
+              to={`/party/${partyKey}/info/invite`}
+              style={{ textDecoration: "none", color: "#000" }}
+            >
+              <div className="info-btn-container">
+                <div className="info-link">친구 초대</div>
+              </div>
+            </Link>
           </Col>
           <Col>
-            <div className="info-btn-container">
-              <div className="info-link">목표 설정</div>
-              <Link to={`/party/${partyKey}/info/setgoal`}>
-                <button
-                  style={{ border: "none", backgroundColor: "#fff" }}
-                ></button>
-              </Link>
-            </div>
+            <Link
+              to={`/party/${partyKey}/info/setgoal`}
+              style={{ textDecoration: "none", color: "#000" }}
+            >
+              <div className="info-btn-container">
+                <div className="info-link">목표 설정</div>
+              </div>
+            </Link>
           </Col>
           <Col>
             <div className="info-btn-container">
