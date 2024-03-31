@@ -23,7 +23,7 @@ import {
 } from "../../../lib/apis/party";
 import { fetchDepositData } from "../../../lib/apis/stock";
 
-const TopNavigationBar = ({ text, type = 0 }) => {
+const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
 
   const userName = userInfo.name;
@@ -33,7 +33,7 @@ const TopNavigationBar = ({ text, type = 0 }) => {
   const [partyInfo, setPartyInfo] = useState([]);
   const { partyKey } = useParams();
   const handleBackButtonClick = () => {
-    navigate(-1);
+    navigate(to);
   };
 
   const handleFlowButtonClick = () => {

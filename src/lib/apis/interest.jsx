@@ -3,6 +3,7 @@ import { authInstance } from "./base";
 // [GET] get 승인 중인 관심 list
 export async function getApproval(partyKey) {
   const response = await authInstance.get(`/interests/${partyKey}/approval`);
+  console.log("res", response.data.result);
   return response;
 }
 
@@ -28,6 +29,7 @@ export async function vote(partyKey, interestStockKey, reqBody) {
     `/interests/${partyKey}/${interestStockKey}`,
     reqBody
   );
+  console.log("vote", response.data);
   return response;
 }
 

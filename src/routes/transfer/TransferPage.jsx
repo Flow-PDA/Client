@@ -46,7 +46,9 @@ export default function TransferPage() {
 
   return (
     <>
-      <TopNavigationBar text={"이체하기"} type={1} />
+
+      <TopNavigationBar text={"이체하기"} to={`/party/${partyKey}/myparty`} />
+
       <Container>
         <div className="transfer-possible-price-sentence">이체 가능 금액</div>
         <div className="transfer-possible-price">
