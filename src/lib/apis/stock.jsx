@@ -84,6 +84,25 @@ export async function fetchStockEndPrice(stockKey) {
 
   return response;
 }
+
+/**
+ * Load Stock price
+ * @param {String} stockKey stock code
+ * @param {String} mode minute, day, month
+ * @param {String} from start date : YYYYMMDDHHMM
+ * @param {String} to end date : YYYYMMDDHHMM
+ * @returns 
+ */
+export async function fetchStockPrice(stockKey, mode, from, to) {
+  try {
+    const response = await authInstance.get(`/stocks/stockInfo/${stockKey}/price?mode=${mode}&from=${from}&to=${to}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
 export default {
   fetchStockInfo,
   fetchNewsData,
