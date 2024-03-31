@@ -74,8 +74,8 @@ export default function InterestStockDetailAskingPricePage() {
           return data.data.result;
         });
         const stockEndPrice = await fetchStockEndPrice(stockKey);
-        // console.log(stockEndPrice.data[0].closePrice);
-        if (stockEndPrice.length > 0) {
+        // console.log("aaa", stockEndPrice.data[0].closePrice);
+        if (stockEndPrice) {
           setYesterDayEndPrice(stockEndPrice.data[0].closePrice);
         }
 
@@ -102,7 +102,7 @@ export default function InterestStockDetailAskingPricePage() {
   const handleNewsButtonClick = () => {
     navigate(`/stockDetail/${partyKey}/${stockKey}/news`);
   };
-
+  console.log("전 영업일 종가", yesterDayEndPrice);
   return (
     <>
       <TopNavigationBar text={"종목 상세정보"} type={1} />
