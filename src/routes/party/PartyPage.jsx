@@ -12,9 +12,11 @@ import {
   fetchSearchUser,
   fetchNormalUser,
 } from "../../lib/apis/party";
+import { fetchNotReadNoti } from "../../lib/apis/notification";
 import { fetchDepositData } from "../../lib/apis/stock";
 import { useSelector, useDispatch } from "react-redux";
 import Alert from "../../assets/alert.png";
+import Bell from "../../assets/bell.png";
 import { deletePartyKey } from "../../store/reducers/partyReducer";
 // 특정 모임 정보 api
 // 잔고 api
@@ -133,18 +135,59 @@ export default function PartyPage() {
   const NoParty = () => {
     dispatch(deletePartyKey());
   };
+
+  const UnReadNoti = async () => {
+    try {
+      const response = await fetchNotReadNoti();
+      setCount(response);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchData();
     CheckInvite();
     FindParty();
+    UnReadNoti();
     // FindUser();
     // fetchDeposit();
   }, [partyKey]);
   console.log(partyKey);
+
   return (
     <>
-      <button onClick={test}>test</button>
+      {/* <button onClick={test}>test</button> */}
       <TopNavigationBar text="모임 생성"></TopNavigationBar>
+      <img
+        src={Bell}
+        alt="notification"
+        style={{
+          width: "2rem",
+          height: "2rem",
+          position: "absolute",
+          right: "1.5rem",
+          top: "1rem",
+          zIndex: 1000,
+        }}
+        onClick={() => {
+          navigate(`/${userKey}/notification`);
+        }}
+      />
+      <div
+        style={{
+          width: "0.5rem",
+          height: "0.5rem",
+          backgroundColor: "red",
+          borderRadius: "50%",
+          position: "absolute",
+          right: "1.3rem",
+          top: "1rem",
+          zIndex: 1000,
+        }}
+        className={count >= 1 ? "" : "dis-none"}
+      ></div>
+
       <Container className="page-container">
         <div className="party-container">
           <div
