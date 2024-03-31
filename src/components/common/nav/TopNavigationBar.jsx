@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { fetchPartyInfo } from "../../../lib/apis/party";
 
-const TopNavigationBar = ({ text, type = 0 }) => {
+const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const userGroup = useSelector((state) => state.user.groupInfo);
   console.log(userGroup);
@@ -27,7 +27,7 @@ const TopNavigationBar = ({ text, type = 0 }) => {
   const [partyInfo, setPartyInfo] = useState([]);
   const { partyKey } = useParams();
   const handleBackButtonClick = () => {
-    navigate(-1);
+    navigate(to);
   };
 
   const handleHamburgerButtonClick = () => {
