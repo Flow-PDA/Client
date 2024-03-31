@@ -9,7 +9,7 @@ import DownArrowButton from "../../../assets/down_arrow.png";
 import InterestButton from "../../../assets/interest.png";
 import StockButton from "../../../assets/stock.png";
 import TransferButton from "../../../assets/cash.png";
-import FlowButton from "../../../assets/Flow.png";
+import FlowButton from "../../../assets/logo.svg";
 import AlarmButton from "../../../assets/alarm.png";
 import "./TopNavigationBar.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -95,7 +95,6 @@ const TopNavigationBar = ({ text, type = 0 }) => {
     const partyName = partyInfo.name;
     const partyAccountNumber = partyInfo.accountNumber;
     const groupInfo = useSelector((state) => state.user.groupInfo);
-    console.log("ㅁㅁ", groupInfo);
 
     return (
       <Navbar className="navbar">
