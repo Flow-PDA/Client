@@ -7,10 +7,12 @@ import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
 import { Link, useParams } from "react-router-dom";
 import { fetchTransferList } from "../../lib/apis/transfer";
 import { fetchPartyInfo } from "../../lib/apis/party";
+import { fetchPartyAdmin } from "../../lib/apis/party";
 
 export default function TransferPage() {
   const [transferData, setTransferData] = useState([]);
   const [partyInfo, setPartyInfo] = useState();
+  const [role, setRole] = useState();
 
   const partyKey = useParams().partyKey;
   const callTransferData = async () => {
@@ -30,15 +32,24 @@ export default function TransferPage() {
       console.error("모임 정보 데이터 호출 중 에러:", error);
     }
   };
+  const callPartyAdminInfo = async () => {
+    try {
+      const response = await fetchPartyAdmin(partyKey);
+      // console.log("ㅇㅇㅇ", response);
+      setRole(response.data.role);
+    } catch (error) {
+      console.error("모임 정보 데이터 호출 중 에러:", error);
+    }
+  };
 
   useEffect(() => {
     callTransferData();
     callPartyInfo();
+    callPartyAdminInfo();
   }, []);
 
   let deposit = 0;
-  console.log(transferData);
-  console.log(partyInfo);
+  // console.log(role);
 
   if (partyInfo) {
     deposit = partyInfo.deposit;
@@ -54,13 +65,17 @@ export default function TransferPage() {
         <div className="transfer-possible-price">
           {deposit.toLocaleString()}원
         </div>
-        <Link
-          to={`transferDetailAccountNumPage`}
-          preventScrollReset
-          className="text-decoration-none"
-        >
-          <PrimaryButton text="이체하기" minWidth="100%" />
-        </Link>
+        {role === 0 ? (
+          <></>
+        ) : (
+          <Link
+            to={`transferDetailAccountNumPage`}
+            preventScrollReset
+            className="text-decoration-none"
+          >
+            <PrimaryButton text="이체하기" minWidth="100%" />
+          </Link>
+        )}
 
         <hr />
         <div className="full-transfer-sentence">전체 내역</div>
