@@ -10,15 +10,14 @@ export default function SampleChart({ mode, stockKey }) {
   useEffect(() => {
     async function fetchData() {
       const currentDate = new Date();
-      const fromDate = new Date(currentDate);
-      fromDate.setDate(currentDate.getDate() - 50);
+      const {interval, fromDate} = getFromDate(currentDate);
       
       const currentTimeStr = getTimeString(currentDate);
       const fromTimeStr = getTimeString(fromDate);
   
-      console.log(currentTimeStr, fromTimeStr);
+      // console.log(currentTimeStr, fromTimeStr, interval);
   
-      const response = await fetchStockPrice(stockKey, "day", fromTimeStr, currentTimeStr);
+      const response = await fetchStockPrice(stockKey, interval, fromTimeStr, currentTimeStr);
       
       const newList = response.result?.map((elem) => {
         return {
@@ -26,13 +25,36 @@ export default function SampleChart({ mode, stockKey }) {
           y: [elem.openPrice, elem.highPrice, elem.lowPrice, elem.closePrice]
         }
       });
-      console.log(newList);
+      // console.log(newList);
       setData(newList);
     }
     if (mode === "day") setChartType("candlestick")
     else setChartType("line");
     fetchData();
   }, [mode, stockKey]);
+
+  const getFromDate = useCallback((now) => {
+    const fromDate = new Date(now);
+    let interval = "minute";
+
+    if (mode === "day") {
+      fromDate.setHours(9);
+      fromDate.setMinutes(0);
+      fromDate.setSeconds(0);
+      fromDate.setMilliseconds(0);
+    } else if (mode === "month") {
+      fromDate.setMonth(fromDate.getMonth() - 1);
+      interval = "day";
+    } else if (mode === "3month") {
+      fromDate.setMonth(fromDate.getMonth() - 3);
+      interval = "week";
+    } else if (mode === "year") {
+      fromDate.setFullYear(fromDate.getFullYear() - 1);
+      interval = "week";
+    }
+
+    return {interval, fromDate};
+  }, [mode]);
 
   const getTimeString = useCallback((now) => {
     const year = now.getFullYear();
@@ -45,6 +67,7 @@ export default function SampleChart({ mode, stockKey }) {
   }, [])
 
   return (
+    data?.length > 0 ?
     <ApexChart
       type={chartType}
       series={[
@@ -116,6 +139,7 @@ export default function SampleChart({ mode, stockKey }) {
           ],
         },
       }}
-    />
+      />
+      : <></>
   );
 }
