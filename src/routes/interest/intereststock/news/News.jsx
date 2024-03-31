@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./News.css";
 import { useNavigate } from "react-router-dom";
-import { fetchNewsData } from "../../../lib/apis/stock";
-import { AuthContext } from "../../../lib/contexts/AuthContext";
+import { fetchNewsData } from "../../../../lib/apis/stock";
+import { AuthContext } from "../../../../lib/contexts/AuthContext";
 import { Container, Row, Col } from "react-bootstrap";
 export default function News({ news, setNews, stockName }) {
   const { throwAuthError } = useContext(AuthContext);

@@ -4,11 +4,16 @@ import "./SampleAskingPriceChart.css";
 import Modal from "../../../../components/common/modal/StockAskingModal";
 import io from "socket.io-client";
 
-export default function SampleAskingPriceChart({ name, stockCode }) {
+export default function SampleAskingPriceChart({
+  stockCode,
+  endPrice,
+  currentPrice,
+}) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState(null);
   const [selectedPercent, setSelectedPercent] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
+
   const handlePriceClick = (price, percent, type) => {
     setSelectedPrice(price);
     setSelectedPercent(percent);
@@ -21,16 +26,23 @@ export default function SampleAskingPriceChart({ name, stockCode }) {
 
   // update price
   const updatePrice = (data) => {
-    // bids
-    const bids = data.buyList.map((elem) => {
-      // TODO: calc. percent
-      return { price: elem[0], quantity: elem[1], percent: 1.23 };
-    });
-
     // asks
     const asks = data.sellList.map((elem) => {
-      // TODO: calc. percent
-      return { price: elem[0], quantity: elem[1], percent: -1.23 };
+      const percent = (((Number(elem[0]) - endPrice) / endPrice) * 100).toFixed(
+        2
+      );
+      return {
+        price: elem[0],
+        quantity: elem[1],
+        percent: percent,
+      };
+    });
+    // bids
+    const bids = data.buyList.map((elem) => {
+      const percent = (((Number(elem[0]) - endPrice) / endPrice) * 100).toFixed(
+        2
+      );
+      return { price: elem[0], quantity: elem[1], percent: percent };
     });
 
     setOrderBook({
@@ -71,14 +83,14 @@ export default function SampleAskingPriceChart({ name, stockCode }) {
     }
   }, [socketIo]);
 
-  // 승인 모달 열기 함수
+  // 모달 열기 함수
   function openModal() {
     setModalOpen(true);
   }
 
-  // 승인 모달 닫기 함수
+  // 모달 닫기 함수
   async function closeModal() {
-    setModalOpen(false); // 승인 후 승인 대기 상태 해제
+    setModalOpen(false);
   }
 
   const [orderBook, setOrderBook] = useState({
@@ -87,31 +99,38 @@ export default function SampleAskingPriceChart({ name, stockCode }) {
     timestamp: Date.now(),
   });
 
-  const sumQuantity = (asks, bids) => {
+  const sumQuantityAsk = (asks) => {
     var sum = 0;
     for (var i of asks) {
       sum += Number(i.quantity);
     }
-    for (var j of bids) {
-      sum += Number(j.quantity);
+
+    return sum;
+  };
+
+  const sumQuantityBid = (bids) => {
+    var sum = 0;
+    for (var i of bids) {
+      sum += Number(i.quantity);
     }
+
     return sum;
   };
 
   const renderAsks = (asks, sum, timestamp) => {
     return _.orderBy(asks, "price", "desc").map((v) => {
       const width =
-        (v.quantity / sum) * 100 > 100
+        (v.quantity / sum) * 300 > 100
           ? "100%"
-          : (v.quantity / sum) * 100 + "%";
+          : (v.quantity / sum) * 300 + "%";
 
       const height = "100%";
 
       const marginLeft =
-        width === "100%" ? "0" : 100 - (v.quantity / sum) * 100 + "%";
+        width === "100%" ? "0" : 100 - (v.quantity / sum) * 300 + "%";
       const key = timestamp + v.price;
 
-      const askClassName = v.price === 73500 ? "ask-highlight" : "";
+      const askClassName = v.price === currentPrice ? "ask-highlight" : "";
       return (
         <tr key={key} className={askClassName}>
           <td className="td-quantity">
@@ -127,16 +146,28 @@ export default function SampleAskingPriceChart({ name, stockCode }) {
           </td>
 
           <td
-            className={`td-price asks-price`}
+            className={
+              v.percent > 0
+                ? "td-price red-text"
+                : v.percent == 0
+                ? "td-price black-text"
+                : "td-price blue-text"
+            }
             onClick={() => handlePriceClick(v.price, v.percent, "asks")}
           >
-            {v.price.toLocaleString()}
+            {Number(v.price).toLocaleString()}
           </td>
           <td
-            className="td-percent asks-percent"
+            className={
+              v.percent > 0
+                ? "td-price red-text"
+                : v.percent == 0
+                ? "td-price black-text"
+                : "td-price blue-text"
+            }
             onClick={() => handlePriceClick(v.price, v.percent, "asks")}
           >
-            +{v.percent.toLocaleString()}%
+            {v.percent.toLocaleString()}%
           </td>
 
           <td></td>
@@ -148,26 +179,38 @@ export default function SampleAskingPriceChart({ name, stockCode }) {
   const renderBids = (bids, sum, timestamp) => {
     return bids.map((v) => {
       var width =
-        (v.quantity / sum) * 100 > 100
+        (v.quantity / sum) * 300 > 100
           ? "100%"
-          : (v.quantity / sum) * 100 + "%";
+          : (v.quantity / sum) * 300 + "%";
       const key = timestamp + v.price;
       const height = "100%";
-      const askClassName = v.price === 73500 ? "ask-highlight" : "";
+      const askClassName = v.price === currentPrice ? "ask-highlight" : "";
       return (
         <tr key={key} className={askClassName}>
           <td></td>
           <td
-            className="td-price bids-price"
+            className={
+              v.percent > 0
+                ? "td-price red-text"
+                : v.percent == 0
+                ? "td-price black-text"
+                : "td-price blue-text"
+            }
             onClick={() => handlePriceClick(v.price, v.percent, "bids")}
           >
-            {v.price.toLocaleString()}{" "}
+            {Number(v.price).toLocaleString()}{" "}
           </td>
           <td
-            className="td-percent bids-percent"
+            className={
+              v.percent > 0
+                ? "td-price red-text"
+                : v.percent == 0
+                ? "td-price black-text"
+                : "td-price blue-text"
+            }
             onClick={() => handlePriceClick(v.price, v.percent, "bids")}
           >
-            -{v.percent.toLocaleString()}%
+            {v.percent.toLocaleString()}%
           </td>
           <td className="td-quantity">
             <div
@@ -189,7 +232,8 @@ export default function SampleAskingPriceChart({ name, stockCode }) {
   //   }
 
   const { asks, bids } = orderBook;
-  const sum = sumQuantity(asks, bids);
+  const sumAsk = sumQuantityAsk(asks);
+  const sumBid = sumQuantityBid(bids);
 
   return (
     <div className="box_orderbook bg-white rounded shadow-sm">
@@ -200,12 +244,11 @@ export default function SampleAskingPriceChart({ name, stockCode }) {
           stockPrice={selectedPrice}
           stockPercent={selectedPercent}
           type={selectedType}
-          name={name}
         />
 
         <tbody>
-          {renderAsks(asks, sum, orderBook.timestamp)}
-          {renderBids(bids, sum, orderBook.timestamp)}
+          {renderAsks(asks, sumAsk, orderBook.timestamp)}
+          {renderBids(bids, sumBid, orderBook.timestamp)}
         </tbody>
       </table>
     </div>

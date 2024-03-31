@@ -9,16 +9,22 @@ import DownArrowButton from "../../../assets/down_arrow.png";
 import InterestButton from "../../../assets/interest.png";
 import StockButton from "../../../assets/stock.png";
 import TransferButton from "../../../assets/cash.png";
+import FlowButton from "../../../assets/Flow.png";
+import AlarmButton from "../../../assets/alarm.png";
 import "./TopNavigationBar.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { fetchPartyInfo } from "../../../lib/apis/party";
+
+import {
+  fetchPartyInquire,
+  fetchUser,
+  fetchPartyInfo,
+} from "../../../lib/apis/party";
+import { fetchDepositData } from "../../../lib/apis/stock";
 
 const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
-  const userGroup = useSelector((state) => state.user.groupInfo);
-  console.log(userGroup);
 
   const userName = userInfo.name;
   const navigate = useNavigate();
@@ -30,6 +36,10 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
     navigate(to);
   };
 
+  const handleFlowButtonClick = () => {
+    navigate("/party");
+  };
+
   const handleHamburgerButtonClick = () => {
     setMenuOpen(!menuOpen);
     setToggleOpen(false);
@@ -38,10 +48,12 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   const handleSettingButtonClick = (partyKey) => {
     navigate(`/party/${partyKey}/info`);
   };
-  const handleHomeButtonClick = () => {};
 
   const handletoggleButtonClick = () => {
     setToggleOpen(!toggleOpen);
+  };
+  const handleHomeButtonClick = () => {
+    navigate("/party");
   };
 
   const callPartyInfo = async () => {
@@ -52,6 +64,12 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
       console.error("모임 정보 데이터 호출 중 에러:", error);
     }
   };
+
+  const [infos, setInfos] = useState([]);
+
+  //TODO 햄버거버튼 연결
+
+  // console.log(infos);
 
   useEffect(() => {
     callPartyInfo();
@@ -76,6 +94,8 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
     //햄버거 버튼 있는 버전
     const partyName = partyInfo.name;
     const partyAccountNumber = partyInfo.accountNumber;
+    const groupInfo = useSelector((state) => state.user.groupInfo);
+    console.log("ㅁㅁ", groupInfo);
 
     return (
       <Navbar className="navbar">
@@ -153,25 +173,35 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
                   다른 모임투자로 이동하기
                   {toggleOpen ? (
                     <>
-                      {/* TODO: 리덕스에 userGroup 들어오면 userGroup map으로 수정!!!! */}
                       <Image
                         src={DownArrowButton}
                         className="right-arrow-btn"
                       />
-                      <div className="another-party">
-                        <div className="another-party-info">
-                          <div className="party-name">178의 모임투자</div>
-                          <div className="party-account-number">
-                            012-456-789
+                      {groupInfo.map((data) => (
+                        <>
+                          <div className="another-party">
+                            {partyAccountNumber !== data.accountNumber ? (
+                              <>
+                                <Link
+                                  className="link"
+                                  to={`/party/${data.partyKey}/myparty`}
+                                >
+                                  <div className="another-party-info">
+                                    <div className="party-name">
+                                      {data.name}의 모임투자
+                                    </div>
+                                    <div className="party-account-number">
+                                      [계좌] {data.accountNumber}
+                                    </div>
+                                  </div>
+                                </Link>
+                              </>
+                            ) : (
+                              <></>
+                            )}
                           </div>
-                        </div>
-                        <div className="another-party-info">
-                          <div className="party-name">179의 모임투자</div>
-                          <div className="party-account-number">
-                            012-422-789
-                          </div>
-                        </div>
-                      </div>
+                        </>
+                      ))}
                     </>
                   ) : (
                     <Image src={RightArrowButton} className="right-arrow-btn" />
@@ -202,6 +232,27 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
             className="navbar-brand icon-right"
           >
             <Image src={SettingButton} alt="Setting" />
+          </Navbar.Brand>
+        </Container>
+      </Navbar>
+    );
+  } else if (type === 3) {
+    return (
+      <Navbar className="navbar">
+        <Container className="navbar-container">
+          <Navbar.Brand
+            onClick={handleFlowButtonClick}
+            className="navbar-brand"
+            style={{ marginLeft: "2vw", marginTop: "3vw" }}
+          >
+            <Image src={FlowButton} alt="Home" style={{ width: "25vw" }} />
+          </Navbar.Brand>
+          <Nav.Item className="nav-item-text">{text}</Nav.Item>
+          <Navbar.Brand
+            className="navbar-brand icon-right"
+            style={{ marginRight: "3vw", marginTop: "1vw" }}
+          >
+            <Image src={AlarmButton} alt="alarm" />
           </Navbar.Brand>
         </Container>
       </Navbar>

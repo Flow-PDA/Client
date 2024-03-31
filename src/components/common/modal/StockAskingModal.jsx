@@ -79,9 +79,9 @@ const StockAskingModal = ({
           </div>
           <div style={{ fontSize: "1.0rem", color: "rgb(133 129 129)" }}>
             {type === "asks" ? (
-              <span style={{ fontWeight: 500 }}>+{stockPercent}%</span>
+              <span style={{ fontWeight: 500 }}>{stockPercent}%</span>
             ) : (
-              <span style={{ fontWeight: 500 }}>-{stockPercent}%</span>
+              <span style={{ fontWeight: 500 }}>{stockPercent}%</span>
             )}
           </div>
         </div>

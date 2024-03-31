@@ -32,7 +32,7 @@ export async function fetchHankookStockCurrent(stockKey) {
     const response = await authInstance.get(
       `/stocks/inquire?stock_code=${stockKey}`
     );
-    console.log("fetchHankookStockCurrent", stockKey);
+    console.log("fetchHankookStockCurrent", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching stock balance:", error);
