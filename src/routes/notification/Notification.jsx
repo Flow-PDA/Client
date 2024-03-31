@@ -85,14 +85,6 @@ export default function Notification() {
         {notis.map((noti) => (
           <div
             key={noti.notificationKey}
-            onClick={() => {
-              ReadNoti(noti.notificationKey);
-              if (noti.type === 3) {
-                navigate(`/transfer/${noti.partyKey}`);
-              } else if (noti.type === 1) {
-                navigate(`/interests/${noti.partyKey}`);
-              }
-            }}
             className={
               noti.isViewed === true ? "white-background" : "gray-background"
             }
@@ -106,15 +98,41 @@ export default function Notification() {
                   height: "1.5rem",
                   marginLeft: "1rem",
                 }}
+                onClick={() => {
+                  ReadNoti(noti.notificationKey);
+                  if (noti.type === 3) {
+                    navigate(`/transfer/${noti.partyKey}`);
+                  } else if (noti.type === 1) {
+                    navigate(`/interests/${noti.partyKey}`);
+                  }
+                }}
               />
               <div
                 style={{ fontWeight: "500", fontSize: "0.9rem", width: "90%" }}
+                onClick={() => {
+                  ReadNoti(noti.notificationKey);
+                  if (noti.type === 3) {
+                    navigate(`/transfer/${noti.partyKey}`);
+                  } else if (noti.type === 1) {
+                    navigate(`/interests/${noti.partyKey}`);
+                  }
+                }}
               >
                 {noti.content}
               </div>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <div style={{ marginLeft: "3.6rem", color: "#818181" }}>
+              <div
+                style={{ marginLeft: "3.6rem", color: "#818181" }}
+                onClick={() => {
+                  ReadNoti(noti.notificationKey);
+                  if (noti.type === 3) {
+                    navigate(`/transfer/${noti.partyKey}`);
+                  } else if (noti.type === 1) {
+                    navigate(`/interests/${noti.partyKey}`);
+                  }
+                }}
+              >
                 {noti.createdAt.slice(5, 10)}&ensp;
                 {noti.createdAt.slice(11, 16)}
               </div>
