@@ -62,6 +62,11 @@
   color: #fff !important;
 }
 
+.hovered {
+  background-color: #c8c8c8 !important;
+  color: #fff !important;
+}
+
 .stock-detail-transaction-button {
   padding: 2vh 0;
   display: flex !important; /* 버튼을 가로로 정렬하기 위해 flex 사용 */

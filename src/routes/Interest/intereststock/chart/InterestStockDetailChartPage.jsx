@@ -20,6 +20,7 @@ export default function InterestStockDetailChartPage() {
   const stockKey = useParams().stockKey;
   const [stockInfo, setStockInfo] = useState([]);
   const [stockBalance, setStockBalance] = useState([]);
+  const [chartMode, setChartMode] = useState("day");
 
   const [currentTime, setCurrentTime] = useState(new Date()); // 현재 시간 상태 추가
   const [chartMode, setChartMode] = useState("day");
@@ -41,8 +42,9 @@ export default function InterestStockDetailChartPage() {
       });
       _socketIo.on("update", (data) => {
         //console.log(data);
-
-        setStockExecutionPrice(data[1]);
+        if (data[1] !== stockExecutionPrice) {
+          setStockExecutionPrice(data[1]);
+        }
         // console.log(stockExecutionPrice);
       });
 
@@ -153,13 +155,20 @@ export default function InterestStockDetailChartPage() {
             </Row>
             <Row>
               <Col>
-                <SampleChart mode={chartMode} stockKey={stockKey} />
+                <SampleChart
+                  mode={chartMode}
+                  stockKey={stockKey}
+                  price={stockExecutionPrice}
+                />
               </Col>
             </Row>
             <Row className="stock-detail-date-row">
               <Col>
                 <Button
-                  className="stock-detail-date-button day"
+                  className={
+                    "stock-detail-date-button day" +
+                    (chartMode === "day" ? " hovered" : "")
+                  }
                   onClick={() => setChartMode("day")}
                 >
                   1일
@@ -167,7 +176,10 @@ export default function InterestStockDetailChartPage() {
               </Col>
               <Col>
                 <Button
-                  className="stock-detail-date-button week"
+                  className={
+                    "stock-detail-date-button week" +
+                    (chartMode === "week" ? " hovered" : "")
+                  }
                   onClick={() => setChartMode("week")}
                 >
                   1주
@@ -175,15 +187,10 @@ export default function InterestStockDetailChartPage() {
               </Col>
               <Col>
                 <Button
-                  className="stock-detail-date-button month"
-                  onClick={() => setChartMode("month")}
-                >
-                  1달
-                </Button>
-              </Col>
-              <Col>
-                <Button
-                  className="stock-detail-date-button three-month"
+                  className={
+                    "stock-detail-date-button three-month" +
+                    (chartMode === "3month" ? " hovered" : "")
+                  }
                   onClick={() => setChartMode("3month")}
                 >
                   3달
@@ -191,7 +198,10 @@ export default function InterestStockDetailChartPage() {
               </Col>
               <Col>
                 <Button
-                  className="stock-detail-date-button year"
+                  className={
+                    "stock-detail-date-button year" +
+                    (chartMode === "year" ? " hovered" : "")
+                  }
                   onClick={() => setChartMode("year")}
                 >
                   1년
