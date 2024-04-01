@@ -109,6 +109,30 @@ export default function CandleChart({ mode, stockKey, price }) {
     }
   }, [updateData]);
 
+  // useEffect(() => {
+  //   if (noContent === true && mode === "day") {
+  //     console.log("No content");
+  //     setNoContent(false);
+  //     const str = getPrevDateStrings(prevDateCnt);
+  //     console.log(str);
+
+  //     fetchStockPrice(stockKey, "minute", str[0], str[1])
+  //       .then((response) => {
+  //         console.log(response);
+  //         return response.result;
+  //       })
+  //       .then((result) => {
+  //         console.log(result);
+  //         if (result.length > 0) {
+  //           setData(result);
+  //         } else {
+  //           setPrevDateCnt(prevDateCnt + 1);
+  //           setNoContent(true);
+  //         }
+  //       });
+  //   }
+  // }, [noContent, prevDateCnt]);
+
   const timeStrToTimestamp = useCallback((str) => {
     const year = str.slice(0, 4);
     const month = str.slice(4, 6);
