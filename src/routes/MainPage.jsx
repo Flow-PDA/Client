@@ -41,7 +41,7 @@ const MainPage = () => {
     if (!party.partyKey) {
       fetchParty();
     }
-  }, []);
+  }, [party]);
   return (
     <Container className="main-container">
       <Row>
