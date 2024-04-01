@@ -4,6 +4,7 @@ import { authInstance } from "./base";
 // 유저별 전체 알림
 export async function fetchAllNoti() {
   const response = await authInstance.get(`/notices/allnoti`);
+  console.log(response.data.result);
   return response.data.result;
 }
 // 읽은 알림 삭제
