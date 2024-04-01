@@ -27,7 +27,7 @@ export default function CandleChart({ mode, stockKey, price }) {
         currentTimeStr
       );
 
-      if (response.result.length > 1) {
+      if (response.result?.length > 1) {
         const newList = response.result?.map((elem, index) => {
           const timeStr = elem.localDate ? elem.localDate : elem.localDateTime;
           return {
@@ -58,7 +58,7 @@ export default function CandleChart({ mode, stockKey, price }) {
 
   useEffect(() => {
     let timerId;
-    if (chartInterval > 0) {
+    if (chartInterval > 100) {
       timerId = setInterval(() => {
         console.log(`${chartInterval} passed, Update data`);
         setUpdateData(true);

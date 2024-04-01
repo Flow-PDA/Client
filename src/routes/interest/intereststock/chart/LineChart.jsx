@@ -23,7 +23,7 @@ export default function LineChart({ mode, stockKey, price }) {
         currentTimeStr
       );
 
-      if (response.result.length > 1) {
+      if (response.result?.length > 1) {
         const newList = response.result?.map((elem, index) => {
           const timeStr = elem.localDate ? elem.localDate : elem.localDateTime;
           return {

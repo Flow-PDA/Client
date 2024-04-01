@@ -63,7 +63,7 @@ export default function InterestStockDetailChartPage() {
       // REGISTER_SUB : 등록, RELEASE_SUB : 해제
       socketIo.emit("REGISTER_SUB", temp);
     }
-  }, [socketIo]);
+  }, [socketIo, stockKey]);
 
   useEffect(() => {
     const interval = setInterval(() => {
