@@ -47,10 +47,6 @@ export default function TransferDetailConfirmPage() {
       const response = await fetchPartyInfo(partyKey);
       setPartyInfo(response);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
       console.error("이체 데이터 호출 중 에러:", error);
     }
   };

@@ -18,10 +18,6 @@ export default function InterestPending({ partyKey }) {
         const res = await getApproval(partyKey);
         setStock(res.data.result);
       } catch (error) {
-        if (error.response.status === 401) {
-          console.log("throws");
-          throwAuthError();
-        }
         console.error(error);
         throw Error(error);
       }
@@ -67,10 +63,6 @@ export default function InterestPending({ partyKey }) {
       const res = await getApproval(partyKey);
       setStock(res.data.result);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
       console.error(error);
       throw Error(error);
     }

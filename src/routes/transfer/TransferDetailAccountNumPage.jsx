@@ -36,10 +36,6 @@ export default function TransferDetailAccountNumPage() {
       const response = await fetchTransferList(partyKey);
       setTransferData(response);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
       console.error("이체 데이터 호출 중 에러:", error);
     }
   };
@@ -64,10 +60,6 @@ export default function TransferDetailAccountNumPage() {
       const response = await fetchRecentAccountList(partyKey);
       setRecentAccountData(response);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
       console.error("최근 이체 데이터 호출 중 에러:", error);
     }
   };

@@ -29,10 +29,6 @@ export default function TradeButton({
         mystock.find((data) => data.stockKey === stockKey) !== undefined;
       setIsInterestStock(isActive);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
       console.error(error);
     }
   }
@@ -48,10 +44,6 @@ export default function TradeButton({
       setIsModalOpen(true); // 모달 열기
       setIsInterestStock(true); //
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
       console.error(error);
     }
   }

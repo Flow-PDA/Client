@@ -42,12 +42,7 @@ export default function PartyPage() {
     try {
       const res = await modifyTest(2);
       // console.log(res);
-    } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
-    }
+    } catch (error) {}
   }, []);
   const fetchData = async () => {
     try {
@@ -83,10 +78,6 @@ export default function PartyPage() {
       setInfos(new_tmp);
       // console.log(res);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
       console.error(error);
     }
   };
@@ -170,7 +161,7 @@ export default function PartyPage() {
   return (
     <>
       {/* <button onClick={test}>test</button> */}
-      <TopNavigationBar text="모임 생성"></TopNavigationBar>
+      <TopNavigationBar type={3}></TopNavigationBar>
       <img
         src={Bell}
         alt="notification"
@@ -178,8 +169,8 @@ export default function PartyPage() {
           width: "2rem",
           height: "2rem",
           position: "absolute",
-          right: "1.5rem",
-          top: "1rem",
+          right: "1rem",
+          top: "1.5rem",
           zIndex: 1000,
         }}
         onClick={() => {
@@ -193,8 +184,8 @@ export default function PartyPage() {
           backgroundColor: "red",
           borderRadius: "50%",
           position: "absolute",
-          right: "1.3rem",
-          top: "1rem",
+          right: "1rem",
+          top: "1.3rem",
           zIndex: 1000,
         }}
         className={count >= 1 ? "" : "dis-none"}

@@ -59,12 +59,7 @@ export default function InterestStockDetailNewsPage() {
         console.log(stockKey);
         const stock_info = await fetchHankookStockCurrent(stockKey); //현재가 불러오는 페이지
         setStockInfo(stock_info);
-      } catch (error) {
-        if (error.response.status === 401) {
-          console.log("throws");
-          throwAuthError();
-        }
-      }
+      } catch (error) {}
     }
     fetchData();
   }, []);
