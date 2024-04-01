@@ -82,7 +82,9 @@ export async function fetchStockEndPrice(stockKey) {
     `/stocks/stockInfo/${stockKey}/endPrice`
   );
 
-  return response;
+  // console.log("aa", response.data.result);
+
+  return response.data.result;
 }
 export default {
   fetchStockInfo,
