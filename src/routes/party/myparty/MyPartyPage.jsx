@@ -28,6 +28,10 @@ export default function MyPartyPage() {
       const new_tmp = await fetchDepositData(CANO, APPKEY, APPSECRET, TOKEN);
       setInfos(new_tmp);
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
       console.error(error);
     }
   };
@@ -37,6 +41,10 @@ export default function MyPartyPage() {
       const response = await fetchHavingStock(partyKey);
       setHavings(response);
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
       console.error(error);
     }
   };

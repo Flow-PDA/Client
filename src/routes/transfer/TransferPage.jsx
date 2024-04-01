@@ -20,6 +20,10 @@ export default function TransferPage() {
       const response = await fetchTransferList(partyKey);
       setTransferData(response);
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
       console.error("이체 데이터 호출 중 에러:", error);
     }
   };
@@ -29,6 +33,10 @@ export default function TransferPage() {
       const response = await fetchPartyInfo(partyKey);
       setPartyInfo(response);
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
       console.error("모임 정보 데이터 호출 중 에러:", error);
     }
   };
@@ -38,7 +46,11 @@ export default function TransferPage() {
       // console.log("ㅇㅇㅇ", response);
       setRole(response.data.role);
     } catch (error) {
-      console.error("모임 정보 데이터 호출 중 에러:", error);
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
+      console.error("모임 정보 운영자 데이터 호출 중 에러:", error);
     }
   };
 
@@ -57,7 +69,6 @@ export default function TransferPage() {
 
   return (
     <>
-
       <TopNavigationBar text={"이체하기"} to={`/party/${partyKey}/myparty`} />
 
       <Container>

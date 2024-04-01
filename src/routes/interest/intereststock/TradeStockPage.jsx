@@ -90,6 +90,10 @@ export default function TradeStockPage() {
           setYesterDayEndPrice(stockEndPrice.data[0].closePrice);
         }
       } catch (error) {
+        if (error.response.status === 401) {
+          console.log("throws");
+          throwAuthError();
+        }
         console.error(error);
         throw Error(error);
       }
@@ -151,6 +155,10 @@ export default function TradeStockPage() {
         }
       }
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
       console.error(error);
     }
   };
@@ -164,6 +172,10 @@ export default function TradeStockPage() {
       const response = await fetchPartyInfo(partyKey);
       setPartyInfo(response);
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
       console.error("모임 정보 데이터 호출 중 에러:", error);
     }
   };
