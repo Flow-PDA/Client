@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import io from "socket.io-client";
 import "./RisingStockPage.css";
+import { useNavigate } from "react-router-dom";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 import { fetchShinhanRising } from "../../../lib/apis/shinhanApi";
 import { AuthContext } from "../../../lib/contexts/AuthContext";
@@ -13,7 +14,7 @@ export default function RisingStockPage() {
   const [socketIo, setSocketIo] = useState(null);
   const [updatedData, setUpdatedData] = useState(null);
   const { throwAuthError } = useContext(AuthContext);
-
+  const navigate = useNavigate()
   const fetchData = async () => {
     try {
       const response = await fetchShinhanRising();
@@ -118,8 +119,8 @@ export default function RisingStockPage() {
                 {data.stbd_nm}
               </div>
               {/* <div>{data.stock_code}</div> */}
-              <div>{data.price ? data.price : 0}</div>
-              <div>{`${data?.prdy_vrss} (${data?.prdy_ctrt} %)`}</div>
+              <div style={{ fontSize: "1.2rem", fontWeight: "600" }}>{data.price ? Number(data.price).toLocaleString() : 0}원</div>
+              <div style={{ fontSize: "1rem", fontWeight: "600" }}>{`${data?.prdy_vrss} (${data?.prdy_ctrt} %)`}</div>
             </Col>
           </Row>
         ))}
