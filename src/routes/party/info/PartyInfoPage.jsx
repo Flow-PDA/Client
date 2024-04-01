@@ -56,14 +56,18 @@ export default function PartyInfoPage() {
   const fetchMember = async () => {
     try {
       const response = await fetchPartyMemberInquire(partyKey);
-      console.log(response.data.result[0]);
-      setMember(response.data.result);
-      const temps = response.data.result;
-      temps.map(async (temp) => {
-        const resp = await fetchSearchUser(partyKey, temp.userKey);
-        members.push(resp.data);
-        console.log(members);
-      });
+      setMember(response);
+      const temps = response;
+      const resBody = await Promise.all(
+        temps.map(async (temp) => {
+          const resp = await fetchSearchUser(partyKey, temp.userKey);
+          // members.push(resp.data);
+          // console.log(members);
+          return resp;
+        })
+      );
+      console.log(resBody);
+      setMembers(resBody);
     } catch (err) {
       console.error(err);
     }
@@ -94,18 +98,18 @@ export default function PartyInfoPage() {
           <div className="info-title">{info.name}의 모임투자</div>
           <div className="info-detail">
             <div>
-              <div>모임 시작일</div>
-              <div>목표</div>
-              <div>목표 금액</div>
-              <div>목표 날짜</div>
+              <div className="info-sub-title">모임 시작일</div>
+              <div className="info-sub-title">목표</div>
+              <div className="info-sub-title">목표 금액</div>
+              <div className="info-sub-title">목표 날짜</div>
             </div>
             <div>
-              <div>
+              <div className="info-sub-title">
                 {!info.createdAt ? info.createdAt : info.createdAt.slice(0, 10)}
               </div>
-              <div>{info.goal}</div>
-              <div>{addCommasToNumber(info.goalPrice)}원</div>
-              <div>{info.goalDate}</div>
+              <div className="info-sub-title">{info.goal}</div>
+              <div className="info-sub-title">{addCommasToNumber(info.goalPrice)}원</div>
+              <div className="info-sub-title">{info.goalDate}</div>
             </div>
           </div>
         </Row>
@@ -143,15 +147,15 @@ export default function PartyInfoPage() {
           <Col className="info-member-container">
             {users.length >= 1 &&
               members.map((mem) => (
-                <div key={mem.userKey} className="info-member">
-                  <div>{mem.userName}</div>
+                <div key={mem.data.userKey} className="info-member">
+                  <div className="info-sub-title">{mem.data.userName}</div>
                   {admin.role === 1 ? (
                     <Button
                       className="text-center"
                       variant="danger"
                       onClick={() => {
-                        console.log(mem.userKey);
-                        deleteUser(mem.userKey);
+                        console.log(mem.data.userKey);
+                        deleteUser(mem.data.userKey);
                       }}
                       style={{
                         height: "2.4rem",
@@ -169,24 +173,24 @@ export default function PartyInfoPage() {
               ))}
           </Col>
           <Col>
-            <div className="info-btn-container">
-              <div className="info-link">친구 초대</div>
-              <Link to={`/party/${partyKey}/info/invite`}>
-                <button
-                  style={{ border: "none", backgroundColor: "#fff" }}
-                ></button>
-              </Link>
-            </div>
+            <Link
+              to={`/party/${partyKey}/info/invite`}
+              style={{ textDecoration: "none", color: "#000" }}
+            >
+              <div className="info-btn-container">
+                <div className="info-link">친구 초대</div>
+              </div>
+            </Link>
           </Col>
           <Col>
-            <div className="info-btn-container">
-              <div className="info-link">목표 설정</div>
-              <Link to={`/party/${partyKey}/info/setgoal`}>
-                <button
-                  style={{ border: "none", backgroundColor: "#fff" }}
-                ></button>
-              </Link>
-            </div>
+            <Link
+              to={`/party/${partyKey}/info/setgoal`}
+              style={{ textDecoration: "none", color: "#000" }}
+            >
+              <div className="info-btn-container">
+                <div className="info-link">목표 설정</div>
+              </div>
+            </Link>
           </Col>
           <Col>
             <div className="info-btn-container">

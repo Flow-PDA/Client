@@ -21,7 +21,6 @@ import {
   fetchUser,
   fetchPartyInfo,
 } from "../../../lib/apis/party";
-import { fetchDepositData } from "../../../lib/apis/stock";
 
 const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
@@ -59,6 +58,7 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   const callPartyInfo = async () => {
     try {
       const response = await fetchPartyInfo(partyKey);
+      console.log(response);
       setPartyInfo(response);
     } catch (error) {
       console.error("모임 정보 데이터 호출 중 에러:", error);
@@ -127,8 +127,8 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
                   </Navbar.Brand>
                 </div>
                 <div className="slide-menu-top-info">
-                  <div className="home-name">
-                    <div className="go-to-home" onClick={handleHomeButtonClick}>
+                  <div className="home-name" onClick={handleHomeButtonClick}>
+                    <div className="go-to-home">
                       <Image src={HomeButton} alt="Home" />
                     </div>
                     <div className="userName">{userName}님</div>
@@ -247,12 +247,6 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
             <Image src={FlowButton} alt="Home" style={{ width: "25vw" }} />
           </Navbar.Brand>
           <Nav.Item className="nav-item-text">{text}</Nav.Item>
-          <Navbar.Brand
-            className="navbar-brand icon-right"
-            style={{ marginRight: "3vw", marginTop: "1vw" }}
-          >
-            <Image src={AlarmButton} alt="alarm" />
-          </Navbar.Brand>
         </Container>
       </Navbar>
     );

@@ -3,7 +3,7 @@ import { authInstance } from "./base";
 // [GET] get 승인 중인 관심 list
 export async function getApproval(partyKey) {
   const response = await authInstance.get(`/interests/${partyKey}/approval`);
-  console.log("res", response.data.result);
+  // console.log("res", response.data.result);
   return response;
 }
 

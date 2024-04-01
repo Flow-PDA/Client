@@ -17,7 +17,7 @@ export default function MyPartyTransactionDetail() {
       const response = await fetchTransactionDetail(partyKey);
       setTransactionData(response);
     } catch (error) {
-      console.error("이체 데이터 호출 중 에러:", error);
+      console.error("거래내역 데이터 호출 중 에러:", error);
     }
   };
 

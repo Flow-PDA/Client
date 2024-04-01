@@ -38,7 +38,7 @@ export default function TransferPage() {
       // console.log("ㅇㅇㅇ", response);
       setRole(response.data.role);
     } catch (error) {
-      console.error("모임 정보 데이터 호출 중 에러:", error);
+      console.error("모임 정보 운영자 데이터 호출 중 에러:", error);
     }
   };
 
@@ -57,7 +57,6 @@ export default function TransferPage() {
 
   return (
     <>
-
       <TopNavigationBar text={"이체하기"} to={`/party/${partyKey}/myparty`} />
 
       <Container>

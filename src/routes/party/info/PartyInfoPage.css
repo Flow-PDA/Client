@@ -49,3 +49,7 @@
   justify-content: space-between;
   border-bottom: solid 1px #c8c8c8;
 }
+.info-sub-title{
+  font-size: 1.1rem;
+  font-weight: 500;
+}

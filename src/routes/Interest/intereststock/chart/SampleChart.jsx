@@ -177,7 +177,6 @@ export default function SampleChart({ mode, stockKey, price }) {
         fromDate.setFullYear(fromDate.getFullYear() - 1);
         interval = "week";
       }
-
       return { interval, fromDate };
     },
     [mode]
@@ -194,6 +193,7 @@ export default function SampleChart({ mode, stockKey, price }) {
   }, []);
 
   return data?.length > 0 ? (
+
     <ApexChart
       type={chartType}
       series={[
@@ -241,12 +241,21 @@ export default function SampleChart({ mode, stockKey, price }) {
             },
           },
         },
-        tooltip: {
-          shared: false,
-          y: {
-            formatter: function (value) {
-              console.log(value);
-              return value;
+        annotations: {
+          // 예시로 선을 추가합니다. 여기에 원하는 어노테이션을 추가할 수 있습니다.
+          xaxis: [
+            {
+              x: data[15]?.x,
+              strokeDashArray: 0,
+              borderColor: "#775DD0",
+              label: {
+                borderColor: "#775DD0",
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
+                },
+                text: "어노테이션",
+              },
             },
           },
         },

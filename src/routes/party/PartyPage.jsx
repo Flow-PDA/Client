@@ -12,9 +12,11 @@ import {
   fetchSearchUser,
   fetchNormalUser,
 } from "../../lib/apis/party";
+import { fetchNotReadNoti } from "../../lib/apis/notification";
 import { fetchDepositData } from "../../lib/apis/stock";
 import { useSelector, useDispatch } from "react-redux";
 import Alert from "../../assets/alert.png";
+import Bell from "../../assets/bell.png";
 import { deletePartyKey } from "../../store/reducers/partyReducer";
 import { updateGroupInfo } from "../../store/reducers/userReducer";
 // 특정 모임 정보 api
@@ -40,12 +42,7 @@ export default function PartyPage() {
     try {
       const res = await modifyTest(2);
       // console.log(res);
-    } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
-    }
+    } catch (error) {}
   }, []);
   const fetchData = async () => {
     try {
@@ -135,10 +132,22 @@ export default function PartyPage() {
   const NoParty = () => {
     dispatch(deletePartyKey());
   };
+
+  const UnReadNoti = async () => {
+    try {
+      const response = await fetchNotReadNoti();
+      console.log(response);
+      setCount(response.result);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchData();
     CheckInvite();
     FindParty();
+    UnReadNoti();
     // FindUser();
     // fetchDeposit();
   }, [partyKey]);
@@ -149,10 +158,40 @@ export default function PartyPage() {
   }, [infos, dispatch]);
 
   console.log(partyKey);
+
   return (
     <>
       {/* <button onClick={test}>test</button> */}
-      <TopNavigationBar type={3} />
+      <TopNavigationBar type={3}></TopNavigationBar>
+      <img
+        src={Bell}
+        alt="notification"
+        style={{
+          width: "2rem",
+          height: "2rem",
+          position: "absolute",
+          right: "1rem",
+          top: "1.5rem",
+          zIndex: 1000,
+        }}
+        onClick={() => {
+          navigate(`/${userKey}/notification`);
+        }}
+      />
+      <div
+        style={{
+          width: "0.5rem",
+          height: "0.5rem",
+          backgroundColor: "red",
+          borderRadius: "50%",
+          position: "absolute",
+          right: "1rem",
+          top: "1.3rem",
+          zIndex: 1000,
+        }}
+        className={count >= 1 ? "" : "dis-none"}
+      ></div>
+
       <Container className="page-container">
         <div className="party-container">
           <div

@@ -35,7 +35,7 @@
 }
 .live-issue-btn {
   font-size: 0.9rem;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   border: 1px solid #375aff;
   /* border: none; */
   color: #375aff;

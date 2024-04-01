@@ -16,7 +16,7 @@ export default function TradeButton({
 
   useEffect(() => {
     fetchIsApproved();
-    console.log(stockInfo);
+    // console.log(stockInfo);
   }, []);
 
   async function fetchIsApproved() {

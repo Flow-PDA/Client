@@ -80,14 +80,32 @@ export default function TradeStockPage() {
       return Math.floor(price / 1000) * 1000; // 1000원 단위
     }
   }
+  function adjustPriceMin(price) {
+    //최대 하한가 계산할 때 사용
+    if (stockExecutionPrice < 2000) {
+      return Math.ceil(price); // 1원 단위
+    } else if (stockExecutionPrice < 5000) {
+      return Math.ceil(price / 5) * 5; // 5원 단위
+    } else if (stockExecutionPrice < 20000) {
+      return Math.ceil(price / 10) * 10; // 10원 단위
+    } else if (stockExecutionPrice < 50000) {
+      return Math.ceil(price / 50) * 50; // 50원 단위
+    } else if (stockExecutionPrice < 200000) {
+      return Math.ceil(price / 100) * 100; // 100원 단위
+    } else if (stockExecutionPrice < 500000) {
+      return Math.ceil(price / 500) * 500; // 500원 단위
+    } else {
+      return Math.ceil(price / 1000) * 1000; // 1000원 단위
+    }
+  }
 
   useEffect(() => {
     async function fetchData() {
       try {
         const stockEndPrice = await fetchStockEndPrice(stockKey);
-        // console.log("aaa", stockEndPrice.data[0].closePrice);
+
         if (stockEndPrice) {
-          setYesterDayEndPrice(stockEndPrice.data[0].closePrice);
+          setYesterDayEndPrice(stockEndPrice[0].closePrice);
         }
       } catch (error) {
         console.error(error);
@@ -104,8 +122,8 @@ export default function TradeStockPage() {
   const maxTradePrice = adjustPrice(
     Math.floor(parseInt(yesterDayEndPrice) * 1.3)
   );
-  const minTradePrice = adjustPrice(
-    Math.floor(parseInt(yesterDayEndPrice) * 0.7)
+  const minTradePrice = adjustPriceMin(
+    Math.ceil(parseInt(yesterDayEndPrice) * 0.7)
   );
 
   const trade = async (transactionType) => {

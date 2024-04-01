@@ -1,0 +1,22 @@
+.gray-background {
+  background-color: #efefef;
+  display: flex;
+  border-radius: 7px;
+
+  flex-direction: column;
+}
+.white-background {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+.noti-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+.noti-img-container {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
