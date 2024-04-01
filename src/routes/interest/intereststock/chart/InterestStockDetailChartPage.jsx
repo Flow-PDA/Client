@@ -90,10 +90,6 @@ export default function InterestStockDetailChartPage() {
           partyInfo: party,
         });
       } catch (error) {
-        if (error.response.status === 401) {
-          console.log("throws");
-          throwAuthError();
-        }
         console.error(error);
         throw Error(error);
       }
@@ -156,27 +152,50 @@ export default function InterestStockDetailChartPage() {
               </Col>
             </Row>
             <Row>
-                <Col>
-                  <SampleChart mode={chartMode} stockKey={stockKey} />
-                </Col>
+              <Col>
+                <SampleChart mode={chartMode} stockKey={stockKey} />
+              </Col>
             </Row>
             <Row className="stock-detail-date-row">
               <Col>
-                <Button className="stock-detail-date-button day" onClick={()=> setChartMode("day")}>1일</Button>
+                <Button
+                  className="stock-detail-date-button day"
+                  onClick={() => setChartMode("day")}
+                >
+                  1일
+                </Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button week" onClick={()=> setChartMode("week")}>1주</Button>
+                <Button
+                  className="stock-detail-date-button week"
+                  onClick={() => setChartMode("week")}
+                >
+                  1주
+                </Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button month" onClick={() => setChartMode("month")}>1달</Button>
+                <Button
+                  className="stock-detail-date-button month"
+                  onClick={() => setChartMode("month")}
+                >
+                  1달
+                </Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button three-month" onClick={() => setChartMode("3month")}>
+                <Button
+                  className="stock-detail-date-button three-month"
+                  onClick={() => setChartMode("3month")}
+                >
                   3달
                 </Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button year" onClick={() => setChartMode("year")}>1년</Button>
+                <Button
+                  className="stock-detail-date-button year"
+                  onClick={() => setChartMode("year")}
+                >
+                  1년
+                </Button>
               </Col>
             </Row>
             <StockDataFetcher stockBalance={stockBalance} />
