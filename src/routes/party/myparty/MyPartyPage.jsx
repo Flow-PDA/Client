@@ -141,7 +141,7 @@ export default function MyPartyPage() {
             </Row>
             <hr style={{ marginTop: "1.5rem", width: "90vw" }} />
             <Row className="myparty-stock-container">
-              {havings
+              { havings.length > 0 && havings
                 .slice(0, showAllStocks ? havings.length : 5)
                 .map((stock) => (
                   <Row
