@@ -39,7 +39,6 @@ export default function SetPricePage() {
             }}
             value={price}
           />
-          <div className="setprice-deposit">현재 보유 금액 : 279,666원</div>
         </Row>
         <Row className="setprice-bottom">
           <PrimaryButton
