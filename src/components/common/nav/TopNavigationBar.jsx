@@ -13,8 +13,9 @@ import FlowButton from "../../../assets/logo.svg";
 import AlarmButton from "../../../assets/alarm.png";
 import "./TopNavigationBar.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useSelector } from "react-redux";
+import { AuthContext } from "../../../lib/contexts/AuthContext";
 
 import {
   fetchPartyInquire,
@@ -31,6 +32,7 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   const [toggleOpen, setToggleOpen] = useState(false);
   const [partyInfo, setPartyInfo] = useState([]);
   const { partyKey } = useParams();
+  const { throwAuthError } = useContext(AuthContext);
   const handleBackButtonClick = () => {
     navigate(to);
   };
@@ -53,6 +55,11 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   };
   const handleHomeButtonClick = () => {
     navigate("/party");
+  };
+
+  const onLogoutClick = (e) => {
+    e.preventDefault();
+    throwAuthError();
   };
 
   const callPartyInfo = async () => {
@@ -133,7 +140,9 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
                     </div>
                     <div className="userName">{userName}님</div>
                   </div>
-                  <div className="logout">로그아웃</div>
+                  <div className="logout" onClick={(e) => onLogoutClick(e)}>
+                    로그아웃
+                  </div>
                 </div>
               </div>
               <div className="party-stock">
