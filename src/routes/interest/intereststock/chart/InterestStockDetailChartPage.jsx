@@ -39,8 +39,9 @@ export default function InterestStockDetailChartPage() {
       });
       _socketIo.on("update", (data) => {
         //console.log(data);
-
-        setStockExecutionPrice(data[1]);
+        if (data[1] !== stockExecutionPrice) {
+          setStockExecutionPrice(data[1]);
+        }
         // console.log(stockExecutionPrice);
       });
 
@@ -99,7 +100,6 @@ export default function InterestStockDetailChartPage() {
 
   return (
     <>
-      {console.log(stockBalance)}
       <TopNavigationBar text={"종목 상세정보"} type={1} />
       <Container>
         {stockInfo.length === 0 ? (
@@ -143,27 +143,58 @@ export default function InterestStockDetailChartPage() {
               </Col>
             </Row>
             <Row>
-                <Col>
-                  <SampleChart mode={chartMode} stockKey={stockKey} />
-                </Col>
+              <Col>
+                <SampleChart
+                  mode={chartMode}
+                  stockKey={stockKey}
+                  price={stockExecutionPrice}
+                />
+              </Col>
             </Row>
             <Row className="stock-detail-date-row">
               <Col>
-                <Button className="stock-detail-date-button day" onClick={()=> setChartMode("day")}>1일</Button>
+                <Button
+                  className={
+                    "stock-detail-date-button day" +
+                    (chartMode === "day" ? " hovered" : "")
+                  }
+                  onClick={() => setChartMode("day")}
+                >
+                  1일
+                </Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button week" onClick={()=> setChartMode("week")}>1주</Button>
+                <Button
+                  className={
+                    "stock-detail-date-button week" +
+                    (chartMode === "week" ? " hovered" : "")
+                  }
+                  onClick={() => setChartMode("week")}
+                >
+                  1주
+                </Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button month" onClick={() => setChartMode("month")}>1달</Button>
-              </Col>
-              <Col>
-                <Button className="stock-detail-date-button three-month" onClick={() => setChartMode("3month")}>
+                <Button
+                  className={
+                    "stock-detail-date-button three-month" +
+                    (chartMode === "3month" ? " hovered" : "")
+                  }
+                  onClick={() => setChartMode("3month")}
+                >
                   3달
                 </Button>
               </Col>
               <Col>
-                <Button className="stock-detail-date-button year" onClick={() => setChartMode("year")}>1년</Button>
+                <Button
+                  className={
+                    "stock-detail-date-button year" +
+                    (chartMode === "year" ? " hovered" : "")
+                  }
+                  onClick={() => setChartMode("year")}
+                >
+                  1년
+                </Button>
               </Col>
             </Row>
             <StockDataFetcher stockBalance={stockBalance} />
