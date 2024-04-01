@@ -89,10 +89,6 @@ export default function InterestStockDetailAskingPricePage() {
           partyInfo: party,
         });
       } catch (error) {
-        if (error.response.status === 401) {
-          console.log("throws");
-          throwAuthError();
-        }
         console.error(error);
         throw Error(error);
       }
@@ -160,6 +156,8 @@ export default function InterestStockDetailAskingPricePage() {
                 stockCode={stockKey}
                 endPrice={yesterDayEndPrice}
                 currentPrice={stockExecutionPrice}
+                stockBalance={stockBalance}
+                stockName={stockInfo.stockName}
               />
             </div>
 

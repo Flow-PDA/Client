@@ -8,6 +8,8 @@ export default function SampleAskingPriceChart({
   stockCode,
   endPrice,
   currentPrice,
+  stockName,
+  stockBalance,
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState(null);
@@ -253,6 +255,8 @@ export default function SampleAskingPriceChart({
               stockPrice={selectedPrice}
               stockPercent={selectedPercent}
               type={selectedType}
+              stockBalance={stockBalance}
+              name={stockName}
             />
           )}
 

@@ -37,6 +37,8 @@ const StockAskingModal = ({
   type,
   color = "#375AFF",
   name,
+  stockBalance,
+  stockInfo,
 }) => {
   const navigate = useNavigate();
   const { partyKey, stockKey } = useParams();
@@ -47,6 +49,7 @@ const StockAskingModal = ({
         stockName: name,
         stockPrice: stockPrice,
         type: "구매",
+        stockBalance: stockBalance,
       },
     });
   };
@@ -57,6 +60,7 @@ const StockAskingModal = ({
         stockName: name,
         stockPrice: stockPrice,
         type: "판매",
+        stockBalance: stockBalance,
       },
     });
   };

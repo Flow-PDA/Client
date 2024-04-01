@@ -21,7 +21,6 @@ import {
   fetchUser,
   fetchPartyInfo,
 } from "../../../lib/apis/party";
-import { fetchDepositData } from "../../../lib/apis/stock";
 
 const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
@@ -59,13 +58,9 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   const callPartyInfo = async () => {
     try {
       const response = await fetchPartyInfo(partyKey);
+      console.log(response);
       setPartyInfo(response);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
-
       console.error("모임 정보 데이터 호출 중 에러:", error);
     }
   };
@@ -252,12 +247,6 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
             <Image src={FlowButton} alt="Home" style={{ width: "25vw" }} />
           </Navbar.Brand>
           <Nav.Item className="nav-item-text">{text}</Nav.Item>
-          <Navbar.Brand
-            className="navbar-brand icon-right"
-            style={{ marginRight: "3vw", marginTop: "1vw" }}
-          >
-            <Image src={AlarmButton} alt="alarm" />
-          </Navbar.Brand>
         </Container>
       </Navbar>
     );

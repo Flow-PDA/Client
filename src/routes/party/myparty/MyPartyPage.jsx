@@ -28,10 +28,6 @@ export default function MyPartyPage() {
       const new_tmp = await fetchDepositData(CANO, APPKEY, APPSECRET, TOKEN);
       setInfos(new_tmp);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
       console.error(error);
     }
   };
@@ -41,10 +37,6 @@ export default function MyPartyPage() {
       const response = await fetchHavingStock(partyKey);
       setHavings(response);
     } catch (error) {
-      if (error.response.status === 401) {
-        console.log("throws");
-        throwAuthError();
-      }
       console.error(error);
     }
   };
@@ -61,10 +53,12 @@ export default function MyPartyPage() {
   return (
     <>
       <TopNavigationBar
-        text={`${parties.name}의 모임투자`}
+        text={parties.name !== undefined ? `${parties.name}의 모임투자` : ""}
         type={2}
         partyKey={partyKey}
+        to={"/party"}
       />
+
       <Container className="myparty-container">
         {infos.length === 0 ? (
           <div
