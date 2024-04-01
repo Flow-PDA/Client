@@ -6,7 +6,7 @@ import { AuthContext } from "../../../../lib/contexts/AuthContext";
 import { fetchHankookStockCurrent } from "../../../../lib/apis/hankookApi";
 import { SyncLoader } from "react-spinners";
 import "./InterestStockDetailNewsPage.css";
-import News from "../news/News";
+import News from "./News";
 import io from "socket.io-client";
 
 export default function InterestStockDetailNewsPage() {
