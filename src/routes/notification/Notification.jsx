@@ -11,10 +11,13 @@ import notification, {
 import "./Notification.css";
 import Speaker from "../../assets/speakerphone.png";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Notification() {
   const [notis, setNotis] = useState([]);
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.user.userInfo);
+
   const AllNoti = async () => {
     try {
       const response = await fetchAllNoti();
@@ -63,7 +66,7 @@ export default function Notification() {
   }, []);
   return (
     <>
-      <TopNavigationBar text="정찬진님의 알림"></TopNavigationBar>
+      <TopNavigationBar text={`${userInfo.name}님의 알림`}></TopNavigationBar>
       <div
         style={{
           display: "flex",
