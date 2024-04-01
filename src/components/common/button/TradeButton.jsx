@@ -1,5 +1,5 @@
 import { Button, Col, Row } from "react-bootstrap";
-import { getApproval, regist } from "../../../lib/apis/interest";
+import { getApproval, getApproved, regist } from "../../../lib/apis/interest";
 import { useState, useEffect } from "react";
 import ApproveInterestModal from "../../../components/common/modal/ApproveInterestModal"; // ApproveInterestModal 임포트
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,8 @@ export default function TradeButton({
   stockKey,
 }) {
   const [isInterestStock, setIsInterestStock] = useState(false);
+  const [isApprovedStock, setIsApprovedStock] = useState(false);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -27,7 +29,21 @@ export default function TradeButton({
 
       const isActive =
         mystock.find((data) => data.stockKey === stockKey) !== undefined;
+      console.log(isActive);
       setIsInterestStock(isActive);
+
+      const approvedMystock = await getApproved(partyKey).then((data) => {
+        return data.data.result;
+      });
+
+      console.log(approvedMystock);
+
+      const isActive2 =
+        approvedMystock.find((data) => data.stockKey === stockKey) !==
+        undefined;
+      // console.log(approvedMystock.find((data) => data.stockKey === stockKey));
+      // console.log("isActive2", isActive2);
+      setIsApprovedStock(isActive2);
     } catch (error) {
       console.error(error);
     }
@@ -61,7 +77,8 @@ export default function TradeButton({
 
   return (
     <>
-      {stockBalance.data ? (
+      {("stockBalance.data", console.log(stockBalance))}
+      {stockBalance.data || isApprovedStock ? (
         <Row className="stock-detail-transaction-button">
           <Button
             className="stock-detail-sell-button"
