@@ -98,18 +98,18 @@ export default function PartyInfoPage() {
           <div className="info-title">{info.name}의 모임투자</div>
           <div className="info-detail">
             <div>
-              <div>모임 시작일</div>
-              <div>목표</div>
-              <div>목표 금액</div>
-              <div>목표 날짜</div>
+              <div className="info-sub-title">모임 시작일</div>
+              <div className="info-sub-title">목표</div>
+              <div className="info-sub-title">목표 금액</div>
+              <div className="info-sub-title">목표 날짜</div>
             </div>
             <div>
-              <div>
+              <div className="info-sub-title">
                 {!info.createdAt ? info.createdAt : info.createdAt.slice(0, 10)}
               </div>
-              <div>{info.goal}</div>
-              <div>{addCommasToNumber(info.goalPrice)}원</div>
-              <div>{info.goalDate}</div>
+              <div className="info-sub-title">{info.goal}</div>
+              <div className="info-sub-title">{addCommasToNumber(info.goalPrice)}원</div>
+              <div className="info-sub-title">{info.goalDate}</div>
             </div>
           </div>
         </Row>
@@ -148,7 +148,7 @@ export default function PartyInfoPage() {
             {users.length >= 1 &&
               members.map((mem) => (
                 <div key={mem.data.userKey} className="info-member">
-                  <div>{mem.data.userName}</div>
+                  <div className="info-sub-title">{mem.data.userName}</div>
                   {admin.role === 1 ? (
                     <Button
                       className="text-center"
