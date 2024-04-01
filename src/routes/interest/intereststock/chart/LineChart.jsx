@@ -2,13 +2,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import ApexChart from "react-apexcharts";
 import { fetchStockPrice } from "../../../../lib/apis/stock";
 
-export default function CandleChart({ mode, stockKey, price }) {
+export default function LineChart({ mode, stockKey, price }) {
   const [data, setData] = useState([]);
   const [chartType, setChartType] = useState("line");
-  const [noContent, setNoContent] = useState(false);
-  const [prevDateCnt, setPrevDateCnt] = useState(1);
-  const [chartInterval, setChartInterval] = useState(1);
-  const [updateData, setUpdateData] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -46,92 +42,14 @@ export default function CandleChart({ mode, stockKey, price }) {
         });
         setData(newList);
         // console.log(newList[1].x - newList[0].x);
-        setChartInterval(newList[1].x - newList[0].x);
       } else {
-        setNoContent(true);
+        // setNoContent(true);
       }
     }
     if (mode === "day") setChartType("candlestick");
     else setChartType("line");
     fetchData();
   }, [mode]);
-
-  useEffect(() => {
-    let timerId;
-    if (chartInterval > 0) {
-      timerId = setInterval(() => {
-        console.log(`${chartInterval} passed, Update data`);
-        setUpdateData(true);
-      }, (chartInterval / 100) * 60 * 1000);
-    }
-
-    return () => clearInterval(timerId);
-  }, [chartInterval]);
-
-  useEffect(() => {
-    if (updateData) {
-      const currentDate = new Date(Date.now());
-      const fromDate = new Date(Date.now() - 1000 * 60 * (100 / 100));
-
-      const fromString = getTimeString(fromDate);
-      const currentString = getTimeString(currentDate);
-
-      fetchStockPrice(stockKey, "minute", fromString, currentString).then(
-        (response) => {
-          const newList = data.filter((elem) => {
-            return true;
-          });
-          // console.log(response);
-          const addedList = response.result?.map((elem, index) => {
-            const timeStr = elem.localDate
-              ? elem.localDate
-              : elem.localDateTime;
-            return {
-              // x: elem.localDate ? elem.localDate : elem.localDateTime,
-              x: timeStrToTimestamp(timeStr),
-              y: [
-                elem.openPrice,
-                elem.highPrice,
-                elem.lowPrice,
-                elem.closePrice
-                  ? elem.closePrice
-                  : Number.parseInt(elem.currentPrice),
-              ],
-            };
-            // return elem.closePrice;
-          });
-          newList.push(...addedList);
-          setData(newList);
-          // console.log(newList);
-          setUpdateData(false);
-        }
-      );
-    }
-  }, [updateData]);
-
-  // useEffect(() => {
-  //   if (noContent === true && mode === "day") {
-  //     console.log("No content");
-  //     setNoContent(false);
-  //     const str = getPrevDateStrings(prevDateCnt);
-  //     console.log(str);
-
-  //     fetchStockPrice(stockKey, "minute", str[0], str[1])
-  //       .then((response) => {
-  //         console.log(response);
-  //         return response.result;
-  //       })
-  //       .then((result) => {
-  //         console.log(result);
-  //         if (result.length > 0) {
-  //           setData(result);
-  //         } else {
-  //           setPrevDateCnt(prevDateCnt + 1);
-  //           setNoContent(true);
-  //         }
-  //       });
-  //   }
-  // }, [noContent, prevDateCnt]);
 
   const timeStrToTimestamp = useCallback((str) => {
     const year = str.slice(0, 4);
@@ -217,6 +135,11 @@ export default function CandleChart({ mode, stockKey, price }) {
           height: 350,
           type: { chartType },
         },
+        colors: ["#FF0000"],
+        stroke: {
+          curve: "smooth",
+          width: 2,
+        },
         xaxis: {
           tooltip: {
             enabled: true,
@@ -240,17 +163,6 @@ export default function CandleChart({ mode, stockKey, price }) {
             show: true,
             formatter: function (value) {
               return value.toFixed(0);
-            },
-          },
-        },
-        // dataLabels: {
-        //   enabled: true,
-        // },
-        plotOptions: {
-          candlestick: {
-            colors: {
-              downward: "#375aff",
-              upward: "#F44336",
             },
           },
         },
