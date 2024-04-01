@@ -61,6 +61,11 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
       const response = await fetchPartyInfo(partyKey);
       setPartyInfo(response);
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
+
       console.error("모임 정보 데이터 호출 중 에러:", error);
     }
   };
@@ -127,8 +132,8 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
                   </Navbar.Brand>
                 </div>
                 <div className="slide-menu-top-info">
-                  <div className="home-name">
-                    <div className="go-to-home" onClick={handleHomeButtonClick}>
+                  <div className="home-name" onClick={handleHomeButtonClick}>
+                    <div className="go-to-home">
                       <Image src={HomeButton} alt="Home" />
                     </div>
                     <div className="userName">{userName}님</div>

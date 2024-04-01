@@ -36,6 +36,10 @@ export default function LiveStockPage() {
       const response = await axios.get(`${BASE_URL}/points/kospi`);
       setKospiDatas(response.data[0]);
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
       console.error("Error fetching data:", error);
     }
   };
@@ -45,6 +49,10 @@ export default function LiveStockPage() {
       const response = await axios.get(`${BASE_URL}/points/kosdaq`);
       setKosdaqDatas(response.data[0]);
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
       console.error("Error fetching data:", error);
     }
   };
@@ -55,6 +63,10 @@ export default function LiveStockPage() {
       // console.log(response.data[0]);
       setNasdaqDatas(response.data[0]);
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
       console.error("Error fetching data:", error);
     }
   };

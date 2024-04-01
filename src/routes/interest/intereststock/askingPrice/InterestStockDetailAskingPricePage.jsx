@@ -74,9 +74,10 @@ export default function InterestStockDetailAskingPricePage() {
           return data.data.result;
         });
         const stockEndPrice = await fetchStockEndPrice(stockKey);
-        // console.log("aaa", stockEndPrice.data[0].closePrice);
+        // console.log("sto", stockEndPrice);
+        // console.log("aaa", stockEndPrice[0].closePrice);
         if (stockEndPrice) {
-          setYesterDayEndPrice(stockEndPrice.data[0].closePrice);
+          setYesterDayEndPrice(stockEndPrice[0].closePrice);
         }
 
         const isActive =
@@ -88,6 +89,10 @@ export default function InterestStockDetailAskingPricePage() {
           partyInfo: party,
         });
       } catch (error) {
+        if (error.response.status === 401) {
+          console.log("throws");
+          throwAuthError();
+        }
         console.error(error);
         throw Error(error);
       }
@@ -102,7 +107,7 @@ export default function InterestStockDetailAskingPricePage() {
   const handleNewsButtonClick = () => {
     navigate(`/stockDetail/${partyKey}/${stockKey}/news`);
   };
-  console.log("전 영업일 종가", yesterDayEndPrice);
+  // console.log("전 영업일 종가", yesterDayEndPrice);
   return (
     <>
       <TopNavigationBar text={"종목 상세정보"} type={1} />

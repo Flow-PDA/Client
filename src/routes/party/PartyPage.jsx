@@ -83,6 +83,10 @@ export default function PartyPage() {
       setInfos(new_tmp);
       // console.log(res);
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("throws");
+        throwAuthError();
+      }
       console.error(error);
     }
   };
