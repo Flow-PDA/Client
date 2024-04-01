@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import TopNavigationBar from "../../../../components/common/nav/TopNavigationBar";
 import "./InterestStockDetailChartPage.css";
-import SampleChart from "./SampleChart";
+import CandleChart from "./CandleChart.jsx";
 import StockDataFetcher from "./StockDataFetcher.jsx";
 import io from "socket.io-client";
 import {
@@ -14,6 +14,7 @@ import { fetchPartyInfo } from "../../../../lib/apis/party.jsx";
 import { getApproval, regist } from "../../../../lib/apis/interest.jsx";
 import { SyncLoader } from "react-spinners";
 import TradeButton from "../../../../components/common/button/TradeButton.jsx";
+import LineChart from "./LineChart.jsx";
 
 export default function InterestStockDetailChartPage() {
   const partyKey = useParams().partyKey;
@@ -154,11 +155,19 @@ export default function InterestStockDetailChartPage() {
             </Row>
             <Row>
               <Col>
-                <SampleChart
-                  mode={chartMode}
-                  stockKey={stockKey}
-                  price={stockExecutionPrice}
-                />
+                {chartMode === "day" ? (
+                  <CandleChart
+                    mode={chartMode}
+                    stockKey={stockKey}
+                    price={stockExecutionPrice}
+                  />
+                ) : (
+                  <LineChart
+                    mode={chartMode}
+                    stockKey={stockKey}
+                    price={stockExecutionPrice}
+                  />
+                )}
               </Col>
             </Row>
             <Row className="stock-detail-date-row">
@@ -209,17 +218,17 @@ export default function InterestStockDetailChartPage() {
             </Row>
             <StockDataFetcher stockBalance={stockBalance} />
 
-            {/* {currentTime.getHours() >= 9 &&
+            {currentTime.getHours() >= 9 &&
               currentTime.getHours() < 15 &&
               (currentTime.getHours() !== 15 ||
-                currentTime.getMinutes() < 30) && ( */}
-            <TradeButton
-              stockBalance={stockBalance}
-              partyKey={partyKey}
-              stockKey={stockKey}
-              stockInfo={stockInfo}
-            />
-            {/* )} */}
+                currentTime.getMinutes() < 30) && (
+                <TradeButton
+                  stockBalance={stockBalance}
+                  partyKey={partyKey}
+                  stockKey={stockKey}
+                  stockInfo={stockInfo}
+                />
+              )}
           </>
         )}
       </Container>

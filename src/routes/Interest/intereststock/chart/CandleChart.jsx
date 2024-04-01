@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import ApexChart from "react-apexcharts";
 import { fetchStockPrice } from "../../../../lib/apis/stock";
 
-export default function SampleChart({ mode, stockKey, price }) {
+export default function CandleChart({ mode, stockKey, price }) {
   const [data, setData] = useState([]);
   const [chartType, setChartType] = useState("line");
   const [noContent, setNoContent] = useState(false);
@@ -29,24 +29,26 @@ export default function SampleChart({ mode, stockKey, price }) {
 
       if (response.result.length > 1) {
         const newList = response.result?.map((elem, index) => {
+          const timeStr = elem.localDate ? elem.localDate : elem.localDateTime;
           return {
-            x: elem.localDate ? elem.localDate : elem.localDateTime,
+            // x: elem.localDate ? elem.localDate : elem.localDateTime,
+            x: timeStrToTimestamp(timeStr),
             y: [
               elem.openPrice,
               elem.highPrice,
               elem.lowPrice,
-              elem.closePrice ? elem.closePrice : elem.currentPrice,
+              elem.closePrice
+                ? elem.closePrice
+                : Number.parseInt(elem.currentPrice),
             ],
           };
           // return elem.closePrice;
         });
-        console.log(newList);
         setData(newList);
         // console.log(newList[1].x - newList[0].x);
         setChartInterval(newList[1].x - newList[0].x);
-        setChartInterval(100);
       } else {
-        // setNoContent(true);
+        setNoContent(true);
       }
     }
     if (mode === "day") setChartType("candlestick");
@@ -79,10 +81,14 @@ export default function SampleChart({ mode, stockKey, price }) {
           const newList = data.filter((elem) => {
             return true;
           });
-          console.log(response);
+          // console.log(response);
           const addedList = response.result?.map((elem, index) => {
+            const timeStr = elem.localDate
+              ? elem.localDate
+              : elem.localDateTime;
             return {
-              x: elem.localDate ? elem.localDate : elem.localDateTime,
+              // x: elem.localDate ? elem.localDate : elem.localDateTime,
+              x: timeStrToTimestamp(timeStr),
               y: [
                 elem.openPrice,
                 elem.highPrice,
@@ -96,7 +102,7 @@ export default function SampleChart({ mode, stockKey, price }) {
           });
           newList.push(...addedList);
           setData(newList);
-          console.log(newList);
+          // console.log(newList);
           setUpdateData(false);
         }
       );
@@ -127,6 +133,22 @@ export default function SampleChart({ mode, stockKey, price }) {
   //   }
   // }, [noContent, prevDateCnt]);
 
+  const timeStrToTimestamp = useCallback((str) => {
+    const year = str.slice(0, 4);
+    const month = str.slice(4, 6);
+    const day = str.slice(6, 8);
+    if (str.length > 11) {
+      const hour = str.slice(8, 10);
+      const min = str.slice(10, 12);
+
+      // console.log(year, month, day, hour, min);
+      return new Date(year, month, day, hour, min);
+    } else {
+      // console.log(year, month, day);
+      return new Date(year, month, day);
+    }
+  }, []);
+
   useEffect(() => {
     if (mode === "day" && data.length > 0) {
       // console.log(price);
@@ -143,20 +165,6 @@ export default function SampleChart({ mode, stockKey, price }) {
     }
   }, [price]);
 
-  const getPrevDateStrings = useCallback((cnt) => {
-    const date = new Date(Date.now() - cnt * 1000 * 3600 * 24);
-    const from = new Date(date);
-    const end = new Date(date);
-
-    from.setHours(7);
-    end.setHours(16);
-
-    const fromString = getTimeString(from);
-    const endString = getTimeString(end);
-
-    return [fromString, endString];
-  }, []);
-
   const getFromDate = useCallback(
     (now) => {
       const fromDate = new Date(now);
@@ -167,7 +175,7 @@ export default function SampleChart({ mode, stockKey, price }) {
         fromDate.setMinutes(0);
         fromDate.setSeconds(0);
         fromDate.setMilliseconds(0);
-      } else if (mode === "month") {
+      } else if (mode === "week") {
         fromDate.setMonth(fromDate.getMonth() - 1);
         interval = "day";
       } else if (mode === "3month") {
@@ -209,22 +217,27 @@ export default function SampleChart({ mode, stockKey, price }) {
           height: 350,
           type: { chartType },
         },
-        colors: ["#FF0000"],
         xaxis: {
           tooltip: {
             enabled: true,
+            formatter: function (value, timestamp) {
+              return new Date(value).toISOString().split(".")[0];
+            },
           },
-          type: mode === "day" ? "date" : "date",
+          type: "datetime",
           labels: {
             show: false,
           },
         },
         yaxis: {
           tooltip: {
-            enabled: true,
+            enabled: false,
+            formatter: function (value, val1) {
+              console.log(value, val1);
+            },
           },
           labels: {
-            show: false,
+            show: true,
             formatter: function (value) {
               return value.toFixed(0);
             },
@@ -241,36 +254,9 @@ export default function SampleChart({ mode, stockKey, price }) {
             },
           },
         },
-        tooltip: {
-          shared: false,
-          y: {
-            formatter: function (value) {
-              console.log(value);
-              return value;
-            },
-          },
-        },
-        // annotations: {
-        //   // 예시로 선을 추가합니다. 여기에 원하는 어노테이션을 추가할 수 있습니다.
-        //   yaxis: [
-        //     {
-        //       x: data[0]?.x,
-        //       strokeDashArray: 0,
-        //       borderColor: "#775DD0",
-        //       label: {
-        //         borderColor: "#775DD0",
-        //         style: {
-        //           color: "#fff",
-        //           background: "#775DD0",
-        //         },
-        //         text: data[0].y[0],
-        //       },
-        //     },
-        //   ],
-        // },
       }}
     />
   ) : (
-    <></>
+    <div style={{ height: "262px" }}></div>
   );
 }
