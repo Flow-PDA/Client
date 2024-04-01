@@ -24,8 +24,7 @@ export default function PartyInvitePage() {
       content: {
         title: "같이하는 투자",
         description: "친구와 함께 투자해보세요!",
-        imageUrl:
-          "https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg",
+        imageUrl: "https://avatars.githubusercontent.com/u/162952288?s=200&v=4",
         link: {
           mobileWebUrl: realUrl,
           webUrl: realUrl,
