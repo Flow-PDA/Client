@@ -29,20 +29,16 @@ export default function TradeButton({
 
       const isActive =
         mystock.find((data) => data.stockKey === stockKey) !== undefined;
-      console.log(isActive);
       setIsInterestStock(isActive);
 
       const approvedMystock = await getApproved(partyKey).then((data) => {
         return data.data.result;
       });
 
-      console.log(approvedMystock);
-
       const isActive2 =
         approvedMystock.find((data) => data.stockKey === stockKey) !==
         undefined;
-      // console.log(approvedMystock.find((data) => data.stockKey === stockKey));
-      // console.log("isActive2", isActive2);
+  
       setIsApprovedStock(isActive2);
     } catch (error) {
       console.error(error);
@@ -51,7 +47,6 @@ export default function TradeButton({
 
   async function handleAddToInterestStock() {
     try {
-      console.log("Stock added to interest stock!");
       const reqBody = {
         stockKey: stockKey,
       };

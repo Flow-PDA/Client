@@ -12,7 +12,6 @@ export default function InterestPending({ partyKey }) {
   // const [isApprovalPending, setIsApprovalPending] = useState(false); // 승인 대기 상태 추가
 
   useEffect(() => {
-    console.log("PendingPage", partyKey);
     async function fetchData() {
       try {
         const res = await getApproval(partyKey);
@@ -74,7 +73,6 @@ export default function InterestPending({ partyKey }) {
         {stock.length > 0 &&
           stock.map((data, index) => (
             <Row className="interest-list" key={index}>
-              {console.log(data)}
               <Col xs={2} className="interest-date">
                 {`${new Date(data.createdAt).getMonth() + 1}.${new Date(
                   data.createdAt
@@ -84,7 +82,6 @@ export default function InterestPending({ partyKey }) {
                 <Row className="interest-company">{data.stockName}</Row>
                 <Row className="interest-name">{data.name}</Row>
               </Col>
-              {console.log("stock", data)}
               <Col xs={1} className="interest-approve">
                 {data.participantApprovalCnt}/{data.partyMemberCnt}
               </Col>

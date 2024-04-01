@@ -62,10 +62,8 @@ export default function SampleAskingPriceChart({
     if (WS_URL !== undefined) {
       const _socketIo = io.connect(WS_URL);
       _socketIo.on("connect", () => {
-        console.log("socket connected");
       });
       _socketIo.on("update", (data) => {
-        // console.log(data);
         updatePrice(data);
       });
 

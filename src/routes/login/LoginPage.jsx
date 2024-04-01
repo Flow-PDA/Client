@@ -19,7 +19,6 @@ export default function LoginPage() {
   const onLoginClick = useCallback(
     async (e) => {
       e.preventDefault();
-      // console.log(email, password);
       dispatch(fetchUserLogin({ email, password }));
     },
     [email, password]

@@ -18,11 +18,9 @@ export default function RisingStockPage() {
   const fetchData = async () => {
     try {
       const response = await fetchShinhanRising();
-      console.log(response);
       setDatas(response);
     } catch (error) {
       if (error.response.status === 401) {
-        console.log("throws");
         throwAuthError();
       }
     }
@@ -33,10 +31,8 @@ export default function RisingStockPage() {
     if (WS_URL !== undefined) {
       const _socketIo = io.connect(WS_URL);
       _socketIo.on("connect", () => {
-        console.log("socket connected");
       });
       _socketIo.on("update", (data) => {
-        // console.log(data);
         setUpdatedData(data);
       });
 

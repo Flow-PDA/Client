@@ -65,7 +65,6 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   const callPartyInfo = async () => {
     try {
       const response = await fetchPartyInfo(partyKey);
-      console.log(response);
       setPartyInfo(response);
     } catch (error) {
       console.error("모임 정보 데이터 호출 중 에러:", error);
@@ -75,8 +74,6 @@ const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
   const [infos, setInfos] = useState([]);
 
   //TODO 햄버거버튼 연결
-
-  // console.log(infos);
 
   useEffect(() => {
     callPartyInfo();

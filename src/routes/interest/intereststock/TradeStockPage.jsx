@@ -37,13 +37,10 @@ export default function TradeStockPage() {
     if (WS_URL !== undefined) {
       const _socketIo = io.connect(WS_URL);
       _socketIo.on("connect", () => {
-        console.log("socket connected");
       });
       _socketIo.on("update", (data) => {
-        //console.log(data);
 
         setStockExecutionPrice(data[1]);
-        // console.log(stockExecutionPrice);
       });
 
       setSocketIo(_socketIo);
@@ -128,9 +125,6 @@ export default function TradeStockPage() {
 
   const trade = async (transactionType) => {
     try {
-      // transactionType, partyKey, stockKey, orderQuantity, orderPrice;
-      // console.log("price", price);
-      // console.log("amount", amount);
 
       if (transactionType === 0) {
         if (isMarketPrice) {
@@ -154,7 +148,6 @@ export default function TradeStockPage() {
           navigate(`/party/${partyKey}/myPartyTransactionDetail`);
         }
       } else {
-        // console.log(amount, stockBalance.hldg_qty);
         if (parseInt(amount) > parseInt(stockBalance.hldg_qty)) {
           alert(`최대 ${stockBalance.hldg_qty}주 만큼 판매 가능합니다!`);
           return;
@@ -194,7 +187,6 @@ export default function TradeStockPage() {
   }, []);
 
   let deposit = 0;
-  // console.log(partyInfo);
 
   if (partyInfo) {
     deposit = partyInfo.deposit;
@@ -219,8 +211,6 @@ export default function TradeStockPage() {
 
     const calculatedAmount = Math.floor(((percentage / 100) * deposit) / price);
     setAmount(calculatedAmount.toString());
-    // console.log(typeof price);
-    // console.log("calcu", calculatedAmount);
   };
 
   // 숫자에 천 단위 구분 기호 추가하는 함수

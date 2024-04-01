@@ -35,7 +35,6 @@ export default function TransferPage() {
   const callPartyAdminInfo = async () => {
     try {
       const response = await fetchPartyAdmin(partyKey);
-      // console.log("ㅇㅇㅇ", response);
       setRole(response.data.role);
     } catch (error) {
       console.error("모임 정보 운영자 데이터 호출 중 에러:", error);
@@ -49,7 +48,6 @@ export default function TransferPage() {
   }, []);
 
   let deposit = 0;
-  // console.log(role);
 
   if (partyInfo) {
     deposit = partyInfo.deposit;

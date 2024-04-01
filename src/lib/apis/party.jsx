@@ -38,7 +38,6 @@ export async function fetchPartyGoal(partyKey, goal, goalPrice, goalDate) {
     goalPrice,
     goalDate,
   });
-  console.log(response);
   return response;
 }
 
@@ -59,7 +58,6 @@ export async function fetchSearchUser(partyKey, userKey) {
   const response = await authInstance.post(`/parties/${partyKey}/user`, {
     userKey,
   });
-  console.log(response);
   return response;
 }
 // 일반 유저 등록하기
@@ -67,16 +65,13 @@ export async function fetchNormalUser(partyKey) {
   const response = await authInstance.post(`/parties/${partyKey}/members`, {
     partyKey,
   });
-  console.log(response);
   return response;
 }
 // 유저 삭제하기
 export async function fetchDeleteUser(partyKey, userKey) {
-  console.log("11", userKey);
   const response = await authInstance.delete(
     `/parties/${partyKey}/members?userKey=${userKey}`
   );
-  console.log(response);
   return response;
 }
 export async function fetchUser(userKey) {

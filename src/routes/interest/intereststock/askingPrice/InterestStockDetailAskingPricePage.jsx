@@ -38,13 +38,10 @@ export default function InterestStockDetailAskingPricePage() {
     if (WS_URL !== undefined) {
       const _socketIo = io.connect(WS_URL);
       _socketIo.on("connect", () => {
-        console.log("socket connected");
       });
       _socketIo.on("update", (data) => {
-        //console.log(data);
 
         setStockExecutionPrice(data[1]);
-        // console.log(stockExecutionPrice);
       });
 
       setSocketIo(_socketIo);
@@ -74,8 +71,6 @@ export default function InterestStockDetailAskingPricePage() {
           return data.data.result;
         });
         const stockEndPrice = await fetchStockEndPrice(stockKey);
-        // console.log("sto", stockEndPrice);
-        // console.log("aaa", stockEndPrice[0].closePrice);
         if (stockEndPrice) {
           setYesterDayEndPrice(stockEndPrice[0].closePrice);
         }
@@ -103,7 +98,6 @@ export default function InterestStockDetailAskingPricePage() {
   const handleNewsButtonClick = () => {
     navigate(`/stockDetail/${partyKey}/${stockKey}/news`);
   };
-  // console.log("전 영업일 종가", yesterDayEndPrice);
   return (
     <>
       <TopNavigationBar text={"종목 상세정보"} type={1} />

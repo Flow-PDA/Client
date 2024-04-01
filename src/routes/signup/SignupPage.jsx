@@ -24,7 +24,6 @@ export default function SignupPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // console.log(password, checkPassword);
     setVerifiedPassword(password === checkPassword);
   }, [password, checkPassword]);
 
@@ -52,7 +51,6 @@ export default function SignupPage() {
           password,
         };
 
-        // console.log(reqBody);
         const resp = await signup(reqBody);
 
         if (resp.status == 201) {
@@ -71,7 +69,6 @@ export default function SignupPage() {
   const onEmailCheckClick = useCallback(
     async (e) => {
       e.preventDefault();
-      // console.log(email);
       const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
       if (emailRegex.test(email)) {
         const resp = await checkEmail(email);

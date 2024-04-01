@@ -29,7 +29,6 @@ export default function PartyInfoPage() {
   const deleteUser = async (userKey) => {
     try {
       const response = await fetchDeleteUser(partyKey, userKey);
-      console.log(response);
     } catch (err) {
       console.error(err);
     }
@@ -37,7 +36,6 @@ export default function PartyInfoPage() {
   // 모임 정보 조회
   const fetchData = async () => {
     const response = await fetchPartyInfo(partyKey);
-    console.log(response);
     setInfo(response);
   };
 
@@ -45,7 +43,6 @@ export default function PartyInfoPage() {
   const fetchAdmin = async () => {
     try {
       const response = await fetchPartyAdmin(partyKey);
-      console.log(response.data);
       setAdmin(response.data);
     } catch (err) {
       console.error(err);
@@ -61,12 +58,9 @@ export default function PartyInfoPage() {
       const resBody = await Promise.all(
         temps.map(async (temp) => {
           const resp = await fetchSearchUser(partyKey, temp.userKey);
-          // members.push(resp.data);
-          // console.log(members);
           return resp;
         })
       );
-      console.log(resBody);
       setMembers(resBody);
     } catch (err) {
       console.error(err);
@@ -154,7 +148,6 @@ export default function PartyInfoPage() {
                       className="text-center"
                       variant="danger"
                       onClick={() => {
-                        console.log(mem.data.userKey);
                         deleteUser(mem.data.userKey);
                       }}
                       style={{

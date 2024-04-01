@@ -35,33 +35,26 @@ export default function PartyPage() {
   const partyKey = useSelector((state) => state.party.partyKey.partyKey);
   const userKey = useSelector((state) => state.user.userInfo.userKey);
 
-  console.log(typeof partyKey);
-  console.log(userKey);
   const test = useCallback(async (e) => {
     e.preventDefault();
     try {
       const res = await modifyTest(2);
-      // console.log(res);
     } catch (error) {}
   }, []);
   const fetchData = async () => {
     try {
-      // const temps = await fetchPartyInquire();
       const resp = await fetchUser(userKey);
-      console.log(resp);
       const party = resp.map((resp) => {
         const tbody = { partyKey: resp.partyKey };
         return tbody;
       });
-      // console.log(resp.data.groups); //유저가 속한 파티 조회
-      // const party = resp.data.groups;
+  
       const resBody = await Promise.all(
         party.map(async (elem) => {
           const alpha = await fetchPartyInfo(elem.partyKey);
           return alpha;
         })
       );
-      console.log(resBody);
       const new_tmp = await Promise.all(
         resBody.map(async (party) => {
           const {
@@ -74,9 +67,7 @@ export default function PartyPage() {
           return { ...party, ...res };
         })
       );
-      console.log(new_tmp);
       setInfos(new_tmp);
-      // console.log(res);
     } catch (error) {
       console.error(error);
     }
@@ -89,20 +80,15 @@ export default function PartyPage() {
   const CheckInvite = async () => {
     try {
       const response = await fetchPartyMemberInquire(partyKey);
-      console.log(response);
       response.map(async (elem) => {
         if (elem.userKey === userKey) {
           // setCount(count+1)
           setCheck(1);
-          console.log(check);
         }
         //1이면 보여준다, 0이면 안보여준다.
         if (elem.role === 1) {
           const adminKey = elem.userKey;
-          console.log(adminKey);
-          console.log(partyKey);
           const resp = await fetchSearchUser(partyKey, adminKey);
-          console.log(resp);
           setAdmin(resp.data.userName);
         }
       });
@@ -113,7 +99,6 @@ export default function PartyPage() {
   const FindParty = async () => {
     try {
       const response = await fetchPartyInfo(partyKey);
-      console.log(response);
       setPartyName(response.name);
     } catch (err) {
       console.error(err);
@@ -122,7 +107,6 @@ export default function PartyPage() {
   const OkParty = async () => {
     try {
       const response = await fetchNormalUser(partyKey);
-      console.log(response);
       dispatch(deletePartyKey());
       location.reload();
     } catch (err) {
@@ -136,7 +120,6 @@ export default function PartyPage() {
   const UnReadNoti = async () => {
     try {
       const response = await fetchNotReadNoti();
-      console.log(response);
       setCount(response.result);
     } catch (err) {
       console.error(err);
@@ -156,8 +139,6 @@ export default function PartyPage() {
     // infos가 변경될 때마다 groupInfo를 업데이트
     dispatch(updateGroupInfo(infos)); // updateGroupInfo 액션 호출
   }, [infos, dispatch]);
-
-  console.log(partyKey);
 
   return (
     <>
@@ -241,7 +222,6 @@ export default function PartyPage() {
                   투자
                 </h4>
                 <h1 style={{ padding: "0", fontWeight: "600" }}>
-                  {console.log(infos)}
                   {(
                     Number(party.transferSum) + Number(party.tot_evlu_amt)
                   ).toLocaleString()}
