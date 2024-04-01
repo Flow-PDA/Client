@@ -145,7 +145,8 @@ export default function PartyPage() {
   const UnReadNoti = async () => {
     try {
       const response = await fetchNotReadNoti();
-      setCount(response);
+      console.log(response);
+      setCount(response.result);
     } catch (err) {
       console.error(err);
     }
