@@ -241,8 +241,9 @@ export default function PartyPage() {
                   투자
                 </h4>
                 <h1 style={{ padding: "0", fontWeight: "600" }}>
+                  {console.log(infos)}
                   {(
-                    Number(party.evlu_amt_smtl_amt) + Number(party.deposit)
+                    Number(party.transferSum) + Number(party.tot_evlu_amt)
                   ).toLocaleString()}
                   원
                 </h1>

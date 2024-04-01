@@ -80,8 +80,9 @@ export default function MyPartyPage() {
                   [계좌] {parties.accountNumber}
                 </p>
                 <h1 style={{ padding: "0", fontWeight: 600 }}>
+                  {console.log("deposit", parties)}
                   {(
-                    parties.deposit + Number(infos.evlu_amt_smtl_amt)
+                    Number(parties.transferSum) + Number(infos.tot_evlu_amt)
                   ).toLocaleString()}
                   원
                 </h1>
