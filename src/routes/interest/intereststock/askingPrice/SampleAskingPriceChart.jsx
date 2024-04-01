@@ -246,19 +246,19 @@ export default function SampleAskingPriceChart({
   return (
     <div className="box_orderbook bg-white rounded shadow-sm">
       <table className="orderbook table">
-        {currentTime.getHours() >= 9 &&
+        {/* {currentTime.getHours() >= 9 &&
           currentTime.getHours() < 15 &&
-          (currentTime.getHours() !== 15 || currentTime.getMinutes() < 30) && (
-            <Modal
-              isOpen={modalOpen}
-              closeModal={(e) => closeModal()}
-              stockPrice={selectedPrice}
-              stockPercent={selectedPercent}
-              type={selectedType}
-              stockBalance={stockBalance}
-              name={stockName}
-            />
-          )}
+          (currentTime.getHours() !== 15 || currentTime.getMinutes() < 30) && ( */}
+        <Modal
+          isOpen={modalOpen}
+          closeModal={(e) => closeModal()}
+          stockPrice={selectedPrice}
+          stockPercent={selectedPercent}
+          type={selectedType}
+          stockBalance={stockBalance}
+          name={stockName}
+        />
+        {/* )} */}
 
         <tbody>
           {renderAsks(asks, sumAsk, orderBook.timestamp)}

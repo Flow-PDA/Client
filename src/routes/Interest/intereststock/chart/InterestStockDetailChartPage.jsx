@@ -20,7 +20,6 @@ export default function InterestStockDetailChartPage() {
   const stockKey = useParams().stockKey;
   const [stockInfo, setStockInfo] = useState([]);
   const [stockBalance, setStockBalance] = useState([]);
-  const [chartMode, setChartMode] = useState("day");
 
   const [currentTime, setCurrentTime] = useState(new Date()); // 현재 시간 상태 추가
   const [chartMode, setChartMode] = useState("day");
@@ -210,17 +209,17 @@ export default function InterestStockDetailChartPage() {
             </Row>
             <StockDataFetcher stockBalance={stockBalance} />
 
-            {currentTime.getHours() >= 9 &&
+            {/* {currentTime.getHours() >= 9 &&
               currentTime.getHours() < 15 &&
               (currentTime.getHours() !== 15 ||
-                currentTime.getMinutes() < 30) && (
-                <TradeButton
-                  stockBalance={stockBalance}
-                  partyKey={partyKey}
-                  stockKey={stockKey}
-                  stockInfo={stockInfo}
-                />
-              )}
+                currentTime.getMinutes() < 30) && ( */}
+            <TradeButton
+              stockBalance={stockBalance}
+              partyKey={partyKey}
+              stockKey={stockKey}
+              stockInfo={stockInfo}
+            />
+            {/* )} */}
           </>
         )}
       </Container>

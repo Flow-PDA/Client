@@ -209,17 +209,17 @@ export default function InterestStockDetailChartPage() {
             </Row>
             <StockDataFetcher stockBalance={stockBalance} />
 
-            {currentTime.getHours() >= 9 &&
+            {/* {currentTime.getHours() >= 9 &&
               currentTime.getHours() < 15 &&
               (currentTime.getHours() !== 15 ||
-                currentTime.getMinutes() < 30) && (
-                <TradeButton
-                  stockBalance={stockBalance}
-                  partyKey={partyKey}
-                  stockKey={stockKey}
-                  stockInfo={stockInfo}
-                />
-              )}
+                currentTime.getMinutes() < 30) && ( */}
+            <TradeButton
+              stockBalance={stockBalance}
+              partyKey={partyKey}
+              stockKey={stockKey}
+              stockInfo={stockInfo}
+            />
+            {/* )} */}
           </>
         )}
       </Container>

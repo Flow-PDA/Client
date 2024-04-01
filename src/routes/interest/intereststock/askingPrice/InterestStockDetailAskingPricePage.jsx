@@ -161,17 +161,17 @@ export default function InterestStockDetailAskingPricePage() {
               />
             </div>
 
-            {currentTime.getHours() >= 9 &&
+            {/* {currentTime.getHours() >= 9 &&
               currentTime.getHours() < 15 &&
               (currentTime.getHours() !== 15 ||
-                currentTime.getMinutes() < 30) && (
-                <TradeButton
-                  stockBalance={stockBalance}
-                  partyKey={partyKey}
-                  stockKey={stockKey}
-                  stockInfo={stockInfo}
-                />
-              )}
+                currentTime.getMinutes() < 30) && ( */}
+            <TradeButton
+              stockBalance={stockBalance}
+              partyKey={partyKey}
+              stockKey={stockKey}
+              stockInfo={stockInfo}
+            />
+            {/* )} */}
           </>
         )}
       </Container>
