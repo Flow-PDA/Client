@@ -29,7 +29,7 @@ export default function TradeStockPage() {
   // state for socketIo
   const [socketIo, setSocketIo] = useState(null);
 
-  let [stockExecutionPrice, setStockExecutionPrice] = useState(0);
+  let [stockExecutionPrice, setStockExecutionPrice] = useState(0); // 체결가(시장가)
   // when mounted
   useEffect(() => {
     // socketIo init.
@@ -175,6 +175,9 @@ export default function TradeStockPage() {
 
   const toggleMarketPrice = () => {
     setIsMarketPrice(!isMarketPrice);
+    if (isMarketPrice) {
+      setPrice(stockExecutionPrice);
+    }
   };
 
   const callPartyInfo = async () => {
@@ -213,6 +216,7 @@ export default function TradeStockPage() {
       //시장가 체크되어있으면
       setPrice(Number(stockExecutionPrice));
     }
+
     const calculatedAmount = Math.floor(((percentage / 100) * deposit) / price);
     setAmount(calculatedAmount.toString());
     // console.log(typeof price);
