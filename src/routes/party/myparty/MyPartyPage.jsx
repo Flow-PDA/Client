@@ -160,10 +160,12 @@ export default function MyPartyPage() {
                     </Col>
                     <Col xs={4} style={{ padding: "0.5vw" }}>
                       <div>
-                        <div style={{ fontWeight: "600",fontSize:'1.1rem' }}>
+                        <div style={{ fontWeight: "600", fontSize: "1.1rem" }}>
                           {stock.prdt_name}
                         </div>
-                        <div style={{fontSize:'1.1rem' }}>{stock.hldg_qty}주</div>
+                        <div style={{ fontSize: "1.1rem" }}>
+                          {stock.hldg_qty}주
+                        </div>
                       </div>
                     </Col>
                     <Col
@@ -171,7 +173,7 @@ export default function MyPartyPage() {
                       xs={6}
                       style={{ padding: "0.75vw" }}
                     >
-                      <div style={{ fontWeight: "500",fontWeight: "600",fontSize:'1.1rem' }}>
+                      <div style={{ fontWeight: "500", fontSize: "1.1rem" }}>
                         {Number(stock.evlu_amt).toLocaleString()}원
                       </div>
                       <div
@@ -180,7 +182,7 @@ export default function MyPartyPage() {
                             ? "blue-text"
                             : "red-text"
                         }
-                        style={{fontWeight: "600",fontSize:'1.1rem'}}
+                        style={{ fontWeight: "600", fontSize: "1.1rem" }}
                       >
                         {stock.evlu_erng_rt[0] === "-" ? <></> : <>+</>}
                         {Number(stock.evlu_pfls_amt).toLocaleString()} (
