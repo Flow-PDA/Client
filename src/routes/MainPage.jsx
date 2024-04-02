@@ -17,22 +17,9 @@ const MainPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const party = useSelector((state) => state.party.partyKey);
-  console.log("party:", party);
   const [searchParams, setSearchParams] = useSearchParams();
   const key = searchParams.get("partyKey");
-  console.log(key);
-  console.log(party);
-  // console.log(params.getAll("partyKey"));
-  // console.log(location);
-  // console.log();
-  // useEffect(() => {
-  //   console.log(searchParams.get("partyKey"));
-  //   if (searchParams.get("partyKey") === "1") {
-  //     setSearchParams("?partyKey=2");
-  //   }
-  // }, [searchParams]);
 
-  // console.log(partyKey);
   const fetchParty = () => {
     dispatch(changePartyKey({ partyKey: `${key}` }));
   };

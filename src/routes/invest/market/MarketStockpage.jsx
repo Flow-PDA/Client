@@ -10,11 +10,9 @@ export default function MarketStockpage() {
   const fetchData = async () => {
     try {
       const response = await fetchShinhanMarket();
-      console.log(response);
       setDatas(response);
     } catch (error) {
       if (error.response.status === 401) {
-        console.log("throws");
         throwAuthError();
       }
     }

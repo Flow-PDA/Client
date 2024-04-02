@@ -18,8 +18,6 @@ export default function CandleChart({ mode, stockKey, price }) {
       const currentTimeStr = getTimeString(currentDate);
       const fromTimeStr = getTimeString(fromDate);
 
-      console.log(currentTimeStr, fromTimeStr, interval);
-
       const response = await fetchStockPrice(
         stockKey,
         interval,
@@ -45,7 +43,6 @@ export default function CandleChart({ mode, stockKey, price }) {
           // return elem.closePrice;
         });
         setData(newList);
-        // console.log(newList[1].x - newList[0].x);
         setChartInterval(newList[1].x - newList[0].x);
       } else {
         setNoContent(true);
@@ -60,7 +57,6 @@ export default function CandleChart({ mode, stockKey, price }) {
     let timerId;
     if (chartInterval > 100) {
       timerId = setInterval(() => {
-        console.log(`${chartInterval} passed, Update data`);
         setUpdateData(true);
       }, (chartInterval / 100) * 60 * 1000);
     }
@@ -81,7 +77,6 @@ export default function CandleChart({ mode, stockKey, price }) {
           const newList = data.filter((elem) => {
             return true;
           });
-          // console.log(response);
           const addedList = response.result?.map((elem, index) => {
             const timeStr = elem.localDate
               ? elem.localDate
@@ -102,36 +97,12 @@ export default function CandleChart({ mode, stockKey, price }) {
           });
           newList.push(...addedList);
           setData(newList);
-          // console.log(newList);
           setUpdateData(false);
         }
       );
     }
   }, [updateData]);
 
-  // useEffect(() => {
-  //   if (noContent === true && mode === "day") {
-  //     console.log("No content");
-  //     setNoContent(false);
-  //     const str = getPrevDateStrings(prevDateCnt);
-  //     console.log(str);
-
-  //     fetchStockPrice(stockKey, "minute", str[0], str[1])
-  //       .then((response) => {
-  //         console.log(response);
-  //         return response.result;
-  //       })
-  //       .then((result) => {
-  //         console.log(result);
-  //         if (result.length > 0) {
-  //           setData(result);
-  //         } else {
-  //           setPrevDateCnt(prevDateCnt + 1);
-  //           setNoContent(true);
-  //         }
-  //       });
-  //   }
-  // }, [noContent, prevDateCnt]);
 
   const timeStrToTimestamp = useCallback((str) => {
     const year = str.slice(0, 4);
@@ -141,17 +112,14 @@ export default function CandleChart({ mode, stockKey, price }) {
       const hour = str.slice(8, 10);
       const min = str.slice(10, 12);
 
-      // console.log(year, month, day, hour, min);
       return new Date(year, month, day, hour, min);
     } else {
-      // console.log(year, month, day);
       return new Date(year, month, day);
     }
   }, []);
 
   useEffect(() => {
     if (mode === "day" && data.length > 0) {
-      // console.log(price);
       let len = data.length;
 
       data[len - 1].y[3] = price;
@@ -161,7 +129,6 @@ export default function CandleChart({ mode, stockKey, price }) {
           return true;
         })
       );
-      // console.log(data[len - 1]);
     }
   }, [price]);
 
@@ -233,7 +200,6 @@ export default function CandleChart({ mode, stockKey, price }) {
           tooltip: {
             enabled: false,
             formatter: function (value, val1) {
-              console.log(value, val1);
             },
           },
           labels: {
@@ -243,9 +209,7 @@ export default function CandleChart({ mode, stockKey, price }) {
             },
           },
         },
-        // dataLabels: {
-        //   enabled: true,
-        // },
+      
         plotOptions: {
           candlestick: {
             colors: {

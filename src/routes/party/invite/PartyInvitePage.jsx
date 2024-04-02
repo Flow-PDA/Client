@@ -15,7 +15,6 @@ export default function PartyInvitePage() {
     Kakao.cleanup();
     // 자신의 js 키를 넣어준다.
     Kakao.init("694e4a50f31054df8556e5f645705327");
-    console.log(Kakao.isInitialized());
   }, []);
 
   const shareKakao = () => {

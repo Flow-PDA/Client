@@ -16,7 +16,6 @@ export default function PartyCreatePage() {
       alert("모임명과 계좌번호를 입력해주세요.");
     } else {
       const response = await fetchPartyCreate(partyName, accountNumber);
-      console.log(response);
       navigate("/party");
     }
   };

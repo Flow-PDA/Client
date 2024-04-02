@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import TopNavigationBar from "../../../../components/common/nav/TopNavigationBar";
 import "./InterestStockDetailChartPage.css";
-import CandleChart from "./CandleChart.jsx";
-import StockDataFetcher from "./StockDataFetcher.jsx";
+import SampleChart from "./SampleChart";
+import StockDataFetcher from "./StockDataFetcher.js";
 import io from "socket.io-client";
 import {
   fetchHankookStockBalance,
@@ -14,7 +14,6 @@ import { fetchPartyInfo } from "../../../../lib/apis/party.jsx";
 import { getApproval, regist } from "../../../../lib/apis/interest.jsx";
 import { SyncLoader } from "react-spinners";
 import TradeButton from "../../../../components/common/button/TradeButton.jsx";
-import LineChart from "./LineChart.jsx";
 
 export default function InterestStockDetailChartPage() {
   const partyKey = useParams().partyKey;
@@ -38,14 +37,10 @@ export default function InterestStockDetailChartPage() {
     if (WS_URL !== undefined) {
       const _socketIo = io.connect(WS_URL);
       _socketIo.on("connect", () => {
-        console.log("socket connected");
       });
       _socketIo.on("update", (data) => {
-        //console.log(data);
-        if (data[1] !== stockExecutionPrice) {
-          setStockExecutionPrice(data[1]);
-        }
-        // console.log(stockExecutionPrice);
+
+        setStockExecutionPrice(data[1]);
       });
 
       setSocketIo(_socketIo);
@@ -63,7 +58,7 @@ export default function InterestStockDetailChartPage() {
       // REGISTER_SUB : 등록, RELEASE_SUB : 해제
       socketIo.emit("REGISTER_SUB", temp);
     }
-  }, [socketIo, stockKey]);
+  }, [socketIo]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -92,6 +87,9 @@ export default function InterestStockDetailChartPage() {
           partyInfo: party,
         });
       } catch (error) {
+        if (error.response.status === 401) {
+          throwAuthError();
+        }
         console.error(error);
         throw Error(error);
       }
@@ -142,7 +140,6 @@ export default function InterestStockDetailChartPage() {
                 className="stock-detail-menu-button"
                 onClick={handleAskingPriceButtonClick}
               >
-                {/* {console.log(stockInfo)} */}
                 호가
               </Col>
               <Col
@@ -154,66 +151,27 @@ export default function InterestStockDetailChartPage() {
               </Col>
             </Row>
             <Row>
-              <Col>
-                {chartMode === "day" ? (
-                  <CandleChart
-                    mode={chartMode}
-                    stockKey={stockKey}
-                    price={stockExecutionPrice}
-                  />
-                ) : (
-                  <LineChart
-                    mode={chartMode}
-                    stockKey={stockKey}
-                    price={stockExecutionPrice}
-                  />
-                )}
-              </Col>
+                <Col>
+                  <SampleChart mode={chartMode} stockKey={stockKey} />
+                </Col>
             </Row>
             <Row className="stock-detail-date-row">
               <Col>
-                <Button
-                  className={
-                    "stock-detail-date-button day" +
-                    (chartMode === "day" ? " hovered" : "")
-                  }
-                  onClick={() => setChartMode("day")}
-                >
-                  1일
-                </Button>
+                <Button className="stock-detail-date-button day" onClick={()=> setChartMode("day")}>1일</Button>
               </Col>
               <Col>
-                <Button
-                  className={
-                    "stock-detail-date-button week" +
-                    (chartMode === "week" ? " hovered" : "")
-                  }
-                  onClick={() => setChartMode("week")}
-                >
-                  1주
-                </Button>
+                <Button className="stock-detail-date-button week" onClick={()=> setChartMode("week")}>1주</Button>
               </Col>
               <Col>
-                <Button
-                  className={
-                    "stock-detail-date-button three-month" +
-                    (chartMode === "3month" ? " hovered" : "")
-                  }
-                  onClick={() => setChartMode("3month")}
-                >
+                <Button className="stock-detail-date-button month" onClick={() => setChartMode("month")}>1달</Button>
+              </Col>
+              <Col>
+                <Button className="stock-detail-date-button three-month" onClick={() => setChartMode("3month")}>
                   3달
                 </Button>
               </Col>
               <Col>
-                <Button
-                  className={
-                    "stock-detail-date-button year" +
-                    (chartMode === "year" ? " hovered" : "")
-                  }
-                  onClick={() => setChartMode("year")}
-                >
-                  1년
-                </Button>
+                <Button className="stock-detail-date-button year" onClick={() => setChartMode("year")}>1년</Button>
               </Col>
             </Row>
             <StockDataFetcher stockBalance={stockBalance} />

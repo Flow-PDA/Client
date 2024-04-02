@@ -32,23 +32,9 @@ export default function SetDatePage() {
         goalPrice,
         goalDate
       );
-      console.log(response);
       navigate(`/party/${partyKey}/myparty`);
     }
   };
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetchPartyGoal(
-  //       partyKey,
-  //       goal,
-  //       goalPrice,
-  //       goalDate
-  //     );
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   return (
     <>

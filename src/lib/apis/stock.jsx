@@ -6,7 +6,6 @@ export async function fetchStockInfo(stockKey) {
     const response = await authInstance.get(
       `/stocks/inquire?stock_code=${stockKey}`
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -20,8 +19,6 @@ export async function fetchNewsData(stock_name) {
     const response = await authInstance.get(
       `/stocks/news?stock_name=${stock_name}`
     );
-    // console.log(stock_name);
-    // console.log(response);
     return response;
   } catch (err) {
     console.error(error);
@@ -32,7 +29,6 @@ export async function fetchNewsData(stock_name) {
 export async function fetchStockData() {
   try {
     const response = await authInstance.get("stocks/all");
-    console.log(response);
     return response.data;
   } catch (err) {
     console.error(err);
@@ -43,7 +39,6 @@ export async function fetchStockData() {
 export async function fetchEachStockDataFromDB(stockKey) {
   try {
     const response = await authInstance.get(`stocks/stockInfo/${stockKey}`);
-    console.log(response);
     return response.data;
   } catch (err) {
     console.error(err);
@@ -81,9 +76,6 @@ export async function fetchStockEndPrice(stockKey) {
   const response = await authInstance.get(
     `/stocks/stockInfo/${stockKey}/endPrice`
   );
-
-  // console.log("aa", response.data.result);
-
   return response.data.result;
 }
 

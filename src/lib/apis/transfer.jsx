@@ -17,7 +17,6 @@ export async function fetchRecentAccountList(partyKey) {
 //이체하기
 // @param {*} reqBody required : partyKey, name, accountNumber, price
 export async function transfer({ reqBody, partyKey }) {
-  console.log(reqBody);
   const response = await authInstance.post(`/transfers/${partyKey}`, reqBody);
   return response;
 }

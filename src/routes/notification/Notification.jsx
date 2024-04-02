@@ -51,7 +51,6 @@ export default function Notification() {
   const AllNoti = async () => {
     try {
       const response = await fetchAllNoti();
-      console.log(response);
       setNotis(response);
     } catch (err) {
       console.error(err);
@@ -61,7 +60,6 @@ export default function Notification() {
   const DelNoti = async (notificationKey) => {
     try {
       const response = await fetchDelNoti(notificationKey);
-      console.log(response);
       const updatedNotis = notis.filter(
         (noti) => noti.notificationKey !== notificationKey
       );
@@ -74,7 +72,6 @@ export default function Notification() {
   const ReadNoti = async (notificationKey) => {
     try {
       const response = await fetchReadNoti(notificationKey);
-      console.log(response);
       AllNoti();
     } catch (err) {
       console.error(err);
@@ -84,7 +81,6 @@ export default function Notification() {
   const ReadAllNoti = async () => {
     try {
       const response = await fetchReadAllNoti();
-      console.log(response);
       AllNoti();
     } catch (err) {
       console.error(err);

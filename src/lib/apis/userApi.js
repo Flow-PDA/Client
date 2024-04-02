@@ -25,7 +25,6 @@ async function signup(reqBody) {
   try {
     const resp = await instance.post(`/users/signup`, reqBody);
 
-    console.log(resp);
     return resp;
   } catch (error) {
     console.log(error);
@@ -61,12 +60,9 @@ async function modifyTest(userKey) {
     const reqBody = { name: "123" };
     const resp = await authInstance.put(`/users/${userKey}`, reqBody);
 
-    // console.log(resp);
     return resp;
   } catch (error) {
-    // console.log(error);
     if (error.response.status == 401) {
-      // console.log("throw error");
       throw error;
     }
     return error.response;

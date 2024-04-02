@@ -24,18 +24,10 @@ export default function SearchStockPage() {
       setStockData(response);
     } catch (error) {
       if (error.response.status === 401) {
-        console.log("throws");
         throwAuthError();
       }
     }
   };
-  // const stockData = [
-  //   { code: "AE", en: "United Arab Emirates", ko: "아랍에미리트" },
-  //   { code: "AF", en: "Afghanistan", ko: "아프가니스탄" },
-  //   // ... 생략 ...
-  //   { code: "ZA", en: "South Africa", ko: "남아프리카 공화국" },
-  //   { code: "ZW", en: "Zimbabwe", ko: "짐바브웨" },
-  // ];
 
   async function fetchStocks(query) {
     await new Promise((r) => setTimeout(r, 2_000)); // 2초 지연

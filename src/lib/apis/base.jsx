@@ -11,7 +11,6 @@ instance.interceptors.response.use(
   function (error) {
     console.log(error);
     if (error.response.status === 500) {
-      // console.error("서버 에러 발생");
     }
     return Promise.reject(error);
   }
@@ -23,7 +22,6 @@ const persistedString = localStorage.getItem("persist:user");
 const token = persistedString?.includes("accessToken")
   ? JSON.parse(JSON.parse(persistedString).userInfo).accessToken
   : "";
-// console.log(token);
 
 /**
  * axios instance with Authorization header

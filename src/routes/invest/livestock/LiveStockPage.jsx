@@ -26,7 +26,6 @@ export default function LiveStockPage() {
   const partyKey = useParams().partyKey;
   const navigate = useNavigate();
   const handleClick = (tag) => {
-    console.log(tag);
     setSelectedIndex(tag);
     fetchIssueData(tag);
   };
@@ -52,7 +51,6 @@ export default function LiveStockPage() {
   const fetchNasdaqData = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/points/nasdaq`);
-      // console.log(response.data[0]);
       setNasdaqDatas(response.data[0]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -61,13 +59,11 @@ export default function LiveStockPage() {
 
   const fetchIssueData = async (tag) => {
     try {
-      console.log(tag);
       const response = await axios
         .get(`${BASE_URL}/stocks/hotIssue?tag=${tag}`, {
           tag: tag,
         })
         .then((response) => {
-          console.log(tag);
           const data = response.data;
           setIssueDatas(data);
           Promise.all(
@@ -85,10 +81,7 @@ export default function LiveStockPage() {
                     prdy_ctrt: stock_res.data.prdy_ctrt,
                     stck_prpr: stock_res.data.stck_prpr,
                   };
-                  // console.log(tmp_data);
-                  // const items = [...stockDatas];
                   items.push(tmp_data);
-                  console.log(items);
                   return items;
                 });
             })
@@ -112,10 +105,8 @@ export default function LiveStockPage() {
     if (WS_URL !== undefined) {
       const _socketIo = io.connect(WS_URL);
       _socketIo.on("connect", () => {
-        console.log("socket connected");
       });
       _socketIo.on("update", (data) => {
-        // console.log(data);
         setUpdatedData(data);
       });
 
@@ -128,14 +119,9 @@ export default function LiveStockPage() {
   // received new data
   useEffect(() => {
     if (stockDatas.length > 0 && updatedData != null) {
-      // console.log(updatedData[0]);
       const newData = stockDatas.map((elem) => {
         if (elem[0]["stock_code"] == updatedData[0]) {
-          // if (elem[0]["stck_prpr"] != updatedData[1]) {
-          //   console.log(
-          //     `MODIFIED : ${elem[0]["stck_prpr"]} - ${updatedData[1]}`
-          //   );
-          // }
+        
           return [
             {
               ...elem[0],
@@ -148,22 +134,18 @@ export default function LiveStockPage() {
         } else return [elem[0]];
       });
       setUpdatedData(null);
-      // console.log(newData);
       setStockDatas(newData);
     }
   }, [updatedData, stockDatas]);
 
   // list modified
   useEffect(() => {
-    console.log(stockCodeList);
-    console.log(`REGISTER ${stockCodeList}`);
 
     stockCodeList.forEach((elem) => {
       const temp = `1|${elem}`;
       socketIo?.emit("REGISTER_SUB", temp);
     });
     return () => {
-      console.log(`RELEASE ${stockCodeList}`);
       stockCodeList.forEach((elem) => {
         const temp = `1|${elem}`;
         socketIo?.emit("RELEASE_SUB", temp);
@@ -174,7 +156,6 @@ export default function LiveStockPage() {
   // Close socketio
   useEffect(() => {
     return () => {
-      console.log("disconnect");
       if (socketIo != null) {
         socketIo.disconnect();
       }
