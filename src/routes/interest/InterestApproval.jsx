@@ -4,10 +4,15 @@ import HorizontalLine from "../../components/line/HorizontalLine.jsx";
 import { useEffect, useState } from "react";
 import { delApproved, getApproved } from "../../lib/apis/interest.jsx";
 import Modal from "../../components/common/modal/ApproveInterestModal.jsx";
+import { useParams } from "react-router-dom";
+import { fetchHankookStockBalanceAll } from "../../lib/apis/hankookApi.jsx";
+import party from "../../lib/apis/party.jsx";
 
-export default function InterestApproval({ partyKey }) {
-  const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
+export default function InterestApproval() {
+  const partyKey = useParams().partyKey;
+  const [removeModalIsOpen, setRemoveModalIsOpen] = useState(0);
   const [stock, setStock] = useState([]);
+  const [containedStock, setContainedStock] = useState(new Set());
 
   useEffect(() => {
     console.log("ApprovalPage", partyKey);
@@ -15,7 +20,14 @@ export default function InterestApproval({ partyKey }) {
       try {
         const res = await getApproved(partyKey); // 임시로 1로 세팅
         setStock(res.data.result);
-        console.log(stock);
+
+        const newContainedStock = new Set();
+        const mystock = await fetchHankookStockBalanceAll(partyKey);
+        console.log(mystock);
+
+        await mystock.forEach((data) => newContainedStock.add(data.pdno));
+
+        setContainedStock(newContainedStock);
       } catch (error) {
         console.error(error);
       }
@@ -25,8 +37,8 @@ export default function InterestApproval({ partyKey }) {
   }, []);
 
   // 거절 모달 열기 함수
-  function openRemoveModal() {
-    setRemoveModalIsOpen(true);
+  function openRemoveModal(interestStockKey) {
+    setRemoveModalIsOpen(interestStockKey);
   }
 
   // 거절 모달 닫기 함수
@@ -36,15 +48,20 @@ export default function InterestApproval({ partyKey }) {
     };
 
     await delApproved(partyKey, interestStockKey);
-    setRemoveModalIsOpen(false);
-    window.location.reload();
+    setRemoveModalIsOpen(0);
+    const updatedStock = stock.filter(
+      (stock) => stock.interestStockKey !== interestStockKey
+    ); // 선택된 주식을 제외한 주식 목록
+    setStock(updatedStock); // 주식 목록 업데이트
   }
 
   return (
     <Container>
+      {console.log(containedStock)}
       {stock.length > 0 &&
         stock.map((data, index) => (
           <Row className="interest-list" key={index}>
+            {console.log(containedStock.has(data.stockkey))}
             <Col xs={2} className="interest-date">
               {`${new Date(data.createdAt).getMonth() + 1}.${new Date(
                 data.createdAt
@@ -55,15 +72,19 @@ export default function InterestApproval({ partyKey }) {
               <Row className="interest-name">{data.name}</Row>
             </Col>
             <Col xs={4} className="interest-remove-button-col">
+              {console.log(data.stockKey)}
               <Button
                 className="interest-remove-button"
-                onClick={openRemoveModal}
+                onClick={() => openRemoveModal(data.interestStockKey)}
+                disabled={containedStock.has(data.stockKey) === true}
               >
                 종목빼기
               </Button>
               <Modal
-                isOpen={removeModalIsOpen}
-                closeModal={(e) => closeRemoveModal(1, data.interestStockKey)} //1은 임시로 넣어놓은 partyKey
+                isOpen={removeModalIsOpen === data.interestStockKey}
+                closeModal={(e) =>
+                  closeRemoveModal(partyKey, data.interestStockKey)
+                } //1은 임시로 넣어놓은 partyKey
                 stockName={data.stockName}
                 buttonText="종목빼기"
                 color="#f46060"

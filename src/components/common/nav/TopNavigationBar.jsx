@@ -9,17 +9,36 @@ import DownArrowButton from "../../../assets/down_arrow.png";
 import InterestButton from "../../../assets/interest.png";
 import StockButton from "../../../assets/stock.png";
 import TransferButton from "../../../assets/cash.png";
+import FlowButton from "../../../assets/logo.svg";
+import AlarmButton from "../../../assets/alarm.png";
 import "./TopNavigationBar.css";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { useSelector } from "react-redux";
+import { AuthContext } from "../../../lib/contexts/AuthContext";
 
-const TopNavigationBar = ({ text, type = 0, partyKey }) => {
+import {
+  fetchPartyInquire,
+  fetchUser,
+  fetchPartyInfo,
+} from "../../../lib/apis/party";
+
+const TopNavigationBar = ({ text, type = 0, to = -1 }) => {
+  const userInfo = useSelector((state) => state.user.userInfo);
+
+  const userName = userInfo.name;
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [toggleOpen, setToggleOpen] = useState(false);
-
+  const [partyInfo, setPartyInfo] = useState([]);
+  const { partyKey } = useParams();
+  const { throwAuthError } = useContext(AuthContext);
   const handleBackButtonClick = () => {
-    navigate(-1);
+    navigate(to);
+  };
+
+  const handleFlowButtonClick = () => {
+    navigate("/party");
   };
 
   const handleHamburgerButtonClick = () => {
@@ -30,11 +49,38 @@ const TopNavigationBar = ({ text, type = 0, partyKey }) => {
   const handleSettingButtonClick = (partyKey) => {
     navigate(`/party/${partyKey}/info`);
   };
-  const handleHomeButtonClick = () => {};
 
   const handletoggleButtonClick = () => {
     setToggleOpen(!toggleOpen);
   };
+  const handleHomeButtonClick = () => {
+    navigate("/party");
+  };
+
+  const onLogoutClick = (e) => {
+    e.preventDefault();
+    throwAuthError();
+  };
+
+  const callPartyInfo = async () => {
+    try {
+      const response = await fetchPartyInfo(partyKey);
+      console.log(response);
+      setPartyInfo(response);
+    } catch (error) {
+      console.error("모임 정보 데이터 호출 중 에러:", error);
+    }
+  };
+
+  const [infos, setInfos] = useState([]);
+
+  //TODO 햄버거버튼 연결
+
+  // console.log(infos);
+
+  useEffect(() => {
+    callPartyInfo();
+  }, []);
 
   if (type === 0) {
     //기본, 뒤로가기와 가운데 텍스트 있음
@@ -53,6 +99,10 @@ const TopNavigationBar = ({ text, type = 0, partyKey }) => {
     );
   } else if (type === 1) {
     //햄버거 버튼 있는 버전
+    const partyName = partyInfo.name;
+    const partyAccountNumber = partyInfo.accountNumber;
+    const groupInfo = useSelector((state) => state.user.groupInfo);
+
     return (
       <Navbar className="navbar">
         <Container className="navbar-container">
@@ -84,32 +134,43 @@ const TopNavigationBar = ({ text, type = 0, partyKey }) => {
                   </Navbar.Brand>
                 </div>
                 <div className="slide-menu-top-info">
-                  <div className="home-name">
-                    <div className="go-to-home" onClick={handleHomeButtonClick}>
+                  <div className="home-name" onClick={handleHomeButtonClick}>
+                    <div className="go-to-home">
                       <Image src={HomeButton} alt="Home" />
                     </div>
-                    <div className="userName">이신한님</div>
+                    <div className="userName">{userName}님</div>
                   </div>
-                  <div className="logout">로그아웃</div>
+                  <div className="logout" onClick={(e) => onLogoutClick(e)}>
+                    로그아웃
+                  </div>
                 </div>
               </div>
               <div className="party-stock">
                 <div className="current-party">현재 모임투자</div>
                 <div className="current-party-info">
-                  <div className="party-name">177의 모임투자</div>
-                  <div className="party-account-number">123-456-789</div>
+                  <div className="party-name">{partyName}의 모임투자</div>
+                  <div className="party-account-number">
+                    [계좌] {partyAccountNumber}
+                  </div>
+
                   <div className="slide-menu-buttons">
                     <div className="menu-btn">
-                      <Image src={TransferButton} />
-                      <span> 이체하기</span>
+                      <Link className="link" to={`/transfer/${partyKey}`}>
+                        <Image src={TransferButton} />
+                        <span> 이체하기</span>
+                      </Link>
                     </div>
                     <div className="menu-btn">
-                      <Image src={StockButton} />
-                      <span> 투자하기</span>
+                      <Link className="link" to={`/livestock/${partyKey}`}>
+                        <Image src={StockButton} />
+                        <span> 투자하기</span>
+                      </Link>
                     </div>
                     <div className="menu-btn interest-btn">
-                      <Image src={InterestButton} />
-                      <span> 관심목록</span>
+                      <Link className="link" to={`/interests/${partyKey}`}>
+                        <Image src={InterestButton} />
+                        <span> 관심목록</span>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -124,20 +185,31 @@ const TopNavigationBar = ({ text, type = 0, partyKey }) => {
                         src={DownArrowButton}
                         className="right-arrow-btn"
                       />
-                      <div className="another-party">
-                        <div className="another-party-info">
-                          <div className="party-name">178의 모임투자</div>
-                          <div className="party-account-number">
-                            012-456-789
+                      {groupInfo.map((data) => (
+                        <>
+                          <div className="another-party">
+                            {partyAccountNumber !== data.accountNumber ? (
+                              <>
+                                <Link
+                                  className="link"
+                                  to={`/party/${data.partyKey}/myparty`}
+                                >
+                                  <div className="another-party-info">
+                                    <div className="party-name">
+                                      {data.name}의 모임투자
+                                    </div>
+                                    <div className="party-account-number">
+                                      [계좌] {data.accountNumber}
+                                    </div>
+                                  </div>
+                                </Link>
+                              </>
+                            ) : (
+                              <></>
+                            )}
                           </div>
-                        </div>
-                        <div className="another-party-info">
-                          <div className="party-name">179의 모임투자</div>
-                          <div className="party-account-number">
-                            012-422-789
-                          </div>
-                        </div>
-                      </div>
+                        </>
+                      ))}
                     </>
                   ) : (
                     <Image src={RightArrowButton} className="right-arrow-btn" />
@@ -169,6 +241,21 @@ const TopNavigationBar = ({ text, type = 0, partyKey }) => {
           >
             <Image src={SettingButton} alt="Setting" />
           </Navbar.Brand>
+        </Container>
+      </Navbar>
+    );
+  } else if (type === 3) {
+    return (
+      <Navbar className="navbar">
+        <Container className="navbar-container">
+          <Navbar.Brand
+            onClick={handleFlowButtonClick}
+            className="navbar-brand"
+            style={{ marginLeft: "2vw", marginTop: "3vw" }}
+          >
+            <Image src={FlowButton} alt="Home" style={{ width: "25vw" }} />
+          </Navbar.Brand>
+          <Nav.Item className="nav-item-text">{text}</Nav.Item>
         </Container>
       </Navbar>
     );

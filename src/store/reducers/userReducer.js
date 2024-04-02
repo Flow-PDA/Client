@@ -8,6 +8,10 @@ const initialState = {
   groupInfo: [],
 };
 
+// const updateGroupInfo = (state, action) => {
+//   state.groupInfo = action.payload;
+// };
+
 const fetchUserLogin = createAsyncThunk(
   "user/fetchUserSignup",
   async (data, thunkAPI) => {
@@ -28,6 +32,9 @@ const userSlice = createSlice({
       state.loginReqState = "";
       state.groupInfo = [];
     },
+    updateGroupInfo(state, action) {
+      state.groupInfo = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUserLogin.fulfilled, (state, action) => {
@@ -44,9 +51,10 @@ const userSlice = createSlice({
     builder.addCase(fetchUserLogin.pending, (state, action) => {
       state.loginReqState = "pending";
     });
+    // builder.addCase(updateGroupInfo, updateGroupInfo);
   },
 });
 
 export { fetchUserLogin };
-export const { clearUserStore } = userSlice.actions;
+export const { clearUserStore, updateGroupInfo } = userSlice.actions;
 export default userSlice.reducer;

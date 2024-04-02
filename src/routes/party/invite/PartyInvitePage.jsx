@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
 import "./PartyInvitePage.css";
 import Logo from "../../../assets/logo.svg";
+import { useParams } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import KakaoBtn from "../../../assets/kakao.png";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 const { Kakao } = window;
 
 export default function PartyInvitePage() {
-  const realUrl = "http://localhost:5173/";
+  const partyKey = useParams().partyKey;
+  const realUrl = `http://www.pda-flow.site?partyKey=${partyKey}`;
   const resultUrl = window.location.href;
-
   useEffect(() => {
     Kakao.cleanup();
     // 자신의 js 키를 넣어준다.
@@ -23,11 +24,10 @@ export default function PartyInvitePage() {
       content: {
         title: "같이하는 투자",
         description: "친구와 함께 투자해보세요!",
-        imageUrl:
-          "https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg",
+        imageUrl: "https://avatars.githubusercontent.com/u/162952288?s=200&v=4",
         link: {
           mobileWebUrl: realUrl,
-          webUrl: resultUrl,
+          webUrl: realUrl,
         },
       },
       buttons: [

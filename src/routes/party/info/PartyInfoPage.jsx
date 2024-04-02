@@ -10,7 +10,7 @@ import {
   fetchDeleteUser,
 } from "../../../lib/apis/party";
 import Next from "../../../assets/arrow.png";
-import Bottom from "../../../assets/bottom_arrow.png";
+import Bottom from "../../../assets/down_arrow.png";
 import Up from "../../../assets/up_arrow.png";
 import TopNavigationBar from "../../../components/common/nav/TopNavigationBar";
 import party from "../../../lib/apis/party";
@@ -56,14 +56,18 @@ export default function PartyInfoPage() {
   const fetchMember = async () => {
     try {
       const response = await fetchPartyMemberInquire(partyKey);
-      console.log(response.data.result[0]);
-      setMember(response.data.result);
-      const temps = response.data.result;
-      temps.map(async (temp) => {
-        const resp = await fetchSearchUser(partyKey, temp.userKey);
-        members.push(resp.data);
-        console.log(members);
-      });
+      setMember(response);
+      const temps = response;
+      const resBody = await Promise.all(
+        temps.map(async (temp) => {
+          const resp = await fetchSearchUser(partyKey, temp.userKey);
+          // members.push(resp.data);
+          // console.log(members);
+          return resp;
+        })
+      );
+      console.log(resBody);
+      setMembers(resBody);
     } catch (err) {
       console.error(err);
     }
@@ -88,29 +92,36 @@ export default function PartyInfoPage() {
 
   return (
     <>
-      <TopNavigationBar></TopNavigationBar>
+      <TopNavigationBar type={1} />
       <Container className="info-container">
         <Row className="info-top-container">
           <div className="info-title">{info.name}의 모임투자</div>
           <div className="info-detail">
             <div>
-              <div>모임 시작일</div>
-              <div>목표</div>
-              <div>목표 금액</div>
-              <div>목표 날짜</div>
+              <div className="info-sub-title">모임 시작일</div>
+              <div className="info-sub-title">목표</div>
+              <div className="info-sub-title">목표 금액</div>
+              <div className="info-sub-title">목표 날짜</div>
             </div>
             <div>
-              <div>
+              <div className="info-sub-title">
                 {!info.createdAt ? info.createdAt : info.createdAt.slice(0, 10)}
               </div>
-              <div>{info.goal}</div>
-              <div>{addCommasToNumber(info.goalPrice)}원</div>
-              <div>{info.goalDate}</div>
+              <div className="info-sub-title">{info.goal}</div>
+              <div className="info-sub-title">{addCommasToNumber(info.goalPrice)}원</div>
+              <div className="info-sub-title">{info.goalDate}</div>
             </div>
           </div>
         </Row>
         <Row className="info-bottom-container">
-          <div style={{ backgroundColor: "#F5F5F5" }}>모임 설정</div>
+          <div
+            style={{
+              backgroundColor: "#F5F5F5",
+              padding: "2.5vw 3vw",
+            }}
+          >
+            모임 설정
+          </div>
           <Col>
             <div className="info-btn-container">
               <div className="info-link">모임 멤버</div>
@@ -121,65 +132,72 @@ export default function PartyInfoPage() {
                 }}
                 onClick={showUser}
               >
-                <img
-                  src={users.length > 1 ? Up : Bottom}
-                  alt="arrow"
-                  style={{ width: "1rem", height: "0.5rem", fontWeight: "800" }}
-                />
+                {users.length > 1 ? (
+                  <img src={Bottom} alt="arrow" />
+                ) : (
+                  <img
+                    src={Bottom}
+                    style={{ transform: "rotate(-90deg)" }}
+                    alt="arrow"
+                  />
+                )}
               </button>
             </div>
           </Col>
           <Col className="info-member-container">
-            {users.length > 1 &&
+            {users.length >= 1 &&
               members.map((mem) => (
-                <div key={mem.userKey} className="info-member">
-                  <div>{mem.userName}</div>
-                  <Button
-                    className="text-center"
-                    variant="danger"
-                    onClick={() => {
-                      console.log(mem.userKey);
-                      deleteUser(mem.userKey);
-                    }}
-                    style={{
-                      height: "2.4rem",
-                      backgroundColor: "#F46060",
-                      marginRight: "1rem",
-                      textAlign: "center",
-                    }}
-                    disabled={admin.role === 0} // 버튼 비활성화 조건 추가
-                  >
-                    내보내기
-                  </Button>
+                <div key={mem.data.userKey} className="info-member">
+                  <div className="info-sub-title">{mem.data.userName}</div>
+                  {admin.role === 1 ? (
+                    <Button
+                      className="text-center"
+                      variant="danger"
+                      onClick={() => {
+                        console.log(mem.data.userKey);
+                        deleteUser(mem.data.userKey);
+                      }}
+                      style={{
+                        height: "2.4rem",
+                        backgrounColor: "#F46060",
+                        marginRight: "1rem",
+                        textAlign: "center",
+                      }}
+                    >
+                      내보내기
+                    </Button>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               ))}
           </Col>
           <Col>
-            <div className="info-btn-container">
-              <div className="info-link">친구 초대</div>
-              <Link to={`/party/${partyKey}/info/invite`}>
-                <button style={{ border: "none", backgroundColor: "#fff" }}>
-                  <img src={Next} alt="arrow" />
-                </button>
-              </Link>
-            </div>
+            <Link
+              to={`/party/${partyKey}/info/invite`}
+              style={{ textDecoration: "none", color: "#000" }}
+            >
+              <div className="info-btn-container">
+                <div className="info-link">친구 초대</div>
+              </div>
+            </Link>
           </Col>
           <Col>
-            <div className="info-btn-container">
-              <div className="info-link">목표 설정</div>
-              <Link to={`/party/${partyKey}/info/setgoal`}>
-                <button style={{ border: "none", backgroundColor: "#fff" }}>
-                  <img src={Next} alt="arrow" />
-                </button>
-              </Link>
-            </div>
+            <Link
+              to={`/party/${partyKey}/info/setgoal`}
+              style={{ textDecoration: "none", color: "#000" }}
+            >
+              <div className="info-btn-container">
+                <div className="info-link">목표 설정</div>
+              </div>
+            </Link>
           </Col>
           <Col>
             <div className="info-btn-container">
               <div className="info-link">모임 투자 사용 종료</div>
-              <button style={{ border: "none", backgroundColor: "#fff" }}>
-                <img src={Next} alt="arrow" />
-              </button>
+              <button
+                style={{ border: "none", backgroundColor: "#fff" }}
+              ></button>
             </div>
           </Col>
         </Row>

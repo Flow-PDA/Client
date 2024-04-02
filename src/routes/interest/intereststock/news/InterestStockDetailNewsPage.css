@@ -1,0 +1,8 @@
+.news-button {
+  border-bottom: #375aff 0.2rem solid;
+}
+
+.sample-news-list-wrapper {
+  overflow-y: auto;
+  max-height: 74vh;
+}

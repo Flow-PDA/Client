@@ -17,7 +17,7 @@ export default function MyPartyTransactionDetail() {
       const response = await fetchTransactionDetail(partyKey);
       setTransactionData(response);
     } catch (error) {
-      console.error("이체 데이터 호출 중 에러:", error);
+      console.error("거래내역 데이터 호출 중 에러:", error);
     }
   };
 
@@ -51,10 +51,10 @@ export default function MyPartyTransactionDetail() {
                 <Col xs={2} className="transaction-date"></Col>
               )}
 
-              <Col xs={4} className="transaction-stock-name">
+              <Col xs={6} className="transaction-stock-name">
                 {data.stockName}
               </Col>
-              <Col xs={6} className="transaction-name">
+              <Col xs={4} className="transaction-name">
                 {data.name}
               </Col>
             </Row>

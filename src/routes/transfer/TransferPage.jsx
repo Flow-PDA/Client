@@ -6,9 +6,13 @@ import PrimaryButton from "../../components/common/button/PrimaryButton";
 import TopNavigationBar from "../../components/common/nav/TopNavigationBar";
 import { Link, useParams } from "react-router-dom";
 import { fetchTransferList } from "../../lib/apis/transfer";
+import { fetchPartyInfo } from "../../lib/apis/party";
+import { fetchPartyAdmin } from "../../lib/apis/party";
 
 export default function TransferPage() {
   const [transferData, setTransferData] = useState([]);
+  const [partyInfo, setPartyInfo] = useState();
+  const [role, setRole] = useState();
 
   const partyKey = useParams().partyKey;
   const callTransferData = async () => {
@@ -20,31 +24,57 @@ export default function TransferPage() {
     }
   };
 
+  const callPartyInfo = async () => {
+    try {
+      const response = await fetchPartyInfo(partyKey);
+      setPartyInfo(response);
+    } catch (error) {
+      console.error("모임 정보 데이터 호출 중 에러:", error);
+    }
+  };
+  const callPartyAdminInfo = async () => {
+    try {
+      const response = await fetchPartyAdmin(partyKey);
+      // console.log("ㅇㅇㅇ", response);
+      setRole(response.data.role);
+    } catch (error) {
+      console.error("모임 정보 운영자 데이터 호출 중 에러:", error);
+    }
+  };
+
   useEffect(() => {
     callTransferData();
+    callPartyInfo();
+    callPartyAdminInfo();
   }, []);
 
   let deposit = 0;
+  // console.log(role);
 
-  if (transferData[0]) {
-    deposit = transferData[0].deposit;
+  if (partyInfo) {
+    deposit = partyInfo.deposit;
   }
 
   return (
     <>
-      <TopNavigationBar text={"이체하기"} />
+      <TopNavigationBar text={"이체하기"} to={`/party/${partyKey}/myparty`} />
+
       <Container>
         <div className="transfer-possible-price-sentence">이체 가능 금액</div>
         <div className="transfer-possible-price">
           {deposit.toLocaleString()}원
         </div>
-        <Link
-          to={`transferDetailAccountNumPage`}
-          preventScrollReset
-          className="text-decoration-none"
-        >
-          <PrimaryButton text="이체하기" minWidth="100%" />
-        </Link>
+        {role === 0 ? (
+          <></>
+        ) : (
+          <Link
+            to={`transferDetailAccountNumPage`}
+            preventScrollReset
+            className="text-decoration-none"
+          >
+            <PrimaryButton text="이체하기" minWidth="100%" />
+          </Link>
+        )}
 
         <hr />
         <div className="full-transfer-sentence">전체 내역</div>

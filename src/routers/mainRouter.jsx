@@ -25,7 +25,9 @@ import { ProtectedLayout } from "../routes/ProtectedLayout";
 import InterestStockDetailChartPage from "../routes/interest/intereststock/chart/InterestStockDetailChartPage";
 import SearchStockPage from "../routes/invest/SearchStockPage";
 import InterestStockDetailAskingPricePage from "../routes/interest/intereststock/askingPrice/InterestStockDetailAskingPricePage";
-
+import InterestStockDetailNewsPage from "../routes/interest/intereststock/news/InterestStockDetailNewsPage";
+import TradeStockPage from "../routes/interest/intereststock/TradeStockPage";
+import Notification from "../routes/notification/Notification";
 export const mainRouter = [
   {
     path: "",
@@ -34,6 +36,10 @@ export const mainRouter = [
       {
         path: "",
         element: <MainPage />,
+      },
+      {
+        path: ":userKey/notification",
+        element: <Notification />,
       },
       {
         path: "interests",
@@ -56,6 +62,14 @@ export const mainRouter = [
           {
             path: "askingPrice",
             element: <InterestStockDetailAskingPricePage />,
+          },
+          {
+            path: "news",
+            element: <InterestStockDetailNewsPage />,
+          },
+          {
+            path: "tradeStock",
+            element: <TradeStockPage />,
           },
         ],
       },

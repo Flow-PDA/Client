@@ -42,8 +42,8 @@ export default function StockDataFetcher({ stockBalance }) {
                         : "stock-data-total-profit"
                     }
                   >
-                    {stockBalance.data.evlu_pfls_amt}원(
-                    {stockBalance.data.evlu_pfls_rt})%
+                    {parseInt(stockBalance.data.evlu_pfls_amt).toLocaleString()}
+                    원({stockBalance.data.evlu_pfls_rt})%
                   </span>
                 </Col>
               </Row>
